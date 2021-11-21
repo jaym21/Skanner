@@ -57,7 +57,7 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
         binding?.scanSurfaceView?.lifecycleOwner = this
         binding?.scanSurfaceView?.listener = this
 
-        binding?.ivCloseCamera?.setOnClickListener {
+        binding?.btnCloseCamera?.setOnClickListener {
             navController.popBackStack()
         }
 
