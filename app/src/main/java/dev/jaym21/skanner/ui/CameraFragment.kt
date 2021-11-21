@@ -132,6 +132,10 @@ class CameraFragment : Fragment() {
             .setTargetRotation(Surface.ROTATION_0)
             .build()
 
+        imageAnalysis?.setAnalyzer(cameraExecutor, { image ->
+
+        })
+
         //unbinding the use-cases before again binding them
         cameraProvider.unbindAll()
 
