@@ -107,6 +107,15 @@ class CameraFragment : Fragment() {
             .setTargetAspectRatio(screenAspectRatio)
             .setTargetRotation(rotation)
             .build()
+
+        imageCapture = ImageCapture.Builder()
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
+            .setTargetAspectRatio(screenAspectRatio)
+            .setTargetRotation(rotation)
+            .build()
+
+        //unbinding the use-cases before again binding them
+        cameraProvider.unbindAll()
     }
 
     private fun takePicture() {
