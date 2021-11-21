@@ -148,7 +148,7 @@ internal class ScanSurfaceView: FrameLayout {
         }
     }
 
-    private fun takePicture() {
+     fun takePicture() {
         listener.scanSurfaceShowProgress()
         isCapturing = true
 

@@ -53,7 +53,38 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
         //initializing navController
         navController = Navigation.findNavController(view)
 
+        //setting lifecycleOwner for scanSurfaceView
+        binding?.scanSurfaceView?.lifecycleOwner = this
+        binding?.scanSurfaceView?.listener = this
 
+        binding?.ivCloseCamera?.setOnClickListener {
+            navController.popBackStack()
+        }
+
+        if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    startCamera()
+                    binding?.ivTakePicture?.setOnClickListener {
+                        takePicture()
+                    }
+                } else {
+                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE)
+                }
+            } else {
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
+            }
+        } else {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), Constants.CAMERA_REQUEST_CODE)
+        }
+    }
+
+    private fun startCamera() {
+        binding?.scanSurfaceView?.start()
+    }
+
+    private fun takePicture() {
+        binding?.scanSurfaceView?.takePicture()
     }
 
     override fun onRequestPermissionsResult(
@@ -65,7 +96,10 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
         when(requestCode) {
             Constants.CAMERA_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                    startCamera()
+                    binding?.ivTakePicture?.setOnClickListener {
+                        takePicture()
+                    }
                 }else {
                     Snackbar.make(binding?.root!!, "Camera permissions required to work", Snackbar.LENGTH_SHORT).show()
                     navController.popBackStack()
@@ -73,7 +107,10 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
             }
             Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                    startCamera()
+                    binding?.ivTakePicture?.setOnClickListener {
+                        takePicture()
+                    }
                 }else {
                     Snackbar.make(binding?.root!!, "Reading external storage permissions required to work", Snackbar.LENGTH_SHORT).show()
                     navController.popBackStack()
@@ -81,7 +118,10 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
             }
             Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
+                    startCamera()
+                    binding?.ivTakePicture?.setOnClickListener {
+                        takePicture()
+                    }
                 }else {
                     Snackbar.make(binding?.root!!, "Writing external storage permissions required to work", Snackbar.LENGTH_SHORT).show()
                     navController.popBackStack()
