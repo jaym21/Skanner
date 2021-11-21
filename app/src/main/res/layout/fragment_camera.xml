@@ -6,11 +6,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.CameraFragment">
 
-    <androidx.camera.view.PreviewView
-        android:id="@+id/viewFinder"
+    <dev.jaym21.skanner.ui.components.ScanSurfaceView
+        android:id="@+id/scanSurfaceView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 
     <ImageView
         android:id="@+id/ivTakePicture"
@@ -21,5 +20,14 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/purple_500"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>

@@ -1,7 +1,0 @@
-# C/C++ build system timings
-generate_cxx_metadata
-  execute-generate-process 2435ms
-generate_cxx_metadata completed in 2442ms
-
-# C/C++ build system timings
-

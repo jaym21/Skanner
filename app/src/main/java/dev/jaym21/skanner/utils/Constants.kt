@@ -20,8 +20,11 @@ class Constants {
         const val CANNY_THRESHOLD_HIGH = 200.0
         const val CUTOFF_THRESHOLD = 155.0
         const val TRUNCATE_THRESHOLD = 150.0
+        const val TIME_POST_PICTURE = 1500L
         const val DOWNSCALE_IMAGE_SIZE = 600.0
         const val FIRST_MAX_CONTOURS = 10
         const val SMALLEST_ANGLE_COS = 0.172 //80 degrees
+        const val CLEAR_SHAPE_DELAY_IN_MILLIS = 600L
+        const val POINTER_ANIMATION_DURATION = 300L
     }
 }

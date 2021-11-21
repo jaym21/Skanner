@@ -1,1 +1,0 @@
-P:\Programming\AndroidAppDevelopment\Skanner\opencv\build\intermediates\cxx\Debug\3v4b4r6i\obj\arm64-v8a

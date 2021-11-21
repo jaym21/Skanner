@@ -1,1 +1,0 @@
-P:\Programming\AndroidAppDevelopment\Skanner\opencv\build\intermediates\cxx\RelWithDebInfo\723h6c3t\obj\x86
