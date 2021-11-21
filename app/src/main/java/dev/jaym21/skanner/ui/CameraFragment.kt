@@ -81,6 +81,16 @@ class CameraFragment : Fragment() {
     }
 
 
+    private fun setUpCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+        cameraProviderFuture.addListener(Runnable {
+            // CameraProvider
+            cameraProvider = cameraProviderFuture.get()
+
+
+        }, cameraExecutor)
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
