@@ -3,8 +3,10 @@ package dev.jaym21.skanner.ui
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Size
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.*
@@ -22,6 +24,7 @@ import java.util.concurrent.Executors
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.roundToInt
 
 
 class CameraFragment : Fragment() {
@@ -29,13 +32,15 @@ class CameraFragment : Fragment() {
     private var binding: FragmentCameraBinding? = null
     private var displayId: Int = -1
     private var lensFacing: Int = CameraSelector.LENS_FACING_BACK
-    private var preview: Preview? = null
     private lateinit var cameraExecutor: ExecutorService
+    private var preview: Preview? = null
     private var imageCapture: ImageCapture? = null
+    private var imageAnalysis: ImageAnalysis? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private lateinit var outputDirectory: File
     private lateinit var navController: NavController
+    private lateinit var previewSize: Size
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +56,9 @@ class CameraFragment : Fragment() {
 
         //initializing navController
         navController = Navigation.findNavController(view)
+
+        //getting size of previewView
+        previewSize = Size(binding?.viewFinder!!.width, binding?.viewFinder!!.height)
 
         // Initialize our background executor
         cameraExecutor = Executors.newSingleThreadExecutor()
@@ -114,8 +122,20 @@ class CameraFragment : Fragment() {
             .setTargetRotation(rotation)
             .build()
 
+        val aspectRatio = previewSize.width / previewSize.height.toFloat()
+        val width = Constants.IMAGE_ANALYSIS_SCALE_WIDTH
+        val height = (width / aspectRatio).roundToInt()
+
+        imageAnalysis = ImageAnalysis.Builder()
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            .setTargetResolution(Size(width, height))
+            .setTargetRotation(Surface.ROTATION_0)
+            .build()
+
         //unbinding the use-cases before again binding them
         cameraProvider.unbindAll()
+
+
     }
 
     private fun takePicture() {
