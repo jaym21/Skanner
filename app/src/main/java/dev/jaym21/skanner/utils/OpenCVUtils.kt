@@ -3,7 +3,13 @@ package dev.jaym21.skanner.utils
 import dev.jaym21.skanner.model.Quadrilateral
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
+import java.util.*
+import kotlin.Comparator
+import kotlin.collections.ArrayList
+import kotlin.math.max
 import kotlin.math.min
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 class OpenCVUtils {
     companion object {
@@ -30,6 +36,70 @@ class OpenCVUtils {
             val largestContour: List<MatOfPoint>? = findLargestContours(destination)
             if (largestContour != null){
                 return findQuadrilateral(largestContour)
+            }
+            return null
+        }
+
+        private fun findQuadrilateral(mContourList: List<MatOfPoint>): Quadrilateral? {
+            for (c in mContourList) {
+                val c2f = MatOfPoint2f(*c.toArray())
+                val peri = Imgproc.arcLength(c2f, true)
+                val approx = MatOfPoint2f()
+                Imgproc.approxPolyDP(c2f, approx, Constants.EPSILON_CONSTANT * peri, true)
+                val points = approx.toArray()
+                // select biggest 4 angles polygon
+                if (approx.rows() == Constants.ANGLES_NUMBER) {
+                    val foundPoints: Array<Point> = sortPoints(points)
+                    return Quadrilateral(approx, foundPoints)
+                } else if(approx.rows() == 5) {
+                    // if document has a bent corner
+                    var shortestDistance = Int.MAX_VALUE.toDouble()
+                    var shortestPoint1: Point? = null
+                    var shortestPoint2: Point? = null
+
+                    var diagonal = 0.toDouble()
+                    var diagonalPoint1: Point? = null
+                    var diagonalPoint2: Point? = null
+
+                    for (i in 0 until 4) {
+                        for (j in i + 1 until 5) {
+                            val d = distance(points[i], points[j])
+                            if (d < shortestDistance) {
+                                shortestDistance = d
+                                shortestPoint1 = points[i]
+                                shortestPoint2 = points[j]
+                            }
+                            if(d > diagonal) {
+                                diagonal = d
+                                diagonalPoint1 = points[i]
+                                diagonalPoint2 = points[j]
+                            }
+                        }
+                    }
+
+                    val trianglePointWithHypotenuse: Point? = points.toList().minus(arrayListOf(shortestPoint1, shortestPoint2, diagonalPoint1, diagonalPoint2))[0]
+
+                    val newPoint = if(trianglePointWithHypotenuse!!.x > shortestPoint1!!.x && trianglePointWithHypotenuse.x > shortestPoint2!!.x &&
+                        trianglePointWithHypotenuse.y > shortestPoint1.y && trianglePointWithHypotenuse.y > shortestPoint2.y) {
+                        Point(min(shortestPoint1.x, shortestPoint2.x), min(shortestPoint1.y, shortestPoint2.y))
+                    } else if(trianglePointWithHypotenuse.x < shortestPoint1.x && trianglePointWithHypotenuse.x < shortestPoint2!!.x &&
+                        trianglePointWithHypotenuse.y > shortestPoint1.y && trianglePointWithHypotenuse.y > shortestPoint2.y) {
+                        Point(max(shortestPoint1.x, shortestPoint2.x), min(shortestPoint1.y, shortestPoint2.y))
+                    } else if(trianglePointWithHypotenuse.x < shortestPoint1.x && trianglePointWithHypotenuse.x < shortestPoint2!!.x &&
+                        trianglePointWithHypotenuse.y < shortestPoint1.y && trianglePointWithHypotenuse.y < shortestPoint2.y) {
+                        Point(max(shortestPoint1.x, shortestPoint2.x), max(shortestPoint1.y, shortestPoint2.y))
+                    } else if(trianglePointWithHypotenuse.x > shortestPoint1.x && trianglePointWithHypotenuse.x > shortestPoint2!!.x &&
+                        trianglePointWithHypotenuse.y < shortestPoint1.y && trianglePointWithHypotenuse.y < shortestPoint2.y) {
+                        Point(min(shortestPoint1.x, shortestPoint2.x), max(shortestPoint1.y, shortestPoint2.y))
+                    } else {
+                        Point(0.0, 0.0)
+                    }
+
+                    val sortedPoints = sortPoints(arrayOf(trianglePointWithHypotenuse, diagonalPoint1!!, diagonalPoint2!!, newPoint))
+                    val newApprox = MatOfPoint2f()
+                    newApprox.fromArray(*sortedPoints)
+                    return Quadrilateral(newApprox, sortedPoints)
+                }
             }
             return null
         }
@@ -73,6 +143,29 @@ class OpenCVUtils {
             val point = MatOfPoint()
             point.fromList(points)
             return point
+        }
+
+        private fun distance(p1: Point, p2: Point): Double {
+            return sqrt((p1.x - p2.x).pow(2.0) + (p1.y - p2.y).pow(2.0))
+        }
+
+        private fun sortPoints(src: Array<Point>): Array<Point> {
+            val srcPoints: ArrayList<Point> = ArrayList(src.toList())
+            val result = arrayOf<Point?>(null, null, null, null)
+            val sumComparator: Comparator<Point> = Comparator<Point> { lhs, rhs -> (lhs.y + lhs.x).compareTo(rhs.y + rhs.x) }
+            val diffComparator: Comparator<Point> = Comparator<Point> { lhs, rhs -> (lhs.y - lhs.x).compareTo(rhs.y - rhs.x) }
+
+            // top-left corner = minimal sum
+            result[0] = Collections.min(srcPoints, sumComparator)
+            // bottom-right corner = maximal sum
+            result[2] = Collections.max(srcPoints, sumComparator)
+            // top-right corner = minimal difference
+            result[1] = Collections.min(srcPoints, diffComparator)
+            // bottom-left corner = maximal difference
+            result[3] = Collections.max(srcPoints, diffComparator)
+            return result.map {
+                it!!
+            }.toTypedArray()
         }
     }
 }
