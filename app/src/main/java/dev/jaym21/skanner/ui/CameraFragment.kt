@@ -94,6 +94,23 @@ class CameraFragment : Fragment() {
     private fun bindCameraUseCases() {
         val screenAspectRatio = aspectRatio(binding?.viewFinder!!.width, binding?.viewFinder!!.height)
 
+        val rotation = binding?.viewFinder?.display!!.rotation
+
+        // CameraProvider
+        val cameraProvider = cameraProvider ?: throw IllegalStateException("Camera initialization failed.")
+
+        // CameraSelector
+        val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build()
+
+        //building preview object
+        preview = Preview.Builder()
+            .setTargetAspectRatio(screenAspectRatio)
+            .setTargetRotation(rotation)
+            .build()
+    }
+
+    private fun takePicture() {
+
     }
 
     private fun aspectRatio(width: Int, height: Int): Int {
