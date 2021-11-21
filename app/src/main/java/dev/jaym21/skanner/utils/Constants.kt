@@ -20,5 +20,7 @@ class Constants {
         const val CANNY_THRESHOLD_HIGH = 200.0
         const val CUTOFF_THRESHOLD = 155.0
         const val TRUNCATE_THRESHOLD = 150.0
+        const val DOWNSCALE_IMAGE_SIZE = 600.0
+        const val FIRST_MAX_CONTOURS = 10
     }
 }
