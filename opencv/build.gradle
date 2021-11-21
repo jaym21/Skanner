@@ -53,7 +53,6 @@
 //
 //
 //
-//
 // Native C++ support (necessary to use OpenCV in native code of application only):
 //
 // - Use find_package() in app/CMakeLists.txt:
