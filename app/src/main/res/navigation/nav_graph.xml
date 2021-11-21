@@ -5,10 +5,12 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/allDocumentsFragment">
 
+
     <fragment
         android:id="@+id/allDocumentsFragment"
         android:name="dev.jaym21.skanner.ui.AllDocumentsFragment"
-        android:label="AllDocumentsFragment" >
+        android:label="fragment_all_documents"
+        tools:layout="@layout/fragment_all_documents" >
         <action
             android:id="@+id/action_allDocumentsFragment_to_cameraFragment"
             app:destination="@id/cameraFragment" />
