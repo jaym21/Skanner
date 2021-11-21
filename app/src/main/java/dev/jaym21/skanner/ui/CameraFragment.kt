@@ -19,6 +19,9 @@ import com.google.android.material.snackbar.Snackbar
 import dev.jaym21.skanner.databinding.FragmentCameraBinding
 import dev.jaym21.skanner.extensions.yuvToRgba
 import dev.jaym21.skanner.utils.Constants
+import dev.jaym21.skanner.utils.OpenCVUtils
+import org.opencv.core.MatOfPoint2f
+import org.opencv.core.Point
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -136,7 +139,11 @@ class CameraFragment : Fragment() {
         imageAnalysis?.setAnalyzer(cameraExecutor, { image ->
             val mat = image.yuvToRgba()
             val originalPreviewSize = mat.size()
-            val largestQuad = native
+            val largestQuad = OpenCVUtils.detectLargestQuadrilateral(mat)
+            mat.release()
+            if (largestQuad != null){
+
+            }
         })
 
         //unbinding the use-cases before again binding them
@@ -147,6 +154,28 @@ class CameraFragment : Fragment() {
 
     private fun takePicture() {
 
+    }
+
+    private fun drawLargestRect(approx: MatOfPoint2f, points: Array<Point>, stdSize: Size) {
+        val previewWidth = stdSize.height.toFloat()
+        val previewHeight = stdSize.width.toFloat()
+
+        val resultWidth = max(previewWidth - points[0].y.toFloat(), previewWidth - points[1].y.toFloat()) -
+                min(previewWidth - points[2].y.toFloat(), previewWidth - points[3].y.toFloat())
+
+        val resultHeight = max(points[1].x.toFloat(), points[2].x.toFloat()) - min(points[0].x.toFloat(), points[3].x.toFloat())
+
+        val imgDetectionPropsObj = ImageDetectionProperties(previewWidth.toDouble(), previewHeight.toDouble(),
+            points[0], points[1], points[2], points[3], resultWidth.toInt(), resultHeight.toInt())
+        if (imgDetectionPropsObj.isNotValidImage(approx)) {
+            scanCanvasView.clearShape()
+            cancelAutoCapture()
+        } else {
+            if (!isAutoCaptureScheduled) {
+                scheduleAutoCapture()
+            }
+            scanCanvasView.showShape(previewWidth, previewHeight, points)
+        }
     }
 
     private fun aspectRatio(width: Int, height: Int): Int {
