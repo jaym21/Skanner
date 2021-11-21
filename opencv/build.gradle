@@ -50,7 +50,7 @@
 //   It may load library with different version (from OpenCV Android Manager, which is installed separatelly on device)
 //
 // - use "System.loadLibrary("opencv_java4")" or "OpenCVLoader.initDebug()"
-//   
+//
 //
 //
 //
