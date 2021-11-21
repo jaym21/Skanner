@@ -7,22 +7,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.camera.core.Camera
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
-import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentCameraBinding
 import dev.jaym21.skanner.utils.Constants
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.math.abs
+import kotlin.math.max
+import kotlin.math.min
 
 
 class CameraFragment : Fragment() {
@@ -87,8 +86,22 @@ class CameraFragment : Fragment() {
             // CameraProvider
             cameraProvider = cameraProviderFuture.get()
 
-
+            //to build and bind camera use cases
+            bindCameraUseCases()
         }, cameraExecutor)
+    }
+
+    private fun bindCameraUseCases() {
+        val screenAspectRatio = aspectRatio(binding?.viewFinder!!.width, binding?.viewFinder!!.height)
+
+    }
+
+    private fun aspectRatio(width: Int, height: Int): Int {
+        val previewRatio = max(width, height).toDouble() / min(width, height)
+        if (abs(previewRatio - Constants.RATIO_4_3_VALUE) <= abs(previewRatio - Constants.RATIO_16_9_VALUE)) {
+            return AspectRatio.RATIO_4_3
+        }
+        return AspectRatio.RATIO_16_9
     }
 
     override fun onRequestPermissionsResult(
