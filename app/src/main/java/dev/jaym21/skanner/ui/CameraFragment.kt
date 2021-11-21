@@ -17,6 +17,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import dev.jaym21.skanner.databinding.FragmentCameraBinding
+import dev.jaym21.skanner.extensions.yuvToRgba
 import dev.jaym21.skanner.utils.Constants
 import java.io.File
 import java.util.concurrent.ExecutorService
@@ -133,7 +134,9 @@ class CameraFragment : Fragment() {
             .build()
 
         imageAnalysis?.setAnalyzer(cameraExecutor, { image ->
-
+            val mat = image.yuvToRgba()
+            val originalPreviewSize = mat.size()
+            val largestQuad = native
         })
 
         //unbinding the use-cases before again binding them
