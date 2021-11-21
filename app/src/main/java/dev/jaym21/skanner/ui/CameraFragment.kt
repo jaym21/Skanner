@@ -1,5 +1,7 @@
 package dev.jaym21.skanner.ui
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,10 +12,14 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentCameraBinding
+import dev.jaym21.skanner.utils.Constants
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -50,6 +56,84 @@ class CameraFragment : Fragment() {
         // Initialize our background executor
         cameraExecutor = Executors.newSingleThreadExecutor()
 
+        if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                    // Set up the camera and its use cases
+                    binding?.viewFinder?.post {
+                        // Keep track of the display in which this view is attached
+                        displayId = binding?.viewFinder?.display!!.displayId
+                        setUpCamera()
+                        binding?.ivTakePicture?.setOnClickListener {
+                            takePicture()
+                        }
+                    }
+                } else {
+                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE)
+                }
+            } else {
+                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
+            }
+        } else {
+            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), Constants.CAMERA_REQUEST_CODE)
+        }
+
+    }
+
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode) {
+            Constants.CAMERA_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    binding?.viewFinder?.post {
+                        // Keep track of the display in which this view is attached
+                        displayId = binding?.viewFinder?.display!!.displayId
+                        setUpCamera()
+                        binding?.ivTakePicture?.setOnClickListener {
+                            takePicture()
+                        }
+                    }
+                }else {
+                    Snackbar.make(binding?.root!!, "Camera permissions required to work", Snackbar.LENGTH_SHORT).show()
+                    navController.popBackStack()
+                }
+            }
+            Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    binding?.viewFinder?.post {
+                        // Keep track of the display in which this view is attached
+                        displayId = binding?.viewFinder?.display!!.displayId
+                        setUpCamera()
+                        binding?.ivTakePicture?.setOnClickListener {
+                            takePicture()
+                        }
+                    }
+                }else {
+                    Snackbar.make(binding?.root!!, "Reading external storage permissions required to work", Snackbar.LENGTH_SHORT).show()
+                    navController.popBackStack()
+                }
+            }
+            Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    binding?.viewFinder?.post {
+                        // Keep track of the display in which this view is attached
+                        displayId = binding?.viewFinder?.display!!.displayId
+                        setUpCamera()
+                        binding?.ivTakePicture?.setOnClickListener {
+                            takePicture()
+                        }
+                    }
+                }else {
+                    Snackbar.make(binding?.root!!, "Writing external storage permissions required to work", Snackbar.LENGTH_SHORT).show()
+                    navController.popBackStack()
+                }
+            }
+        }
     }
 
     override fun onDestroy() {
