@@ -17,7 +17,7 @@ class OpenCVUtils {
     companion object {
 
         fun getContourEdgePoints(bitmap: Bitmap): List<PointF> {
-
+            var point2f = getPoint(bitmap)
         }
 
         fun detectLargestQuadrilateral(src: Mat): Quadrilateral? {
@@ -172,6 +172,10 @@ class OpenCVUtils {
             return result.map {
                 it!!
             }.toTypedArray()
+        }
+
+        private fun getPoint(bitmap: Bitmap): MatOfPoint2f? {
+            val src = bitmap.toM
         }
     }
 }
