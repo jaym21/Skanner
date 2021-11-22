@@ -1,5 +1,7 @@
 package dev.jaym21.skanner.utils
 
+import android.graphics.Bitmap
+import android.graphics.PointF
 import dev.jaym21.skanner.model.Quadrilateral
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
@@ -13,6 +15,10 @@ import kotlin.math.sqrt
 
 class OpenCVUtils {
     companion object {
+
+        fun getContourEdgePoints(bitmap: Bitmap): List<PointF> {
+
+        }
 
         fun detectLargestQuadrilateral(src: Mat): Quadrilateral? {
             val destination = Mat()

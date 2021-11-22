@@ -18,6 +18,7 @@ import androidx.navigation.Navigation
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentImageCropBinding
 import dev.jaym21.skanner.extensions.scaledBitmap
+import dev.jaym21.skanner.utils.OpenCVUtils
 import id.zelory.compressor.determineImageRotation
 import java.io.File
 
@@ -74,7 +75,7 @@ class ImageCropFragment : Fragment() {
     }
 
     private fun getEdgePoints(bitmap: Bitmap): Map<Int, PointF> {
-
+        val listOfPointF: List<PointF> = OpenCVUtils.
     }
 
     override fun onDestroy() {
