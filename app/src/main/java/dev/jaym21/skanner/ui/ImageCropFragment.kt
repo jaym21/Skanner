@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentImageCropBinding
+import id.zelory.compressor.determineImageRotation
 import java.io.File
 
 class ImageCropFragment : Fragment() {
@@ -22,7 +23,7 @@ class ImageCropFragment : Fragment() {
     private var binding: FragmentImageCropBinding? = null
     private lateinit var navController: NavController
     private lateinit var takenImageUri: Uri
-    private lateinit var originalImageFile: String
+    private lateinit var originalImageFile: File
     private var selectedImage: Bitmap? = null
 
     override fun onCreateView(
@@ -43,15 +44,16 @@ class ImageCropFragment : Fragment() {
         //getting uri of image taken from argument
         takenImageUri = arguments?.getString("savedUri")!!.toUri()
 
-        originalImageFile = arguments?.getString("originalImageFile")!!
+        originalImageFile = (arguments?.get("originalImageFile") as File?)!!
 
 //        selectedImage = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, takenImageUri)
-        val fileBitmap =  BitmapFactory.decodeFile(originalImageFile)
+        val fileBitmap =  BitmapFactory.decodeFile(originalImageFile.absolutePath)
 
         if(fileBitmap != null) {
-            binding?.ivTakenImage?.setImageBitmap(selectedImage)
+            selectedImage = determineImageRotation(originalImageFile, fileBitmap)
         } else {
             Toast.makeText(requireContext(), "Image capture failed, try again!", Toast.LENGTH_SHORT).show()
+            navController.popBackStack()
         }
     }
 
