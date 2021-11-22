@@ -19,5 +19,20 @@
         android:id="@+id/cameraFragment"
         android:name="dev.jaym21.skanner.ui.CameraFragment"
         android:label="fragment_camera"
-        tools:layout="@layout/fragment_camera" />
+        tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_imageCropFragment"
+            app:destination="@id/imageCropFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/imageCropFragment"
+        android:name="dev.jaym21.skanner.ui.ImageCropFragment"
+        android:label="fragment_image_crop"
+        tools:layout="@layout/fragment_image_crop" >
+
+        <argument
+            android:name="savedUri"
+            app:argType="string" />
+
+    </fragment>
 </navigation>

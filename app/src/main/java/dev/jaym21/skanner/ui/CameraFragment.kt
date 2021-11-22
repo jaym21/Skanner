@@ -4,36 +4,23 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Size
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
 import androidx.camera.core.*
-import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
+import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentCameraBinding
-import dev.jaym21.skanner.extensions.yuvToRgba
 import dev.jaym21.skanner.ui.components.ScanSurfaceListener
 import dev.jaym21.skanner.utils.Constants
 import dev.jaym21.skanner.utils.FileUtils
-import dev.jaym21.skanner.utils.ImageDetectionProperties
-import dev.jaym21.skanner.utils.OpenCVUtils
-import org.opencv.core.MatOfPoint2f
-import org.opencv.core.Point
 import java.io.File
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-import kotlin.math.abs
-import kotlin.math.max
-import kotlin.math.min
-import kotlin.math.roundToInt
 
 
 class CameraFragment : Fragment(), ScanSurfaceListener{
@@ -41,7 +28,6 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
     private var binding: FragmentCameraBinding? = null
     private lateinit var navController: NavController
     private lateinit var outputDirectory: File
-    private var originalImageFile: File? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -142,8 +128,8 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
     }
 
     override fun scanSurfacePictureTaken(savedUri: Uri) {
-        val bundle = bundleOf("savedUri" to  savedUri)
-        navController.navigate(R)
+        val bundle = bundleOf("savedUri" to  savedUri.toString())
+        navController.navigate(R.id.action_cameraFragment_to_imageCropFragment, bundle)
     }
 
     override fun scanSurfaceShowProgress() {
