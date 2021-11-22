@@ -2,6 +2,7 @@ package dev.jaym21.skanner.utils
 
 import android.graphics.Bitmap
 import android.graphics.PointF
+import dev.jaym21.skanner.extensions.scaleRectangle
 import dev.jaym21.skanner.extensions.toMat
 import dev.jaym21.skanner.model.Quadrilateral
 import org.opencv.core.*
@@ -19,6 +20,15 @@ class OpenCVUtils {
 
         fun getContourEdgePoints(bitmap: Bitmap): List<PointF> {
             var point2f = getPoint(bitmap)
+            if (point2f == null)
+                point2f = MatOfPoint2f()
+
+            val points: List<Point> = point2f.toArray().toList()
+            val result: MutableList<PointF> = ArrayList()
+            for (i in points.indices) {
+                result.add(PointF(points[i].x.toFloat(), points[i].y.toFloat()))
+            }
+            return result
         }
 
         fun detectLargestQuadrilateral(src: Mat): Quadrilateral? {
@@ -183,7 +193,7 @@ class OpenCVUtils {
             Imgproc.resize(src, downscaled, downscaledSize)
             val largestRectangle = detectLargestQuadrilateral(downscaled)
 
-            return largestRectangle?.contour?.scaleRectangle(1f/ratio)
+            return largestRectangle?.contour?.scaleRectangle(1f / ratio)
         }
     }
 }

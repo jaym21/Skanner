@@ -75,7 +75,7 @@ class ImageCropFragment : Fragment() {
     }
 
     private fun getEdgePoints(bitmap: Bitmap): Map<Int, PointF> {
-        val listOfPointF: List<PointF> = OpenCVUtils.
+        val listOfPointF: List<PointF> = OpenCVUtils.getContourEdgePoints(bitmap)
     }
 
     override fun onDestroy() {
