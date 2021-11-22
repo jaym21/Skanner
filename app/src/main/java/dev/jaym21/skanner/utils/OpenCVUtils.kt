@@ -2,6 +2,7 @@ package dev.jaym21.skanner.utils
 
 import android.graphics.Bitmap
 import android.graphics.PointF
+import dev.jaym21.skanner.extensions.toMat
 import dev.jaym21.skanner.model.Quadrilateral
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
@@ -175,7 +176,14 @@ class OpenCVUtils {
         }
 
         private fun getPoint(bitmap: Bitmap): MatOfPoint2f? {
-            val src = bitmap.toM
+            val src = bitmap.toMat()
+            val ratio = Constants.DOWNSCALE_IMAGE_SIZE / max(src.width(), src.height())
+            val downscaledSize = Size(src.width() * ratio, src.height() * ratio)
+            val downscaled = Mat(downscaledSize, src.type())
+            Imgproc.resize(src, downscaled, downscaledSize)
+            val largestRectangle = detectLargestQuadrilateral(downscaled)
+
+            return largestRectangle?.contour?.scaleRectangle(1f/ratio)
         }
     }
 }
