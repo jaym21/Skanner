@@ -32,9 +32,9 @@ internal class ScanCanvasView: FrameLayout {
     var pointer4: View = View(context)
 
     init {
-        paint.color = ContextCompat.getColor(context, R.color.purple_200)
-        border.color = ContextCompat.getColor(context, R.color.purple_200)
-        border.strokeWidth = 2f
+        paint.color = ContextCompat.getColor(context, R.color.purple_500_alpha_10)
+        border.color = ContextCompat.getColor(context, R.color.purple_500)
+        border.strokeWidth = 4f
         border.style = Paint.Style.STROKE
         border.isAntiAlias = true
         paint.isAntiAlias = true

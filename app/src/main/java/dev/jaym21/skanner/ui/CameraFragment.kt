@@ -2,6 +2,7 @@ package dev.jaym21.skanner.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment

@@ -72,7 +72,7 @@ internal class ScanSurfaceView: FrameLayout {
         }, ContextCompat.getMainExecutor(context))
     }
 
-    private fun bindCameraUseCases() {
+     fun bindCameraUseCases() {
 
         cameraProvider?.unbindAll()
         camera = null
@@ -123,8 +123,13 @@ internal class ScanSurfaceView: FrameLayout {
             }
             image.close()
         })
-        camera = cameraProvider!!.bindToLifecycle(lifecycleOwner, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageAnalysis, imageCapture)
-    }
+         try {
+             camera = cameraProvider!!.bindToLifecycle(lifecycleOwner, CameraSelector.DEFAULT_BACK_CAMERA, preview, imageAnalysis, imageCapture)
+             preview?.setSurfaceProvider(viewFinder.surfaceProvider)
+         }  catch (exc: Exception) {
+             Log.e(TAG, "Use case binding failed", exc)
+         }
+     }
 
     private fun drawLargestRect(approx: MatOfPoint2f, points: Array<Point>, stdSize: org.opencv.core.Size) {
         val previewWidth = stdSize.height.toFloat()
