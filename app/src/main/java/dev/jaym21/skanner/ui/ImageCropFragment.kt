@@ -7,10 +7,12 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.navigation.NavController
@@ -71,11 +73,17 @@ class ImageCropFragment : Fragment() {
             binding?.ivTakenImage?.setImageBitmap(scaledBitmap)
             val tempBitmap = scaledBitmap
             val pointFs = getEdgePoints(tempBitmap)
+            binding?.polygonView?.setPoints(pointFs)
+            binding?.polygonView?.visibility = View.VISIBLE
+            val layoutParams = FrameLayout.LayoutParams(tempBitmap.width + 32, tempBitmap.height + 32)
+            layoutParams.gravity = Gravity.CENTER
+            binding?.polygonView?.layoutParams = layoutParams
         }
     }
 
     private fun getEdgePoints(bitmap: Bitmap): Map<Int, PointF> {
         val listOfPointF: List<PointF> = OpenCVUtils.getContourEdgePoints(bitmap)
+        return binding?.polygonView!!.getOrderedValidEdgePoints(bitmap, listOfPointF)
     }
 
     override fun onDestroy() {
