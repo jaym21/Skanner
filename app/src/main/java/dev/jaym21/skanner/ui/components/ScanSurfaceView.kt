@@ -160,7 +160,8 @@ internal class ScanSurfaceView: FrameLayout {
                 listener.scanSurfaceHideProgress()
                 cameraProvider?.unbind(imageAnalysis)
                 scanCanvasView.clearShape()
-                listener.scanSurfacePictureTaken()
+                if (outputFileResults.savedUri != null)
+                    listener.scanSurfacePictureTaken(outputFileResults.savedUri!!)
                 postDelayed({ isCapturing = false }, Constants.TIME_POST_PICTURE)
             }
 

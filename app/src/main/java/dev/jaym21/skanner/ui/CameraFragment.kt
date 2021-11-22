@@ -2,6 +2,7 @@ package dev.jaym21.skanner.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.util.Size
 import androidx.fragment.app.Fragment
@@ -13,6 +14,7 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
@@ -139,8 +141,9 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
         }
     }
 
-    override fun scanSurfacePictureTaken() {
-
+    override fun scanSurfacePictureTaken(savedUri: Uri) {
+        val bundle = bundleOf("savedUri" to  savedUri)
+        navController.navigate(R)
     }
 
     override fun scanSurfaceShowProgress() {
