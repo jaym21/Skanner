@@ -55,6 +55,16 @@ class ImageCropFragment : Fragment() {
             Toast.makeText(requireContext(), "Image capture failed, try again!", Toast.LENGTH_SHORT).show()
             navController.popBackStack()
         }
+
+        binding?.flImageViewHolder?.post {
+            initImageCropping()
+        }
+    }
+
+    private fun initImageCropping() {
+        if (selectedImage != null  && selectedImage!!.width > 0 && selectedImage!!.height > 0) {
+            val scaledBitmap =
+        }
     }
 
     override fun onDestroy() {
