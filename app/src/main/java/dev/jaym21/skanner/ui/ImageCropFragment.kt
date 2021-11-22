@@ -2,6 +2,8 @@ package dev.jaym21.skanner.ui
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.PointF
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -66,7 +68,13 @@ class ImageCropFragment : Fragment() {
         if (selectedImage != null  && selectedImage!!.width > 0 && selectedImage!!.height > 0) {
             val scaledBitmap = selectedImage!!.scaledBitmap(binding?.flImageCropHolder!!.width, binding?.flImageCropHolder!!.height)
             binding?.ivTakenImage?.setImageBitmap(scaledBitmap)
+            val tempBitmap = scaledBitmap
+            val pointFs = getEdgePoints(tempBitmap)
         }
+    }
+
+    private fun getEdgePoints(bitmap: Bitmap): Map<Int, PointF> {
+
     }
 
     override fun onDestroy() {
