@@ -128,8 +128,8 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
         }
     }
 
-    override fun scanSurfacePictureTaken(savedUri: Uri) {
-        val bundle = bundleOf("savedUri" to  savedUri.toString())
+    override fun scanSurfacePictureTaken(savedUri: Uri, originalImageFile: File) {
+        val bundle = bundleOf("savedUri" to  savedUri.toString(), "originalImageFile" to originalImageFile.absolutePath.toString())
         navController.navigate(R.id.action_cameraFragment_to_imageCropFragment, bundle)
     }
 
