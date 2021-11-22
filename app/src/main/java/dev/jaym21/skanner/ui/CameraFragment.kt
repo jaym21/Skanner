@@ -20,6 +20,7 @@ import dev.jaym21.skanner.databinding.FragmentCameraBinding
 import dev.jaym21.skanner.extensions.yuvToRgba
 import dev.jaym21.skanner.ui.components.ScanSurfaceListener
 import dev.jaym21.skanner.utils.Constants
+import dev.jaym21.skanner.utils.FileUtils
 import dev.jaym21.skanner.utils.ImageDetectionProperties
 import dev.jaym21.skanner.utils.OpenCVUtils
 import org.opencv.core.MatOfPoint2f
@@ -37,6 +38,8 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
 
     private var binding: FragmentCameraBinding? = null
     private lateinit var navController: NavController
+    private lateinit var outputDirectory: File
+    private var originalImageFile: File? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,6 +55,12 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
 
         //initializing navController
         navController = Navigation.findNavController(view)
+
+        //getting output directory to save file in
+        outputDirectory = FileUtils.getOutputDirectory(requireContext())
+
+        //creating file to hold the image
+        binding?.scanSurfaceView?.originalImageFile = FileUtils.createFile(outputDirectory, Constants.FILENAME, Constants.PHOTO_EXTENSION)
 
         //setting lifecycleOwner for scanSurfaceView
         binding?.scanSurfaceView?.lifecycleOwner = this
@@ -130,11 +139,6 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        binding = null
-    }
-
     override fun scanSurfacePictureTaken() {
 
     }
@@ -146,4 +150,10 @@ class CameraFragment : Fragment(), ScanSurfaceListener{
     override fun scanSurfaceHideProgress() {
         binding?.progressBar?.visibility = View.GONE
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
+    }
+
 }
