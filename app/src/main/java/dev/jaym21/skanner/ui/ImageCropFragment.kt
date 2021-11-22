@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentImageCropBinding
+import dev.jaym21.skanner.extensions.scaledBitmap
 import id.zelory.compressor.determineImageRotation
 import java.io.File
 
@@ -63,7 +64,8 @@ class ImageCropFragment : Fragment() {
 
     private fun initImageCropping() {
         if (selectedImage != null  && selectedImage!!.width > 0 && selectedImage!!.height > 0) {
-            val scaledBitmap =
+            val scaledBitmap = selectedImage!!.scaledBitmap(binding?.flImageCropHolder!!.width, binding?.flImageCropHolder!!.height)
+            binding?.ivTakenImage?.setImageBitmap(scaledBitmap)
         }
     }
 
