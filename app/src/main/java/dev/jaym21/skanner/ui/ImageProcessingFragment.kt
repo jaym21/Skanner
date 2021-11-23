@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentImageProcessingBinding
 import java.io.File
 

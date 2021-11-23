@@ -6,12 +6,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.CameraFragment">
 
-    <Button
+    <ImageView
         android:id="@+id/btnCloseCamera"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:background="@drawable/ic_close"
-        app:tint="@color/blue_500"
+        android:src="@drawable/ic_close"
+        android:background="@drawable/button_bg"
+        app:tint="@color/black_alpha_80"
+        android:elevation="8dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="16dp"
@@ -24,8 +28,8 @@
 
     <ImageView
         android:id="@+id/ivTakePicture"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
         android:src="@drawable/ic_lens"
         app:tint="@color/blue_500"
         android:layout_alignParentBottom="true"
