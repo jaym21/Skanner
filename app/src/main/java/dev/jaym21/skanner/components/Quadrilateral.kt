@@ -1,4 +1,4 @@
-package dev.jaym21.skanner.model
+package dev.jaym21.skanner.components
 
 import org.opencv.core.MatOfPoint2f
 import org.opencv.core.Point

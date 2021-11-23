@@ -5,7 +5,7 @@ import android.graphics.PointF
 import dev.jaym21.skanner.extensions.scaleRectangle
 import dev.jaym21.skanner.extensions.toBitmap
 import dev.jaym21.skanner.extensions.toMat
-import dev.jaym21.skanner.model.Quadrilateral
+import dev.jaym21.skanner.components.Quadrilateral
 import org.opencv.core.*
 import org.opencv.imgproc.Imgproc
 import java.util.*

@@ -1,4 +1,4 @@
-package dev.jaym21.skanner.ui.components
+package dev.jaym21.skanner.components
 
 import android.content.Context
 import android.graphics.Bitmap

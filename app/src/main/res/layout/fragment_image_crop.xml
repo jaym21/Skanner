@@ -28,7 +28,7 @@
 
         </FrameLayout>
 
-        <dev.jaym21.skanner.ui.components.PolygonView
+        <dev.jaym21.skanner.components.PolygonView
             android:id="@+id/polygonView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
