@@ -33,6 +33,14 @@
         <argument
             android:name="savedUri"
             app:argType="string" />
+        <action
+            android:id="@+id/action_imageCropFragment_to_imageProcessingFragment"
+            app:destination="@id/imageProcessingFragment" />
 
     </fragment>
+    <fragment
+        android:id="@+id/imageProcessingFragment"
+        android:name="dev.jaym21.skanner.ui.ImageProcessingFragment"
+        android:label="fragment_image_processing"
+        tools:layout="@layout/fragment_image_processing" />
 </navigation>
