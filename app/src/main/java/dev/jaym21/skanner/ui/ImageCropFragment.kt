@@ -7,6 +7,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.core.net.toUri
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import dev.jaym21.skanner.R
@@ -22,6 +24,8 @@ import dev.jaym21.skanner.databinding.FragmentImageCropBinding
 import dev.jaym21.skanner.extensions.scaledBitmap
 import dev.jaym21.skanner.utils.OpenCVUtils
 import id.zelory.compressor.determineImageRotation
+import id.zelory.compressor.extension
+import id.zelory.compressor.saveBitmap
 import java.io.File
 
 class ImageCropFragment : Fragment() {
@@ -31,6 +35,8 @@ class ImageCropFragment : Fragment() {
     private lateinit var takenImageUri: Uri
     private lateinit var originalImageFile: File
     private var selectedImage: Bitmap? = null
+    private var transformedImage: Bitmap? = null
+    private var transformedImageFile: File? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,7 +58,6 @@ class ImageCropFragment : Fragment() {
 
         originalImageFile = (arguments?.get("originalImageFile") as File?)!!
 
-//        selectedImage = MediaStore.Images.Media.getBitmap(requireContext().contentResolver, takenImageUri)
         val fileBitmap =  BitmapFactory.decodeFile(originalImageFile.absolutePath)
 
         if(fileBitmap != null) {
@@ -64,6 +69,14 @@ class ImageCropFragment : Fragment() {
 
         binding?.flImageViewHolder?.post {
             initImageCropping()
+        }
+
+        binding?.ivClose?.setOnClickListener {
+            navController.popBackStack()
+        }
+
+        binding?.ivAccept?.setOnClickListener {
+            getCroppedImage()
         }
     }
 
@@ -78,6 +91,40 @@ class ImageCropFragment : Fragment() {
             val layoutParams = FrameLayout.LayoutParams(tempBitmap.width + 32, tempBitmap.height + 32)
             layoutParams.gravity = Gravity.CENTER
             binding?.polygonView?.layoutParams = layoutParams
+        }
+    }
+
+    private fun getCroppedImage() {
+        if(selectedImage != null) {
+            try {
+                val points: Map<Int, PointF> = binding?.polygonView!!.getPoints()
+                val xRatio: Float = selectedImage!!.width.toFloat() / binding?.ivTakenImage!!.width
+                val yRatio: Float = selectedImage!!.height.toFloat() / binding?.ivTakenImage!!.height
+                val pointPadding = 20
+                val x1: Float = (points.getValue(0).x + pointPadding) * xRatio
+                val x2: Float = (points.getValue(1).x + pointPadding) * xRatio
+                val x3: Float = (points.getValue(2).x + pointPadding) * xRatio
+                val x4: Float = (points.getValue(3).x + pointPadding) * xRatio
+                val y1: Float = (points.getValue(0).y + pointPadding) * yRatio
+                val y2: Float = (points.getValue(1).y + pointPadding) * yRatio
+                val y3: Float = (points.getValue(2).y + pointPadding) * yRatio
+                val y4: Float = (points.getValue(3).y + pointPadding) * yRatio
+
+                transformedImage = OpenCVUtils.getScannedBitmap(selectedImage!!, x1, y1, x2, y2, x3, y3, x4, y4)
+
+                transformedImage?.let {
+                    transformedImageFile = File(requireContext().filesDir, "${Constants.TRANSFORMED_IMAGE_NAME}.${Bitmap.CompressFormat.JPEG.extension()}")
+                    saveBitmap(it, transformedImageFile!!, Bitmap.CompressFormat.JPEG, 100)
+                }
+
+                val bundle = bundleOf("transformedImageFile" to transformedImageFile)
+                navController.navigate(R.id.action_cropImageFragment_to_imageProcessingFragment, bundle)
+
+            } catch (e: java.lang.Exception) {
+                Log.e("TAGYOYO", "Cropping image failed")
+            }
+        } else {
+            Log.e("TAGYOYO", "Invalid Image")
         }
     }
 

@@ -18,6 +18,18 @@ import kotlin.math.sqrt
 class OpenCVUtils {
     companion object {
 
+        fun getScannedBitmap(bitmap: Bitmap, x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float, x4: Float, y4: Float): Bitmap {
+            val rectangle = MatOfPoint2f()
+            rectangle.fromArray(
+                Point(x1.toDouble(), y1.toDouble()),
+                Point(x2.toDouble(), y2.toDouble()),
+                Point(x3.toDouble(), y3.toDouble()),
+                Point(x4.toDouble(), y4.toDouble())
+            )
+            val dstMat = PerspectiveTransformation.transform(bitmap.toMat(), rectangle)
+            return dstMat.toBitmap()
+        }
+
         fun getContourEdgePoints(bitmap: Bitmap): List<PointF> {
             var point2f = getPoint(bitmap)
             if (point2f == null)
@@ -31,7 +43,7 @@ class OpenCVUtils {
             return result
         }
 
-        fun detectLargestQuadrilateral(src: Mat): Quadrilateral? {
+        private fun detectLargestQuadrilateral(src: Mat): Quadrilateral? {
             val destination = Mat()
             Imgproc.blur(src, src, Size(Constants.BLURRING_KERNEL_SIZE, Constants.BLURRING_KERNEL_SIZE))
 
