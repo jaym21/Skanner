@@ -119,7 +119,7 @@ class ImageCropFragment : Fragment() {
                 }
 
                 val bundle = bundleOf("transformedImageFile" to transformedImageFile)
-                navController.navigate(R.id.action_cropImageFragment_to_imageProcessingFragment, bundle)
+                navController.navigate(R.id.action_imageCropFragment_to_imageProcessingFragment, bundle)
 
             } catch (e: java.lang.Exception) {
                 Log.e("TAGYOYO", "Cropping image failed")

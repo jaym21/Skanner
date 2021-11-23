@@ -61,13 +61,7 @@ class CameraFragment : Fragment(){
         if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                 if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                    // Set up the camera and its use cases
-                    binding?.viewFinder?.post {
-                        setUpCamera()
-                        binding?.ivTakePicture?.setOnClickListener {
-                            takePicture()
-                        }
-                    }
+                    initialize()
                 } else {
                     ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE)
                 }
@@ -76,6 +70,20 @@ class CameraFragment : Fragment(){
             }
         } else {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), Constants.CAMERA_REQUEST_CODE)
+        }
+    }
+
+    private fun initialize() {
+        binding?.viewFinder?.post {
+            setUpCamera()
+        }
+
+        binding?.ivTakePicture?.setOnClickListener {
+            takePicture()
+        }
+
+        binding?.btnCloseCamera?.setOnClickListener {
+            navController.popBackStack()
         }
     }
 
@@ -165,12 +173,7 @@ class CameraFragment : Fragment(){
         when(requestCode) {
             Constants.CAMERA_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    binding?.viewFinder?.post {
-                        setUpCamera()
-                        binding?.ivTakePicture?.setOnClickListener {
-                            takePicture()
-                        }
-                    }
+                    initialize()
                 }else {
                     Snackbar.make(binding?.root!!, "Camera permissions required to work", Snackbar.LENGTH_SHORT).show()
                     navController.popBackStack()
@@ -178,12 +181,7 @@ class CameraFragment : Fragment(){
             }
             Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    binding?.viewFinder?.post {
-                        setUpCamera()
-                        binding?.ivTakePicture?.setOnClickListener {
-                            takePicture()
-                        }
-                    }
+                    initialize()
                 }else {
                     Snackbar.make(binding?.root!!, "Reading external storage permissions required to work", Snackbar.LENGTH_SHORT).show()
                     navController.popBackStack()
@@ -191,12 +189,7 @@ class CameraFragment : Fragment(){
             }
             Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    binding?.viewFinder?.post {
-                        setUpCamera()
-                        binding?.ivTakePicture?.setOnClickListener {
-                            takePicture()
-                        }
-                    }
+                    initialize()
                 }else {
                     Snackbar.make(binding?.root!!, "Writing external storage permissions required to work", Snackbar.LENGTH_SHORT).show()
                     navController.popBackStack()
