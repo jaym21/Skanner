@@ -26,5 +26,6 @@ class Constants {
         const val SMALLEST_ANGLE_COS = 0.172 //80 degrees
         const val CLEAR_SHAPE_DELAY_IN_MILLIS = 600L
         const val POINTER_ANIMATION_DURATION = 300L
+        const val TRANSFORMED_IMAGE_NAME = "transformedImage"
     }
 }

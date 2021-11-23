@@ -3,6 +3,7 @@ package dev.jaym21.skanner.utils
 import android.graphics.Bitmap
 import android.graphics.PointF
 import dev.jaym21.skanner.extensions.scaleRectangle
+import dev.jaym21.skanner.extensions.toBitmap
 import dev.jaym21.skanner.extensions.toMat
 import dev.jaym21.skanner.model.Quadrilateral
 import org.opencv.core.*

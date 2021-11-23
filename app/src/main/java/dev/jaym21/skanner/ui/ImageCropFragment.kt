@@ -22,6 +22,7 @@ import androidx.navigation.Navigation
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentImageCropBinding
 import dev.jaym21.skanner.extensions.scaledBitmap
+import dev.jaym21.skanner.utils.Constants
 import dev.jaym21.skanner.utils.OpenCVUtils
 import id.zelory.compressor.determineImageRotation
 import id.zelory.compressor.extension

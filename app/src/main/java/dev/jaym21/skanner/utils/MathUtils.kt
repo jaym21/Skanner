@@ -24,5 +24,11 @@ class MathUtils {
             val dy2 = p2.y - p0.y
             return (dx1 * dx2 + dy1 * dy2) / sqrt((dx1 * dx1 + dy1 * dy1) * (dx2 * dx2 + dy2 * dy2) + 1e-10)
         }
+
+        fun getDistance(p1: Point, p2: Point): Double {
+            val dx = p2.x - p1.x
+            val dy = p2.y - p1.y
+            return sqrt(dx * dx + dy * dy)
+        }
     }
 }
