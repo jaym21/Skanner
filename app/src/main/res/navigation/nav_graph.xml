@@ -13,7 +13,11 @@
         tools:layout="@layout/fragment_all_documents" >
         <action
             android:id="@+id/action_allDocumentsFragment_to_cameraFragment"
-            app:destination="@id/cameraFragment" />
+            app:destination="@id/cameraFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/cameraFragment"
@@ -22,7 +26,11 @@
         tools:layout="@layout/fragment_camera" >
         <action
             android:id="@+id/action_cameraFragment_to_imageCropFragment"
-            app:destination="@id/imageCropFragment" />
+            app:destination="@id/imageCropFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/imageCropFragment"
@@ -35,7 +43,11 @@
             app:argType="string" />
         <action
             android:id="@+id/action_imageCropFragment_to_imageProcessingFragment"
-            app:destination="@id/imageProcessingFragment" />
+            app:destination="@id/imageProcessingFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
 
     </fragment>
     <fragment
