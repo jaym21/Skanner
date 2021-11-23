@@ -17,13 +17,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Your"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:fontFamily="@font/opensans_bold"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Documents"
-            android:textSize="25sp" />
+            android:textSize="25sp"
+            android:fontFamily="@font/opensans_bold"/>
 
     </LinearLayout>
 
