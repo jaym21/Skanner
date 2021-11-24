@@ -11,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
@@ -132,6 +133,7 @@ class CameraFragment : Fragment(){
     }
 
     private fun takePicture() {
+        binding?.progressBar?.visibility = View.VISIBLE
         // Creating time-stamped output file to hold the image
         val photoFile = File(
             outputDirectory,
@@ -147,11 +149,15 @@ class CameraFragment : Fragment(){
         imageCapture?.takePicture(outputOptions, ContextCompat.getMainExecutor(requireContext()), object : ImageCapture.OnImageSavedCallback {
             override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
                 val savedUri = outputFileResults.savedUri
+                binding?.progressBar?.visibility = View.GONE
                 navigateToCropImage(savedUri!!, photoFile)
             }
 
             override fun onError(exception: ImageCaptureException) {
+                binding?.progressBar?.visibility = View.GONE
                 Log.e(TAG, "onError: Photo capture failed: ${exception.message}")
+                Toast.makeText(requireContext(), "Failed to take picture, try again!", Toast.LENGTH_SHORT).show()
+                navController.popBackStack()
             }
         })
     }

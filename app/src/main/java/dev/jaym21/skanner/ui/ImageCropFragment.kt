@@ -97,6 +97,7 @@ class ImageCropFragment : Fragment() {
 
     private fun getCroppedImage() {
         if(selectedImage != null) {
+            binding?.progressBar?.visibility = View.VISIBLE
             try {
                 val points: Map<Int, PointF> = binding?.polygonView!!.getPoints()
                 val xRatio: Float = selectedImage!!.width.toFloat() / binding?.ivTakenImage!!.width
@@ -118,13 +119,19 @@ class ImageCropFragment : Fragment() {
                     saveBitmap(it, transformedImageFile!!, Bitmap.CompressFormat.JPEG, 100)
                 }
 
+                binding?.progressBar?.visibility = View.GONE
                 val bundle = bundleOf("transformedImageFile" to transformedImageFile)
                 navController.navigate(R.id.action_imageCropFragment_to_imageProcessingFragment, bundle)
 
             } catch (e: java.lang.Exception) {
+                binding?.progressBar?.visibility = View.GONE
+                Toast.makeText(requireContext(), "Failed to get crop picture, try again!", Toast.LENGTH_SHORT).show()
                 Log.e("TAGYOYO", "Cropping image failed")
             }
         } else {
+            binding?.progressBar?.visibility = View.GONE
+            Toast.makeText(requireContext(), "Failed to get captured picture, try again!", Toast.LENGTH_SHORT).show()
+            navController.popBackStack(R.id.allDocumentsFragment, false)
             Log.e("TAGYOYO", "Invalid Image")
         }
     }

@@ -1,7 +1,6 @@
 package dev.jaym21.skanner.ui
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.graphics.*
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -29,6 +28,7 @@ class ImageProcessingFragment : Fragment() {
     private var croppedImageBitmap: Bitmap? = null
     private var tempBitmap: Bitmap? = null
     private var isGrayScaleApplied: Boolean = false
+    private var transformedBitmap: Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -53,7 +53,7 @@ class ImageProcessingFragment : Fragment() {
         binding?.ivCroppedImage?.setImageBitmap(croppedImageBitmap)
 
         binding?.ivClose?.setOnClickListener {
-            navController.popBackStack(R.id.allDocumentsFragment, true)
+            navController.popBackStack(R.id.allDocumentsFragment, false)
         }
 
         tempBitmap = croppedImageBitmap
@@ -71,12 +71,13 @@ class ImageProcessingFragment : Fragment() {
         binding?.progressBar?.visibility = View.VISIBLE
         if (tempBitmap != null) {
             tempBitmap = tempBitmap?.rotate(Constants.ANGLE_OF_ROTATION)
+            croppedImageBitmap = croppedImageBitmap?.rotate(Constants.ANGLE_OF_ROTATION)
             binding?.ivCroppedImage?.setImageBitmap(tempBitmap)
             binding?.progressBar?.visibility = View.GONE
         } else {
             Toast.makeText(requireContext(), "No image found, try again!", Toast.LENGTH_SHORT)
                 .show()
-            navController.popBackStack(R.id.allDocumentsFragment, true)
+            navController.popBackStack(R.id.allDocumentsFragment, false)
             binding?.progressBar?.visibility = View.GONE
         }
     }
@@ -87,8 +88,23 @@ class ImageProcessingFragment : Fragment() {
             if (!isGrayScaleApplied) {
                 binding?.ivGrayscaleIcon?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue_500))
                 binding?.tvGrayScale?.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue_500))
-
+                val bitmapMonochrome = Bitmap.createBitmap(tempBitmap!!.width, tempBitmap!!.height, Bitmap.Config.ARGB_8888)
+                val canvas = Canvas(bitmapMonochrome)
+                val colorMatrix = ColorMatrix()
+                colorMatrix.setSaturation(0f)
+                val paint = Paint()
+                paint.colorFilter = ColorMatrixColorFilter(colorMatrix)
+                canvas.drawBitmap(tempBitmap!!, 0f, 0f, paint)
+                tempBitmap = bitmapMonochrome.copy(bitmapMonochrome.config, true)
+                binding?.ivCroppedImage?.setImageBitmap(tempBitmap)
+                binding?.progressBar?.visibility = View.GONE
+            } else {
+                binding?.ivGrayscaleIcon?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white_alpha_60))
+                binding?.tvGrayScale?.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha_60))
+                binding?.ivCroppedImage?.setImageBitmap(croppedImageBitmap)
+                binding?.progressBar?.visibility = View.GONE
             }
+            isGrayScaleApplied = !isGrayScaleApplied
         }
     }
 
