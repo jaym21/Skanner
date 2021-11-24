@@ -40,16 +40,16 @@
         android:id="@+id/ivClose"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:src="@drawable/ic_close"
-        app:tint="@color/blue_500"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="20dp"
         android:background="@drawable/button_dark_bg"
         android:elevation="8dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="20dp"
-        android:layout_marginBottom="20dp"/>
+        android:src="@drawable/ic_close"
+        app:tint="@color/blue_500" />
 
     <ImageView
         android:id="@+id/ivAccept"
