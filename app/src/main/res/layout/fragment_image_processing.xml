@@ -36,12 +36,14 @@
             android:gravity="center">
 
             <ImageView
+                android:id="@+id/ivGrayscaleIcon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:src="@drawable/ic_image_filter"
                 app:tint="@color/white_alpha_60" />
 
             <TextView
+                android:id="@+id/tvGrayScale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Gray Scale"
@@ -107,5 +109,13 @@
         android:layout_alignParentTop="true"
         android:layout_marginEnd="20dp"
         android:layout_marginTop="20dp"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
 
 </RelativeLayout>
