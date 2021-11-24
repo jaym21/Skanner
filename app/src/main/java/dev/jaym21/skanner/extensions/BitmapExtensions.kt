@@ -24,3 +24,9 @@ internal fun Bitmap.toMat(): Mat {
     Utils.bitmapToMat(bitmap32, mat)
     return mat
 }
+
+internal fun Bitmap.rotate(angle: Int): Bitmap {
+    val matrix = Matrix()
+    matrix.postRotate(angle.toFloat())
+    return Bitmap.createBitmap(this, 0, 0, this.width, this.height, matrix, true)
+}

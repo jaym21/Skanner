@@ -53,7 +53,9 @@ class ImageProcessingFragment : Fragment() {
     }
 
     private fun rotateImage() {
-        if (croppedImageBitmap!= null)
+        if (croppedImageBitmap!= null) {
+
+        }
     }
 
     override fun onDestroy() {
