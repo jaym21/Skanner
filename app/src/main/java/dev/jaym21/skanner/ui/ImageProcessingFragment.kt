@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentImageProcessingBinding
 import java.io.File
 
@@ -41,6 +42,18 @@ class ImageProcessingFragment : Fragment() {
         croppedImageBitmap = BitmapFactory.decodeFile(croppedImageFile!!.absolutePath)
 
         binding?.ivCroppedImage?.setImageBitmap(croppedImageBitmap)
+
+        binding?.ivClose?.setOnClickListener {
+            navController.popBackStack(R.id.allDocumentsFragment, true)
+        }
+
+        binding?.llRotate?.setOnClickListener {
+            rotateImage()
+        }
+    }
+
+    private fun rotateImage() {
+        if (croppedImageBitmap!= null)
     }
 
     override fun onDestroy() {
