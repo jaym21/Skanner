@@ -40,18 +40,12 @@ class MainActivity : AppCompatActivity() {
         readPermissionGranted = isReadPermissionAvailable
         writePermissionGranted = isWritePermissionAvailable || minSDK29
 
-        //required permissions which are not granted
-        val permissionsToRequest = mutableListOf<String>()
 
         if (!writePermissionGranted) {
-            permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }else {
             ActivityCompat.requestPermissions(this,  arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
         }
 
         if (!readPermissionGranted) {
-            permissionsToRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }else {
             ActivityCompat.requestPermissions(this,  arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE)
         }
     }

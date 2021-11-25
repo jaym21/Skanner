@@ -2,8 +2,7 @@ package dev.jaym21.skanner.utils
 
 class Constants {
     companion object {
-        const val STORAGE_PERMISSION_REQUEST_CODE = 1000
-        const val FILENAME = "yyyy-MM-dd-HH-mm-ss-SSS"
+        const val FILENAME = "dd-MM-yyyy_HH:mm"
         const val PHOTO_EXTENSION = ".jpg"
         const val CAMERA_REQUEST_CODE = 1001
         const val READ_EXTERNAL_STORAGE_REQUEST_CODE = 1002

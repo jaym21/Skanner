@@ -24,6 +24,10 @@
         android:name="dev.jaym21.skanner.ui.CameraFragment"
         android:label="fragment_camera"
         tools:layout="@layout/fragment_camera" >
+
+        <argument
+            android:name="addMore" />
+
         <action
             android:id="@+id/action_cameraFragment_to_imageCropFragment"
             app:destination="@id/imageCropFragment"

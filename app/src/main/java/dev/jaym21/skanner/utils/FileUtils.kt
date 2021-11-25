@@ -6,6 +6,7 @@ import android.os.Environment
 import androidx.core.content.ContextCompat
 import dev.jaym21.skanner.R
 import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -22,25 +23,34 @@ class FileUtils {
                 activity.filesDir
         }
 
-        // function to create a timestamped file
-        fun createFile(baseFolder: File, format: String, extension: String): File {
-            return File(baseFolder, SimpleDateFormat(format, Locale.US).format(System.currentTimeMillis()) + extension)
-        }
-
         // function to make directory in external storage
-        fun mkdir(context: Context, dirPath: String) {
+        fun mkdir(context: Context, dirPath: String): File {
+            //getting external storage
             val externalStorageVolumes = ContextCompat.getExternalFilesDirs(context.applicationContext, null)
             val primaryExternalStorage = externalStorageVolumes[0]
             val storageDirectory = File(primaryExternalStorage, dirPath)
             if (!storageDirectory.exists()) {
                 storageDirectory.mkdir()
             }
+            return storageDirectory
         }
 
         fun writeFile(context: Context, baseDirectory: String, fileName: String, callback: FileWritingCallback) {
+            //getting external storage
             val externalStorageVolumes = ContextCompat.getExternalFilesDirs(context.applicationContext, null)
             val primaryExternalStorage = externalStorageVolumes[0]
+            //creating destination file name
+            val absFilename = baseDirectory + fileName
+            //destination file
+            val dest = File(primaryExternalStorage, absFilename)
 
+            //writing file to destination
+            val out = FileOutputStream(dest)
+            callback.write(out)
+
+            //closing FileOutputStream
+            out.flush()
+            out.close()
         }
     }
 }
