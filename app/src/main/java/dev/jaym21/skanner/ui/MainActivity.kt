@@ -14,5 +14,7 @@ class MainActivity : AppCompatActivity() {
         if (OpenCVLoader.initDebug()) {
             Log.d("TAGYOYO", "OpenCV loaded")
         }
+
+        val baseStorageDirectory = applicationContext.
     }
 }
