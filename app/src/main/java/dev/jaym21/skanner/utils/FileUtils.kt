@@ -3,6 +3,7 @@ package dev.jaym21.skanner.utils
 import android.app.Activity
 import android.content.Context
 import android.os.Environment
+import androidx.core.content.ContextCompat
 import dev.jaym21.skanner.R
 import java.io.File
 import java.text.SimpleDateFormat
@@ -26,8 +27,20 @@ class FileUtils {
             return File(baseFolder, SimpleDateFormat(format, Locale.US).format(System.currentTimeMillis()) + extension)
         }
 
+        // function to make directory in external storage
+        fun mkdir(context: Context, dirPath: String) {
+            val externalStorageVolumes = ContextCompat.getExternalFilesDirs(context.applicationContext, null)
+            val primaryExternalStorage = externalStorageVolumes[0]
+            val storageDirectory = File(primaryExternalStorage, dirPath)
+            if (!storageDirectory.exists()) {
+                storageDirectory.mkdir()
+            }
+        }
+
         fun writeFile(context: Context, baseDirectory: String, fileName: String, callback: FileWritingCallback) {
-            val sd = context.getExternalFilesDir(null)
+            val externalStorageVolumes = ContextCompat.getExternalFilesDirs(context.applicationContext, null)
+            val primaryExternalStorage = externalStorageVolumes[0]
+
         }
     }
 }
