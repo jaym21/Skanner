@@ -37,7 +37,7 @@ class CameraFragment : Fragment(){
     private var imageCapture: ImageCapture? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
-    private lateinit var outputDirectory: File
+    private lateinit var documentDirectory: File
     private lateinit var navController: NavController
     private val TAG = "CameraFragment"
 
@@ -57,7 +57,7 @@ class CameraFragment : Fragment(){
         navController = Navigation.findNavController(view)
 
         //getting output directory for saving images
-        outputDirectory = FileUtils.getOutputDirectory(requireActivity())
+        documentDirectory = arguments?.get("newDocumentPath") as File
 
         if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -136,7 +136,7 @@ class CameraFragment : Fragment(){
         binding?.progressBar?.visibility = View.VISIBLE
         // Creating time-stamped output file to hold the image
         val photoFile = File(
-            outputDirectory,
+            documentDirectory,
             SimpleDateFormat(
                 Constants.FILENAME, Locale.US
             ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION
