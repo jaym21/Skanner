@@ -27,7 +27,7 @@ class FileUtils {
         }
 
         fun writeFile(context: Context, baseDirectory: String, fileName: String, callback: FileWritingCallback) {
-            val sd = context.getExternalFilesDir(null).ab
+            val sd = context.getExternalFilesDir(null)
         }
     }
 }
