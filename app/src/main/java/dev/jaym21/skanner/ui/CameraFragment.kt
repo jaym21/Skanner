@@ -37,7 +37,9 @@ class CameraFragment : Fragment(){
     private var imageCapture: ImageCapture? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
-    private lateinit var documentDirectory: File
+    private var newDocumentDirectory: File? = null
+    private var oldDocumentDirectory: File? = null
+    private var photoFile: File? = null
     private lateinit var navController: NavController
     private val TAG = "CameraFragment"
 
@@ -53,11 +55,18 @@ class CameraFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //TODO: add photo file to document directory or pass directory and photo file to crop fragment if file overwrite not possible
+        //TODO: pass document directory to crop fragment
+        //TODO: check if file overwrite is possible
+
         //initializing navController
         navController = Navigation.findNavController(view)
 
-        //getting output directory for saving images
-        documentDirectory = arguments?.get("newDocumentPath") as File
+        //getting new document directory for saving images
+        newDocumentDirectory = arguments?.get("newDocumentPath") as File
+
+        //getting old document directory for saving images
+        oldDocumentDirectory = arguments?.get("oldDocumentPath") as File
 
         if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -134,13 +143,26 @@ class CameraFragment : Fragment(){
 
     private fun takePicture() {
         binding?.progressBar?.visibility = View.VISIBLE
-        // Creating time-stamped output file to hold the image
-        val photoFile = File(
-            documentDirectory,
-            SimpleDateFormat(
-                Constants.FILENAME, Locale.US
-            ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION
-        )
+
+        if (newDocumentDirectory != null){
+            // Creating time-stamped output file to hold the image
+            photoFile = File(
+                newDocumentDirectory,
+                SimpleDateFormat(
+                    Constants.FILENAME, Locale.US
+                ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION
+            )
+        } else if (oldDocumentDirectory != null) {
+            // Creating time-stamped output file to hold the image
+            photoFile = File(
+                oldDocumentDirectory,
+                SimpleDateFormat(
+                    Constants.FILENAME, Locale.US
+                ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION
+            )
+        }
+
+
 
         // Creating output option object which contains file + metadata
         val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
