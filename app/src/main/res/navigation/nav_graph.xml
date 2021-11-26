@@ -26,7 +26,7 @@
         tools:layout="@layout/fragment_camera" >
 
         <argument
-            android:name="addMore" />
+            android:name="documentDirectory" />
 
         <action
             android:id="@+id/action_cameraFragment_to_imageCropFragment"
@@ -43,8 +43,7 @@
         tools:layout="@layout/fragment_image_crop" >
 
         <argument
-            android:name="savedUri"
-            app:argType="string" />
+            android:name="takenImage" />
         <action
             android:id="@+id/action_imageCropFragment_to_imageProcessingFragment"
             app:destination="@id/imageProcessingFragment"

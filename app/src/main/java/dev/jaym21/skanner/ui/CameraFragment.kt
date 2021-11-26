@@ -162,32 +162,54 @@ class CameraFragment : Fragment(){
             )
         }
 
+        if (photoFile != null) {
 
+            // Creating output option object which contains file + metadata
+            val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile!!).build()
 
-        // Creating output option object which contains file + metadata
-        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+            // Set up image capture listener which is triggered when image is taken
+            imageCapture?.takePicture(
+                outputOptions,
+                ContextCompat.getMainExecutor(requireContext()),
+                object : ImageCapture.OnImageSavedCallback {
+                    override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                        val savedUri = outputFileResults.savedUri
+                        binding?.progressBar?.visibility = View.GONE
+                        navigateToCropImage(photoFile!!)
+                    }
 
-        // Set up image capture listener which is triggered when image is taken
-        imageCapture?.takePicture(outputOptions, ContextCompat.getMainExecutor(requireContext()), object : ImageCapture.OnImageSavedCallback {
-            override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                val savedUri = outputFileResults.savedUri
-                binding?.progressBar?.visibility = View.GONE
-                navigateToCropImage(savedUri!!, photoFile)
-            }
-
-            override fun onError(exception: ImageCaptureException) {
-                binding?.progressBar?.visibility = View.GONE
-                Log.e(TAG, "onError: Photo capture failed: ${exception.message}")
-                Toast.makeText(requireContext(), "Failed to take picture, try again!", Toast.LENGTH_SHORT).show()
-                navController.popBackStack()
-            }
-        })
+                    override fun onError(exception: ImageCaptureException) {
+                        binding?.progressBar?.visibility = View.GONE
+                        Log.e(TAG, "onError: Photo capture failed: ${exception.message}")
+                        Toast.makeText(
+                            requireContext(),
+                            "Failed to take picture, try again!",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        navController.popBackStack()
+                    }
+                })
+        } else {
+            Toast.makeText(requireContext(), "Failed to save the image, try again!", Toast.LENGTH_SHORT).show()
+            navController.popBackStack()
+        }
     }
 
-    private fun navigateToCropImage(savedUri: Uri, photoFile: File) {
+    private fun navigateToCropImage(photoFile: File) {
         requireActivity().runOnUiThread {
-            val bundle = bundleOf("savedUri" to  savedUri.toString(), "originalImageFile" to photoFile)
-            navController.navigate(dev.jaym21.skanner.R.id.action_cameraFragment_to_imageCropFragment, bundle)
+            if (newDocumentDirectory != null) {
+                val bundle = bundleOf("documentDirectory" to newDocumentDirectory, "originalImageFile" to photoFile)
+                navController.navigate(
+                    dev.jaym21.skanner.R.id.action_cameraFragment_to_imageCropFragment,
+                    bundle
+                )
+            }else if (oldDocumentDirectory != null) {
+                val bundle = bundleOf("documentDirectory" to oldDocumentDirectory, "originalImageFile" to photoFile)
+                navController.navigate(
+                    dev.jaym21.skanner.R.id.action_cameraFragment_to_imageCropFragment,
+                    bundle
+                )
+            }
         }
     }
 
