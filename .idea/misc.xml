@@ -13,6 +13,7 @@
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/fragment_camera.xml" value="0.35260416666666666" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/fragment_image_crop.xml" value="0.35260416666666666" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/fragment_image_processing.xml" value="0.36666666666666664" />
+        <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/fragment_permission_not_granted.xml" value="0.36666666666666664" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/scan_surface_view.xml" value="0.36666666666666664" />
       </map>
     </option>

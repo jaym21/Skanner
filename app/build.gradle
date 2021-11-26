@@ -53,6 +53,8 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.2'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
+    implementation 'com.android.databinding:viewbinding:7.0.3'
+
     // navigation
     def navigation = "2.3.5"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation"

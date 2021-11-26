@@ -2,7 +2,6 @@ package dev.jaym21.skanner.ui
 
 import android.Manifest
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
@@ -22,12 +21,9 @@ import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import dev.jaym21.skanner.databinding.FragmentCameraBinding
 import dev.jaym21.skanner.utils.Constants
-import dev.jaym21.skanner.utils.FileUtils
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 
 class CameraFragment : Fragment(){
@@ -37,7 +33,7 @@ class CameraFragment : Fragment(){
     private var imageCapture: ImageCapture? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
-    private var documentDirectory: File? = null
+    private var documentDirectory: String? = null
     private var photoFile: File? = null
     private lateinit var navController: NavController
     private val TAG = "CameraFragment"
@@ -62,7 +58,8 @@ class CameraFragment : Fragment(){
         navController = Navigation.findNavController(view)
 
         //getting new document directory for saving images
-        documentDirectory = arguments?.get("documentDirectory") as File
+        documentDirectory = arguments?.getString("documentDirectory")
+        Log.d("TAGYOYO", "DOCUMENT DIRECTORY $documentDirectory")
 
         if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {

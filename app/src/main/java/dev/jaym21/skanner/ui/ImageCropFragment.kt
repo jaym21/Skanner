@@ -36,6 +36,7 @@ class ImageCropFragment : Fragment() {
     private var originalImageFile: File? = null
     private var documentDirectory: File? = null
     private var selectedImage: Bitmap? = null
+    private var transformedImage: Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

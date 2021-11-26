@@ -26,7 +26,7 @@
         tools:layout="@layout/fragment_camera" >
 
         <argument
-            android:name="documentDirectory" />
+            android:name="documentDirectory"/>
 
         <action
             android:id="@+id/action_cameraFragment_to_imageCropFragment"
@@ -58,4 +58,9 @@
         android:name="dev.jaym21.skanner.ui.ImageProcessingFragment"
         android:label="fragment_image_processing"
         tools:layout="@layout/fragment_image_processing" />
+    <fragment
+        android:id="@+id/permissionNotGrantedFragment"
+        android:name="dev.jaym21.skanner.ui.PermissionNotGrantedFragment"
+        android:label="fragment_permission_not_granted"
+        tools:layout="@layout/fragment_permission_not_granted" />
 </navigation>
