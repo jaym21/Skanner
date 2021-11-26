@@ -33,11 +33,9 @@ class ImageCropFragment : Fragment() {
 
     private var binding: FragmentImageCropBinding? = null
     private lateinit var navController: NavController
-    private lateinit var takenImageUri: Uri
-    private lateinit var originalImageFile: File
+    private var originalImageFile: File? = null
+    private var documentDirectory: File? = null
     private var selectedImage: Bitmap? = null
-    private var transformedImage: Bitmap? = null
-    private var transformedImageFile: File? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,14 +53,14 @@ class ImageCropFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
         //getting uri of image taken from argument
-        takenImageUri = arguments?.getString("savedUri")!!.toUri()
+        documentDirectory = (arguments?.get("documentDirectory") as File?)!!
 
         originalImageFile = (arguments?.get("originalImageFile") as File?)!!
 
-        val fileBitmap =  BitmapFactory.decodeFile(originalImageFile.absolutePath)
+        val fileBitmap =  BitmapFactory.decodeFile(originalImageFile!!.absolutePath)
 
         if(fileBitmap != null) {
-            selectedImage = determineImageRotation(originalImageFile, fileBitmap)
+            selectedImage = determineImageRotation(originalImageFile!!, fileBitmap)
         } else {
             Toast.makeText(requireContext(), "Image capture failed, try again!", Toast.LENGTH_SHORT).show()
             navController.popBackStack()
@@ -115,12 +113,11 @@ class ImageCropFragment : Fragment() {
                 transformedImage = OpenCVUtils.getScannedBitmap(selectedImage!!, x1, y1, x2, y2, x3, y3, x4, y4)
 
                 transformedImage?.let {
-                    transformedImageFile = File(requireContext().filesDir, "${Constants.TRANSFORMED_IMAGE_NAME}.${Bitmap.CompressFormat.JPEG.extension()}")
-                    saveBitmap(it, transformedImageFile!!, Bitmap.CompressFormat.JPEG, 100)
+                    saveBitmap(it, originalImageFile!!, Bitmap.CompressFormat.JPEG, 100)
                 }
 
                 binding?.progressBar?.visibility = View.GONE
-                val bundle = bundleOf("transformedImageFile" to transformedImageFile)
+                val bundle = bundleOf("documentDirectory" to documentDirectory, "transformedImageFile" to originalImageFile)
                 navController.navigate(R.id.action_imageCropFragment_to_imageProcessingFragment, bundle)
 
             } catch (e: java.lang.Exception) {

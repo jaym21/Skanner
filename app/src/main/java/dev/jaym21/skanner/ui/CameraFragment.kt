@@ -37,8 +37,7 @@ class CameraFragment : Fragment(){
     private var imageCapture: ImageCapture? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
-    private var newDocumentDirectory: File? = null
-    private var oldDocumentDirectory: File? = null
+    private var documentDirectory: File? = null
     private var photoFile: File? = null
     private lateinit var navController: NavController
     private val TAG = "CameraFragment"
@@ -63,10 +62,7 @@ class CameraFragment : Fragment(){
         navController = Navigation.findNavController(view)
 
         //getting new document directory for saving images
-        newDocumentDirectory = arguments?.get("newDocumentPath") as File
-
-        //getting old document directory for saving images
-        oldDocumentDirectory = arguments?.get("oldDocumentPath") as File
+        documentDirectory = arguments?.get("documentDirectory") as File
 
         if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -144,23 +140,13 @@ class CameraFragment : Fragment(){
     private fun takePicture() {
         binding?.progressBar?.visibility = View.VISIBLE
 
-        if (newDocumentDirectory != null){
-            // Creating time-stamped output file to hold the image
-            photoFile = File(
-                newDocumentDirectory,
-                SimpleDateFormat(
-                    Constants.FILENAME, Locale.US
-                ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION
-            )
-        } else if (oldDocumentDirectory != null) {
-            // Creating time-stamped output file to hold the image
-            photoFile = File(
-                oldDocumentDirectory,
-                SimpleDateFormat(
-                    Constants.FILENAME, Locale.US
-                ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION
-            )
-        }
+        // Creating time-stamped output file to hold the image
+        photoFile = File(
+            documentDirectory,
+            SimpleDateFormat(
+                Constants.FILENAME, Locale.US
+            ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION
+        )
 
         if (photoFile != null) {
 
@@ -197,19 +183,11 @@ class CameraFragment : Fragment(){
 
     private fun navigateToCropImage(photoFile: File) {
         requireActivity().runOnUiThread {
-            if (newDocumentDirectory != null) {
-                val bundle = bundleOf("documentDirectory" to newDocumentDirectory, "originalImageFile" to photoFile)
-                navController.navigate(
-                    dev.jaym21.skanner.R.id.action_cameraFragment_to_imageCropFragment,
-                    bundle
-                )
-            }else if (oldDocumentDirectory != null) {
-                val bundle = bundleOf("documentDirectory" to oldDocumentDirectory, "originalImageFile" to photoFile)
-                navController.navigate(
-                    dev.jaym21.skanner.R.id.action_cameraFragment_to_imageCropFragment,
-                    bundle
-                )
-            }
+            val bundle = bundleOf("documentDirectory" to documentDirectory, "originalImageFile" to photoFile)
+            navController.navigate(
+                dev.jaym21.skanner.R.id.action_cameraFragment_to_imageCropFragment,
+                bundle
+            )
         }
     }
 
