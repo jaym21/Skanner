@@ -23,6 +23,7 @@ import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentImageCropBinding
 import dev.jaym21.skanner.extensions.scaledBitmap
 import dev.jaym21.skanner.utils.Constants
+import dev.jaym21.skanner.utils.FileUtils
 import dev.jaym21.skanner.utils.OpenCVUtils
 import id.zelory.compressor.determineImageRotation
 import id.zelory.compressor.extension
@@ -76,6 +77,15 @@ class ImageCropFragment : Fragment() {
         }
 
         binding?.ivClose?.setOnClickListener {
+            val documentDirectoryFile = File(documentDirectory)
+            val directoryAllFiles = documentDirectoryFile.listFiles()
+            //deleting the directory whole if empty meaning new directory document is created
+            if (directoryAllFiles.size == 1){
+                FileUtils.deleteFile(requireActivity(), documentDirectory!!)
+            } else {
+                FileUtils.deleteFile(requireActivity(), originalImageFilePath!!)
+            }
+
             navController.popBackStack(R.id.allDocumentsFragment, false)
         }
 
@@ -122,7 +132,7 @@ class ImageCropFragment : Fragment() {
                 }
 
                 binding?.progressBar?.visibility = View.GONE
-                val bundle = bundleOf("documentDirectory" to documentDirectory, "transformedImageFilePath" to originalImageFilePath)
+                val bundle = bundleOf("documentDirectory" to documentDirectory, "croppedImageFilePath" to originalImageFilePath)
                 navController.navigate(R.id.action_imageCropFragment_to_imageProcessingFragment, bundle)
 
             } catch (e: java.lang.Exception) {

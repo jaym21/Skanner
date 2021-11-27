@@ -51,10 +51,6 @@ class MainActivity : AppCompatActivity() {
         readPermissionGranted = isReadPermissionAvailable
         writePermissionGranted = isWritePermissionAvailable || minSDK29
 
-        if (readPermissionGranted && writePermissionGranted) {
-            navGraph!!.startDestination = R.id.allDocumentsFragment
-            navController!!.graph = navGraph as NavGraph
-        }
 
         if (!writePermissionGranted) {
             ActivityCompat.requestPermissions(this,  arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE)

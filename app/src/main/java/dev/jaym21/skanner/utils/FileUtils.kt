@@ -41,25 +41,20 @@ class FileUtils {
         }
 
         // function to make directory in external storage
-        fun mkdir(context: Context, dirPath: String): File {
-            //getting external storage
-            val externalStorageVolumes = ContextCompat.getExternalFilesDirs(context.applicationContext, null)
-            val primaryExternalStorage = externalStorageVolumes[0]
-            val storageDirectory = File(primaryExternalStorage, dirPath)
+        fun mkdir(activity: Activity, dirPath: String): File {
+            //creating a storage directory
+            val storageDirectory = File(getOutputDirectory(activity), dirPath)
             if (!storageDirectory.exists()) {
                 storageDirectory.mkdir()
             }
             return storageDirectory
         }
 
-        fun writeFile(context: Context, baseDirectory: String, fileName: String, callback: FileWritingCallback) {
-            //getting external storage
-            val externalStorageVolumes = ContextCompat.getExternalFilesDirs(context.applicationContext, null)
-            val primaryExternalStorage = externalStorageVolumes[0]
+        fun writeFile(activity: Activity, baseDirectory: String, fileName: String, callback: FileWritingCallback) {
             //creating destination file name
             val absFilename = baseDirectory + fileName
             //destination file
-            val dest = File(primaryExternalStorage, absFilename)
+            val dest = File(getOutputDirectory(activity), absFilename)
 
             //writing file to destination
             val out = FileOutputStream(dest)
@@ -70,11 +65,8 @@ class FileUtils {
             out.close()
         }
 
-        fun deleteFile(context: Context, filePath: String) {
-            //getting external storage
-            val externalStorageVolumes = ContextCompat.getExternalFilesDirs(context.applicationContext, null)
-            val primaryExternalStorage = externalStorageVolumes[0]
-            val targetFile = File(primaryExternalStorage, filePath)
+        fun deleteFile(activity: Activity, filePath: String) {
+            val targetFile = File(getOutputDirectory(activity), filePath)
             targetFile.delete()
         }
     }

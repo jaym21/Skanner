@@ -37,9 +37,14 @@ class AllDocumentsFragment : Fragment() {
         //initializing navController
         navController = Navigation.findNavController(view)
 
+        FileUtils.getOutputDirectory(requireActivity()).listFiles()!!.forEach {
+            Log.d("TAGYOYO", "Directories $it")
+        }
+
         binding?.fabCamera?.setOnClickListener {
             //making new directory to add new images taken
-            val newDocumentPath = FileUtils.mkdir(requireContext(), "Skanner_${SimpleDateFormat(Constants.FILENAME, Locale.US).format(System.currentTimeMillis())}")
+            val newDocumentPath = FileUtils.mkdir(requireActivity(), "Skanner_${SimpleDateFormat(Constants.FILENAME, Locale.US).format(System.currentTimeMillis())}")
+            Log.d("TAGYOYO", "NEW DOCUMENT DIRECTORY $newDocumentPath")
             val bundle = bundleOf("documentDirectory" to newDocumentPath.absolutePath)
             navController.navigate(R.id.action_allDocumentsFragment_to_cameraFragment, bundle)
         }

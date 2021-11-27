@@ -1,9 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.OpenDocumentFragment">
 
+    <ImageView
+        android:id="@+id/btnCloseCamera"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_close"
+        app:tint="@color/blue_500"
+        android:background="@drawable/button_light_bg"
+        android:elevation="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/tvDocumentName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="Document Name"
+        android:textSize="18sp"
+        android:fontFamily="@font/sailec_bold"
+        android:textColor="@color/black"
+        android:lines="2"/>
+
+</RelativeLayout>

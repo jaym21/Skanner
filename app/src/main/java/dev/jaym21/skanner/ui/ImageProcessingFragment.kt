@@ -17,6 +17,8 @@ import dev.jaym21.skanner.databinding.FragmentImageProcessingBinding
 import dev.jaym21.skanner.extensions.rotate
 import dev.jaym21.skanner.models.Document
 import dev.jaym21.skanner.utils.Constants
+import dev.jaym21.skanner.utils.FileUtils
+import java.io.File
 
 
 class ImageProcessingFragment : Fragment() {
@@ -53,7 +55,7 @@ class ImageProcessingFragment : Fragment() {
         documentDirectory = arguments?.getString("documentDirectory")
 
         //getting file of cropped image from argument
-        croppedImageFilePath = arguments?.getString("transformedImageFilePath")
+        croppedImageFilePath = arguments?.getString("croppedImageFilePath")
 
         croppedImageBitmap = BitmapFactory.decodeFile(croppedImageFilePath)
 
@@ -74,6 +76,14 @@ class ImageProcessingFragment : Fragment() {
         }
 
         binding?.ivClose?.setOnClickListener {
+            val documentDirectoryFile = File(documentDirectory)
+            val directoryAllFiles = documentDirectoryFile.listFiles()
+            //deleting the directory whole if empty meaning new directory document is created
+            if (directoryAllFiles.size == 1){
+                FileUtils.deleteFile(requireActivity(), documentDirectory!!)
+            } else {
+                FileUtils.deleteFile(requireActivity(), croppedImageFilePath!!)
+            }
             navController.popBackStack(R.id.allDocumentsFragment, false)
         }
 

@@ -21,6 +21,7 @@ import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import dev.jaym21.skanner.databinding.FragmentCameraBinding
 import dev.jaym21.skanner.utils.Constants
+import dev.jaym21.skanner.utils.FileUtils
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -59,7 +60,6 @@ class CameraFragment : Fragment(){
 
         //getting new document directory for saving images
         documentDirectory = arguments?.getString("documentDirectory")
-        Log.d("TAGYOYO", "DOCUMENT DIRECTORY $documentDirectory")
 
         if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 //            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
@@ -86,7 +86,13 @@ class CameraFragment : Fragment(){
         }
 
         binding?.btnCloseCamera?.setOnClickListener {
-            documentDirectory
+            val documentDirectoryFile = File(documentDirectory)
+            val directoryAllFiles = documentDirectoryFile.listFiles()
+            //deleting the directory whole if empty meaning new directory document is created
+            if (directoryAllFiles.isEmpty()){
+                Log.d("TAGYOYO", "INSIDE IF EMPTY DIR")
+                documentDirectoryFile.delete()
+            }
             navController.popBackStack()
         }
     }
