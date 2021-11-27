@@ -76,7 +76,7 @@ class ImageCropFragment : Fragment() {
         }
 
         binding?.ivClose?.setOnClickListener {
-            navController.popBackStack()
+            navController.popBackStack(R.id.allDocumentsFragment, false)
         }
 
         binding?.ivAccept?.setOnClickListener {

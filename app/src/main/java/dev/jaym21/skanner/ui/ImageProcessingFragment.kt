@@ -14,10 +14,6 @@ import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentImageProcessingBinding
 import dev.jaym21.skanner.extensions.rotate
 import dev.jaym21.skanner.utils.Constants
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.io.File
 
 
 class ImageProcessingFragment : Fragment() {
@@ -29,7 +25,7 @@ class ImageProcessingFragment : Fragment() {
     private var tempBitmap: Bitmap? = null
     private var documentDirectory: String? = null
     private var isGrayScaleApplied: Boolean = false
-    private var toExport = 0
+    private var exportTemp = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,6 +65,14 @@ class ImageProcessingFragment : Fragment() {
         binding?.llGrayScale?.setOnClickListener {
             applyGrayScale()
         }
+
+        binding?.ivClose?.setOnClickListener {
+            navController.popBackStack(R.id.allDocumentsFragment, false)
+        }
+
+        binding?.ivAccept?.setOnClickListener {
+            addImageToDirectoryUpdateDatabase()
+        }
     }
 
     private fun rotateImage() {
@@ -102,15 +106,21 @@ class ImageProcessingFragment : Fragment() {
                 tempBitmap = bitmapMonochrome.copy(bitmapMonochrome.config, true)
                 binding?.ivCroppedImage?.setImageBitmap(tempBitmap)
                 binding?.progressBar?.visibility = View.GONE
-                toExport = 1
+                exportTemp = true
             } else {
                 binding?.ivGrayscaleIcon?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white_alpha_60))
                 binding?.tvGrayScale?.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha_60))
                 binding?.ivCroppedImage?.setImageBitmap(croppedImageBitmap)
                 binding?.progressBar?.visibility = View.GONE
-                toExport = 0
+                exportTemp = false
             }
             isGrayScaleApplied = !isGrayScaleApplied
+        }
+    }
+
+    private fun addImageToDirectoryUpdateDatabase() {
+        if (exportTemp) {
+
         }
     }
 
