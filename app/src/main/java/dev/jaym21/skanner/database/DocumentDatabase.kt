@@ -1,6 +1,8 @@
 package dev.jaym21.skanner.database
 
+import android.content.Context
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import dev.jaym21.skanner.models.Document
 
@@ -11,5 +13,19 @@ abstract class DocumentDatabase: RoomDatabase() {
 
     companion object {
 
+        @Volatile
+        private var INSTANCE: DocumentDatabase? = null
+
+        fun getDatabase(context: Context): DocumentDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    DocumentDatabase::class.java,
+                    "document_database"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
     }
 }
