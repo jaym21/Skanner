@@ -1,9 +1,6 @@
 package dev.jaym21.skanner.database
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
+import androidx.room.*
 import dev.jaym21.skanner.models.Document
 
 @Dao
@@ -14,4 +11,7 @@ interface DocumentDao {
 
     @Delete
     suspend fun deleteDocument(document: Document)
+
+    @Update
+    suspend fun updateDocument(document: Document)
 }
