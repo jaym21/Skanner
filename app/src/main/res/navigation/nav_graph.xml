@@ -57,10 +57,24 @@
         android:id="@+id/imageProcessingFragment"
         android:name="dev.jaym21.skanner.ui.ImageProcessingFragment"
         android:label="fragment_image_processing"
-        tools:layout="@layout/fragment_image_processing" />
+        tools:layout="@layout/fragment_image_processing" >
+        <action
+            android:id="@+id/action_imageProcessingFragment_to_openDocumentFragment"
+            app:destination="@id/openDocumentFragment" />
+    </fragment>
     <fragment
         android:id="@+id/permissionNotGrantedFragment"
         android:name="dev.jaym21.skanner.ui.PermissionNotGrantedFragment"
         android:label="fragment_permission_not_granted"
         tools:layout="@layout/fragment_permission_not_granted" />
+    <fragment
+        android:id="@+id/openDocumentFragment"
+        android:name="dev.jaym21.skanner.ui.OpenDocumentFragment"
+        android:label="fragment_open_document"
+        tools:layout="@layout/fragment_open_document" >
+
+        <argument
+            android:name="openDocument" />
+
+    </fragment>
 </navigation>

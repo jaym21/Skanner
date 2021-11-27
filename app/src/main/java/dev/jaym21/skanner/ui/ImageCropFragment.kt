@@ -81,7 +81,7 @@ class ImageCropFragment : Fragment() {
             val directoryAllFiles = documentDirectoryFile.listFiles()
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.size == 1){
-                FileUtils.deleteFile(requireActivity(), documentDirectory!!)
+                documentDirectoryFile.delete()
             } else {
                 FileUtils.deleteFile(requireActivity(), originalImageFilePath!!)
             }

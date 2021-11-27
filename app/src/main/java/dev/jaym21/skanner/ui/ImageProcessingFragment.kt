@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -151,11 +152,15 @@ class ImageProcessingFragment : Fragment() {
     private fun updateDocumentDirectory(document: Document) {
         val updatedDocument = Document(document.id, document.name, document.path, document.pageCount + 1)
         viewModel.updateDocument(updatedDocument)
+        val bundle = bundleOf("openDocument" to updatedDocument)
+        navController.navigate(R.id.action_imageProcessingFragment_to_openDocumentFragment, bundle)
     }
 
     private fun addNewDocument() {
         val newDocument = Document(0, documentDirectory!!, documentDirectory!!, 1)
         viewModel.addDocument(newDocument)
+        val bundle = bundleOf("openDocument" to newDocument)
+        navController.navigate(R.id.action_imageProcessingFragment_to_openDocumentFragment, bundle)
     }
 
     override fun onDestroy() {

@@ -2,6 +2,7 @@ package dev.jaym21.skanner.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity(tableName = "document_table")
 data class Document(
@@ -10,4 +11,4 @@ data class Document(
     val name: String,
     val path: String,
     val pageCount: Int
-)
+): Serializable
