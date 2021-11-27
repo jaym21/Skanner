@@ -54,6 +54,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
 
     implementation 'com.android.databinding:viewbinding:7.0.3'
+    implementation 'com.android.support:support-v4:28.0.0'
 
     // navigation
     def navigation = "2.3.5"

@@ -86,6 +86,7 @@ class CameraFragment : Fragment(){
         }
 
         binding?.btnCloseCamera?.setOnClickListener {
+            documentDirectory
             navController.popBackStack()
         }
     }

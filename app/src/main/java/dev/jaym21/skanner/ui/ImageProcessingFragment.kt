@@ -8,17 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentImageProcessingBinding
 import dev.jaym21.skanner.extensions.rotate
+import dev.jaym21.skanner.models.Document
 import dev.jaym21.skanner.utils.Constants
 
 
 class ImageProcessingFragment : Fragment() {
 
     private var binding: FragmentImageProcessingBinding? = null
+    private lateinit var viewModel: DocumentViewModel
     private lateinit var navController: NavController
     private var croppedImageFilePath: String? = null
     private var croppedImageBitmap: Bitmap? = null
@@ -38,6 +42,9 @@ class ImageProcessingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //initializing viewModel
+        viewModel = ViewModelProvider(this).get(DocumentViewModel::class.java)
 
         //initializing navController
         navController = Navigation.findNavController(view)
@@ -120,8 +127,25 @@ class ImageProcessingFragment : Fragment() {
 
     private fun addImageToDirectoryUpdateDatabase() {
         if (exportTemp) {
-
+            viewModel.allDocuments.observe(viewLifecycleOwner, Observer { documents ->
+                documents.forEach {
+                    if (it.name == documentDirectory) {
+                        updateDocumentDirectory(it)
+                    }
+                }
+                addNewDocument()
+            })
         }
+    }
+
+    private fun updateDocumentDirectory(document: Document) {
+        val updatedDocument = Document(document.id, document.name, document.path, document.pageCount + 1)
+        viewModel.updateDocument(updatedDocument)
+    }
+
+    private fun addNewDocument() {
+        val newDocument = Document(0, documentDirectory!!, documentDirectory!!, 1)
+        viewModel.addDocument(newDocument)
     }
 
     override fun onDestroy() {
