@@ -62,15 +62,15 @@ class CameraFragment : Fragment(){
         Log.d("TAGYOYO", "DOCUMENT DIRECTORY $documentDirectory")
 
         if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+//            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+//                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
                     initialize()
-                } else {
-                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE)
-                }
-            } else {
-                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
-            }
+//                } else {
+//                    ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE)
+//                }
+//            } else {
+//                ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
+//            }
         } else {
             ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), Constants.CAMERA_REQUEST_CODE)
         }
@@ -180,7 +180,7 @@ class CameraFragment : Fragment(){
 
     private fun navigateToCropImage(photoFile: File) {
         requireActivity().runOnUiThread {
-            val bundle = bundleOf("documentDirectory" to documentDirectory, "originalImageFile" to photoFile)
+            val bundle = bundleOf("documentDirectory" to documentDirectory, "originalImageFile" to photoFile.absolutePath)
             navController.navigate(
                 dev.jaym21.skanner.R.id.action_cameraFragment_to_imageCropFragment,
                 bundle
@@ -204,22 +204,22 @@ class CameraFragment : Fragment(){
                     navController.popBackStack()
                 }
             }
-            Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initialize()
-                }else {
-                    Snackbar.make(binding?.root!!, "Reading external storage permissions required to work", Snackbar.LENGTH_SHORT).show()
-                    navController.popBackStack()
-                }
-            }
-            Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initialize()
-                }else {
-                    Snackbar.make(binding?.root!!, "Writing external storage permissions required to work", Snackbar.LENGTH_SHORT).show()
-                    navController.popBackStack()
-                }
-            }
+//            Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
+//                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    initialize()
+//                }else {
+//                    Snackbar.make(binding?.root!!, "Reading external storage permissions required to work", Snackbar.LENGTH_SHORT).show()
+//                    navController.popBackStack()
+//                }
+//            }
+//            Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> {
+//                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    initialize()
+//                }else {
+//                    Snackbar.make(binding?.root!!, "Writing external storage permissions required to work", Snackbar.LENGTH_SHORT).show()
+//                    navController.popBackStack()
+//                }
+//            }
         }
     }
 

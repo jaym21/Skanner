@@ -33,8 +33,9 @@ class ImageCropFragment : Fragment() {
 
     private var binding: FragmentImageCropBinding? = null
     private lateinit var navController: NavController
+    private var originalImageFilePath: String? = null
     private var originalImageFile: File? = null
-    private var documentDirectory: File? = null
+    private var documentDirectory: String? = null
     private var selectedImage: Bitmap? = null
     private var transformedImage: Bitmap? = null
 
@@ -53,12 +54,15 @@ class ImageCropFragment : Fragment() {
         //initializing navController
         navController = Navigation.findNavController(view)
 
-        //getting uri of image taken from argument
-        documentDirectory = (arguments?.get("documentDirectory") as File?)!!
+        //getting document directory from argument
+        documentDirectory = arguments?.getString("documentDirectory")
 
-        originalImageFile = (arguments?.get("originalImageFile") as File?)!!
+        originalImageFilePath = arguments?.getString("originalImageFile")
 
-        val fileBitmap =  BitmapFactory.decodeFile(originalImageFile!!.absolutePath)
+        //getting file object from absolute path
+        originalImageFile = File(originalImageFilePath)
+
+        val fileBitmap =  BitmapFactory.decodeFile(originalImageFilePath)
 
         if(fileBitmap != null) {
             selectedImage = determineImageRotation(originalImageFile!!, fileBitmap)
@@ -118,7 +122,7 @@ class ImageCropFragment : Fragment() {
                 }
 
                 binding?.progressBar?.visibility = View.GONE
-                val bundle = bundleOf("documentDirectory" to documentDirectory, "transformedImageFile" to originalImageFile)
+                val bundle = bundleOf("documentDirectory" to documentDirectory, "transformedImageFilePath" to originalImageFilePath)
                 navController.navigate(R.id.action_imageCropFragment_to_imageProcessingFragment, bundle)
 
             } catch (e: java.lang.Exception) {

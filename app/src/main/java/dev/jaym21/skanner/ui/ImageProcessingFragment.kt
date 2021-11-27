@@ -24,11 +24,12 @@ class ImageProcessingFragment : Fragment() {
 
     private var binding: FragmentImageProcessingBinding? = null
     private lateinit var navController: NavController
-    private var croppedImageFile: File? = null
+    private var croppedImageFilePath: String? = null
     private var croppedImageBitmap: Bitmap? = null
     private var tempBitmap: Bitmap? = null
+    private var documentDirectory: String? = null
     private var isGrayScaleApplied: Boolean = false
-    private var transformedBitmap: Bitmap? = null
+    private var toExport = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,10 +46,13 @@ class ImageProcessingFragment : Fragment() {
         //initializing navController
         navController = Navigation.findNavController(view)
 
-        //getting file of cropped image from argument
-        croppedImageFile = arguments?.get("transformedImageFile") as File?
+        //getting document directory from argument
+        documentDirectory = arguments?.getString("documentDirectory")
 
-        croppedImageBitmap = BitmapFactory.decodeFile(croppedImageFile!!.absolutePath)
+        //getting file of cropped image from argument
+        croppedImageFilePath = arguments?.getString("transformedImageFilePath")
+
+        croppedImageBitmap = BitmapFactory.decodeFile(croppedImageFilePath)
 
         binding?.ivCroppedImage?.setImageBitmap(croppedImageBitmap)
 
@@ -98,11 +102,13 @@ class ImageProcessingFragment : Fragment() {
                 tempBitmap = bitmapMonochrome.copy(bitmapMonochrome.config, true)
                 binding?.ivCroppedImage?.setImageBitmap(tempBitmap)
                 binding?.progressBar?.visibility = View.GONE
+                toExport = 1
             } else {
                 binding?.ivGrayscaleIcon?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white_alpha_60))
                 binding?.tvGrayScale?.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha_60))
                 binding?.ivCroppedImage?.setImageBitmap(croppedImageBitmap)
                 binding?.progressBar?.visibility = View.GONE
+                toExport = 0
             }
             isGrayScaleApplied = !isGrayScaleApplied
         }

@@ -8,14 +8,14 @@
 
     <ImageView
         android:id="@+id/btnCloseCamera"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:src="@drawable/ic_close"
         app:tint="@color/blue_500"
         android:background="@drawable/button_dark_bg"
         android:elevation="8dp"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="16dp"
