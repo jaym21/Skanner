@@ -9,6 +9,7 @@
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable/cropping_corner_circle.xml" value="0.3828125" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable/cropping_corner_cirlcle.xml" value="0.3828125" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable/dialog_fragment_bg.xml" value="0.3828125" />
+        <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable/ic_edit.xml" value="0.3828125" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/fragment_all_documents.xml" value="0.36666666666666664" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/fragment_camera.xml" value="0.35260416666666666" />
@@ -17,6 +18,7 @@
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/fragment_image_processing.xml" value="0.36666666666666664" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/fragment_open_document.xml" value="0.36666666666666664" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/fragment_permission_not_granted.xml" value="0.36666666666666664" />
+        <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/rv_documents_item_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/rv_image_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/rv_image_item_layout.xml" value="0.36666666666666664" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/scan_surface_view.xml" value="0.36666666666666664" />

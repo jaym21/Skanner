@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rlDocument"
+    android:elevation="8dp"
+    android:layout_marginBottom="16dp">
+
+    <ImageView
+        android:id="@+id/ivFolderIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/ic_folder"
+        app:tint="@color/blue_200" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_toEndOf="@id/ivFolderIcon"
+        android:layout_toStartOf="@id/ivMore"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="2dp">
+
+        <TextView
+            android:id="@+id/tvDocumentName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="Skanner_28_11_2021_23_08"
+            android:textSize="14sp"
+            android:textColor="@color/black_alpha_80"
+            android:fontFamily="@font/sailec_bold" />
+
+        <TextView
+            android:id="@+id/tvDocumentPages"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:text="5 pages"
+            android:textSize="12sp"
+            android:textColor="@color/black_alpha_60"
+            android:fontFamily="@font/sailec_regular" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivMore"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_more"
+        app:tint="@color/black"
+        android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>

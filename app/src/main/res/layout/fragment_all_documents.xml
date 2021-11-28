@@ -50,7 +50,7 @@
         android:layout_marginBottom="16dp"
         android:src="@drawable/ic_camera"
         app:backgroundTint="@color/blue_500"
-        app:tint="@color/white"
-        app:elevation="8dp"/>
+        android:elevation="8dp"
+        app:tint="@color/white" />
 
 </RelativeLayout>

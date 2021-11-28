@@ -68,7 +68,7 @@
         android:src="@drawable/ic_add"
         app:backgroundTint="@color/blue_500"
         app:tint="@color/white"
-        app:elevation="8dp"
+        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="16dp"
