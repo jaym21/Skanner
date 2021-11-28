@@ -8,13 +8,11 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.Gravity
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
@@ -92,6 +90,20 @@ class ImageCropFragment : Fragment() {
         binding?.ivAccept?.setOnClickListener {
             getCroppedImage()
         }
+
+        //handling back press
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val documentDirectoryFile = File(documentDirectory)
+                val directoryAllFiles = documentDirectoryFile.listFiles()
+                //deleting the directory whole if empty meaning new directory document is created
+                if (directoryAllFiles.size == 1){
+                    documentDirectoryFile.delete()
+                } else {
+                    FileUtils.deleteFile(requireActivity(), originalImageFilePath!!)
+                }
+            }
+        })
     }
 
     private fun initImageCropping() {
@@ -143,8 +155,15 @@ class ImageCropFragment : Fragment() {
         } else {
             binding?.progressBar?.visibility = View.GONE
             Toast.makeText(requireContext(), "Failed to get captured picture, try again!", Toast.LENGTH_SHORT).show()
+            val documentDirectoryFile = File(documentDirectory)
+            val directoryAllFiles = documentDirectoryFile.listFiles()
+            //deleting the directory whole if empty meaning new directory document is created
+            if (directoryAllFiles.size == 1){
+                documentDirectoryFile.delete()
+            } else {
+                FileUtils.deleteFile(requireActivity(), originalImageFilePath!!)
+            }
             navController.popBackStack(R.id.allDocumentsFragment, false)
-            Log.e("TAGYOYO", "Invalid Image")
         }
     }
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
@@ -81,7 +82,7 @@ class ImageProcessingFragment : Fragment() {
             val directoryAllFiles = documentDirectoryFile.listFiles()
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.size == 1){
-                FileUtils.deleteFile(requireActivity(), documentDirectory!!)
+                documentDirectoryFile.delete()
             } else {
                 FileUtils.deleteFile(requireActivity(), croppedImageFilePath!!)
             }
@@ -91,6 +92,20 @@ class ImageProcessingFragment : Fragment() {
         binding?.ivAccept?.setOnClickListener {
             addImageToDirectoryUpdateDatabase()
         }
+
+        //handling back press
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val documentDirectoryFile = File(documentDirectory)
+                val directoryAllFiles = documentDirectoryFile.listFiles()
+                //deleting the directory whole if empty meaning new directory document is created
+                if (directoryAllFiles.size == 1){
+                    documentDirectoryFile.delete()
+                } else {
+                    FileUtils.deleteFile(requireActivity(), croppedImageFilePath!!)
+                }
+            }
+        })
     }
 
     private fun rotateImage() {
@@ -103,6 +118,14 @@ class ImageProcessingFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "No image found, try again!", Toast.LENGTH_SHORT)
                 .show()
+            val documentDirectoryFile = File(documentDirectory)
+            val directoryAllFiles = documentDirectoryFile.listFiles()
+            //deleting the directory whole if empty meaning new directory document is created
+            if (directoryAllFiles.size == 1){
+                documentDirectoryFile.delete()
+            } else {
+                FileUtils.deleteFile(requireActivity(), croppedImageFilePath!!)
+            }
             navController.popBackStack(R.id.allDocumentsFragment, false)
             binding?.progressBar?.visibility = View.GONE
         }
