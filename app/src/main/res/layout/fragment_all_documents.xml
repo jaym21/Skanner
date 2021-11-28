@@ -7,6 +7,7 @@
     tools:context=".ui.AllDocumentsFragment">
 
     <LinearLayout
+        android:id="@+id/llTopHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -30,6 +31,14 @@
             android:fontFamily="@font/sailec_bold"/>
 
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDocuments"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_below="@id/llTopHeading"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="16dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCamera"
