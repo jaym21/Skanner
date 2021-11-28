@@ -54,6 +54,10 @@ class OpenDocumentFragment : Fragment() {
             val bitmap = BitmapFactory.decodeFile(it.absolutePath)
             allImages.add(bitmap)
         }
+
+        binding?.ivClose?.setOnClickListener {
+            navController.popBackStack(R.id.allDocumentsFragment, false)
+        }
     }
 
     override fun onDestroy() {
