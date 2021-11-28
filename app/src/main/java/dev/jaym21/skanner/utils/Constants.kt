@@ -19,7 +19,7 @@ class Constants {
         const val TRUNCATE_THRESHOLD = 150.0
         const val DOWNSCALE_IMAGE_SIZE = 600.0
         const val FIRST_MAX_CONTOURS = 10
-        const val SMALLEST_ANGLE_COS = 0.172 //80 degrees
+        const val SMALLEST_ANGLE_COS = 0.172
         const val ANGLE_OF_ROTATION = 90
     }
 }
