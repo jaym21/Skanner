@@ -51,10 +51,6 @@ class CameraFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO: add photo file to document directory or pass directory and photo file to crop fragment if file overwrite not possible
-        //TODO: pass document directory to crop fragment
-        //TODO: check if file overwrite is possible
-
         //initializing navController
         navController = Navigation.findNavController(view)
 
@@ -152,7 +148,8 @@ class CameraFragment : Fragment(){
             ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION
         )
 
-        if (photoFile != null) {
+        Log.d("TAGYOYO", "PHOTO FILE $photoFile")
+//        if (photoFile != null) {
 
             // Creating output option object which contains file + metadata
             val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile!!).build()
@@ -176,13 +173,20 @@ class CameraFragment : Fragment(){
                             "Failed to take picture, try again!",
                             Toast.LENGTH_SHORT
                         ).show()
+                        val documentDirectoryFile = File(documentDirectory)
+                        val directoryAllFiles = documentDirectoryFile.listFiles()
+                        //deleting the directory whole if empty meaning new directory document is created
+                        if (directoryAllFiles.isEmpty()){
+                            Log.d("TAGYOYO", "INSIDE IF EMPTY DIR")
+                            documentDirectoryFile.delete()
+                        }
                         navController.popBackStack()
                     }
                 })
-        } else {
-            Toast.makeText(requireContext(), "Failed to save the image, try again!", Toast.LENGTH_SHORT).show()
-            navController.popBackStack()
-        }
+//        } else {
+//            Toast.makeText(requireContext(), "Failed to save the image, try again!", Toast.LENGTH_SHORT).show()
+//            navController.popBackStack()
+//        }
     }
 
     private fun navigateToCropImage(photoFile: File) {
@@ -208,6 +212,13 @@ class CameraFragment : Fragment(){
                     initialize()
                 }else {
                     Snackbar.make(binding?.root!!, "Camera permissions required to work", Snackbar.LENGTH_SHORT).show()
+                    val documentDirectoryFile = File(documentDirectory)
+                    val directoryAllFiles = documentDirectoryFile.listFiles()
+                    //deleting the directory whole if empty meaning new directory document is created
+                    if (directoryAllFiles.isEmpty()){
+                        Log.d("TAGYOYO", "INSIDE IF EMPTY DIR")
+                        documentDirectoryFile.delete()
+                    }
                     navController.popBackStack()
                 }
             }

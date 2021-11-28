@@ -2,7 +2,7 @@ package dev.jaym21.skanner.utils
 
 class Constants {
     companion object {
-        const val FILENAME = "dd-MM-yyyy_HH:mm"
+        const val FILENAME = "dd_MM_yyyy_HH_mm"
         const val PHOTO_EXTENSION = ".jpg"
         const val CAMERA_REQUEST_CODE = 1001
         const val READ_EXTERNAL_STORAGE_REQUEST_CODE = 1002
@@ -21,6 +21,5 @@ class Constants {
         const val FIRST_MAX_CONTOURS = 10
         const val SMALLEST_ANGLE_COS = 0.172 //80 degrees
         const val ANGLE_OF_ROTATION = 90
-        const val TRANSFORMED_IMAGE_NAME = "transformedImage"
     }
 }
