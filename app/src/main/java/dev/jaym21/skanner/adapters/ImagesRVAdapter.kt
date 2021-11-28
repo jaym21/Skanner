@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.utils.ImagesDiffUtil
 
@@ -22,7 +25,8 @@ class ImagesRVAdapter(private var images: List<Bitmap>): RecyclerView.Adapter<Im
     }
 
     override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) {
-
+        val currentItem = images[position]
+        Glide.with(holder.itemView.context).load(currentItem).transform(CenterCrop(), RoundedCorners(16)).into(holder.image)
     }
 
     fun updateList(newList: List<Bitmap>) {
