@@ -60,7 +60,11 @@
         tools:layout="@layout/fragment_image_processing" >
         <action
             android:id="@+id/action_imageProcessingFragment_to_openDocumentFragment"
-            app:destination="@id/openDocumentFragment" />
+            app:destination="@id/openDocumentFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
     </fragment>
     <fragment
         android:id="@+id/permissionNotGrantedFragment"
@@ -75,6 +79,14 @@
 
         <argument
             android:name="openDocument" />
+
+        <action
+            android:id="@+id/action_openDocumentFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"/>
 
     </fragment>
 </navigation>

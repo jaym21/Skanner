@@ -6,11 +6,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import dev.jaym21.skanner.R
+import dev.jaym21.skanner.adapters.ImagesRVAdapter
 import dev.jaym21.skanner.databinding.FragmentOpenDocumentBinding
 import dev.jaym21.skanner.models.Document
 import java.io.File
@@ -23,6 +26,7 @@ class OpenDocumentFragment : Fragment() {
     private var openDocument: Document? = null
     private var documentPath: String? = null
     private var documentDirectory: File? = null
+    private lateinit var imagesAdapter: ImagesRVAdapter
     private var allImages = arrayListOf<Bitmap>()
 
     override fun onCreateView(
@@ -55,8 +59,29 @@ class OpenDocumentFragment : Fragment() {
             allImages.add(bitmap)
         }
 
+        //initializing adapter
+        imagesAdapter = ImagesRVAdapter(allImages.toList())
+
+        setUpRecyclerView()
+
         binding?.ivClose?.setOnClickListener {
             navController.popBackStack(R.id.allDocumentsFragment, false)
+        }
+
+        binding?.ivEdit?.setOnClickListener {
+
+        }
+
+        binding?.fabAddMore?.setOnClickListener {
+            val bundle = bundleOf("documentDirectory" to openDocument?.path)
+            navController.navigate(R.id.action_openDocumentFragment_to_cameraFragment, bundle)
+        }
+    }
+
+    private fun setUpRecyclerView() {
+        binding?.rvImages?.apply {
+            adapter = imagesAdapter
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
     }
 
