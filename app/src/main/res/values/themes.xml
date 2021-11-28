@@ -14,7 +14,7 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="InputStyle" parent="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+    <style name="InputStyle" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/blue_500</item>
         <item name="boxStrokeWidth">2dp</item>
     </style>

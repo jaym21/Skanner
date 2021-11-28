@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:padding="16dp"
+    >
     
     <TextView
+        android:id="@+id/tvChangeName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Change name of document"
@@ -14,18 +18,52 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilDocumentName"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        style="@style/InputStyle">
+        android:layout_height="45dp"
+        android:textSize="14sp"
+        style="@style/InputStyle"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/tvChangeName">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/etNoteTitle"
+            android:id="@+id/etDocumentName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Note Title"
-            android:fontFamily="@font/sailec_regular"/>
+            android:hint="Enter name"
+            android:fontFamily="@font/sailec_regular"
+            android:textColor="@color/black_alpha_80"
+            android:textColorHint="@color/black_alpha_80"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
-</LinearLayout>
+    <ImageView
+        android:id="@+id/ivClose"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_close"
+        app:tint="@color/blue_500"
+        android:background="@drawable/button_light_bg"
+        android:elevation="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_below="@id/tilDocumentName"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="8dp"/>
+
+    <ImageView
+        android:id="@+id/ivChangeAccept"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_check"
+        app:tint="@color/blue_500"
+        android:background="@drawable/button_light_bg"
+        android:elevation="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_below="@id/tilDocumentName"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="8dp"/>
+
+</RelativeLayout>
