@@ -3,12 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable-v24/document_item_bg.xml" value="0.3828125" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable/button_bg.xml" value="0.3828125" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable/button_dark_bg.xml" value="0.3828125" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable/button_light_bg.xml" value="0.3828125" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable/cropping_corner_circle.xml" value="0.3828125" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable/cropping_corner_cirlcle.xml" value="0.3828125" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable/dialog_fragment_bg.xml" value="0.3828125" />
+        <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable/document_item_bg.xml" value="0.3828125" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/drawable/ic_edit.xml" value="0.3828125" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/activity_main.xml" value="0.35260416666666666" />
         <entry key="..\:/Programming/AndroidAppDevelopment/Skanner/app/src/main/res/layout/fragment_all_documents.xml" value="0.36666666666666664" />

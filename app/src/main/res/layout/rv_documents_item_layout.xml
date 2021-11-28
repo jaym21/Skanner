@@ -6,9 +6,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rlDocument"
     android:elevation="8dp"
-    android:layout_marginBottom="16dp"
+    android:background="@drawable/dialog_fragment_bg"
+    android:layout_marginTop="16dp"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
     android:paddingTop="15dp"
-    android:paddingBottom="15dp">
+    android:paddingBottom="15dp"
+    android:paddingStart="10dp">
 
     <ImageView
         android:id="@+id/ivFolderIcon"
@@ -50,8 +54,9 @@
         android:id="@+id/ivMore"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
         android:src="@drawable/ic_more"
-        app:tint="@color/black"
-        android:layout_alignParentEnd="true"/>
+        app:tint="@color/black_alpha_80" />
 
 </RelativeLayout>
