@@ -3,6 +3,7 @@ package dev.jaym21.skanner.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -27,6 +28,7 @@ class DocumentsRVAdapter(private val listener: IDocumentAdapter): ListAdapter<Do
         val name: TextView = itemView.findViewById(R.id.tvDocumentName)
         val pages: TextView = itemView.findViewById(R.id.tvDocumentPages)
         val root: RelativeLayout = itemView.findViewById(R.id.rlDocument)
+        val options: ImageView = itemView.findViewById(R.id.ivMoreOptions)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DocumentsViewHolder {
@@ -47,6 +49,10 @@ class DocumentsRVAdapter(private val listener: IDocumentAdapter): ListAdapter<Do
             "${currentItem.pageCount} pages"
 
         holder.pages.text = noOfPages
+
+        holder.options.setOnClickListener {
+
+        }
     }
 }
 

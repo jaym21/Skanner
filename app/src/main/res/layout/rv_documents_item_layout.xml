@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_toEndOf="@id/ivFolderIcon"
-        android:layout_toStartOf="@id/ivMore"
+        android:layout_toStartOf="@id/ivMoreOptions"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="2dp">
 
@@ -51,7 +51,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/ivMore"
+        android:id="@+id/ivMoreOptions"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_alignParentEnd="true"
