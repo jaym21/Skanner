@@ -8,19 +8,26 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import dev.jaym21.skanner.R
+import dev.jaym21.skanner.adapters.DocumentsRVAdapter
+import dev.jaym21.skanner.adapters.IDocumentAdapter
 import dev.jaym21.skanner.databinding.FragmentAllDocumentsBinding
+import dev.jaym21.skanner.models.Document
 import dev.jaym21.skanner.utils.Constants
 import dev.jaym21.skanner.utils.FileUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AllDocumentsFragment : Fragment() {
+class AllDocumentsFragment : Fragment(), IDocumentAdapter {
 
     private var binding: FragmentAllDocumentsBinding? = null
     private lateinit var navController: NavController
+    private var documentsAdapter = DocumentsRVAdapter(this)
+    private lateinit var viewModel: DocumentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,9 +44,14 @@ class AllDocumentsFragment : Fragment() {
         //initializing navController
         navController = Navigation.findNavController(view)
 
-        FileUtils.getOutputDirectory(requireActivity()).listFiles()!!.forEach {
-            Log.d("TAGYOYO", "Directories $it")
-        }
+        //initializing viewModel
+        viewModel = ViewModelProvider(this).get(DocumentViewModel::class.java)
+
+        setUpRecyclerView()
+
+        viewModel.allDocuments.observe(viewLifecycleOwner, {
+            documentsAdapter.submitList(it)
+        })
 
         binding?.fabCamera?.setOnClickListener {
             //making new directory to add new images taken
@@ -50,8 +62,19 @@ class AllDocumentsFragment : Fragment() {
         }
     }
 
+    private fun setUpRecyclerView() {
+        binding?.rvDocuments?.apply {
+            adapter = documentsAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         binding = null
+    }
+
+    override fun onDocumentClicked(document: Document) {
+
     }
 }
