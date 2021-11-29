@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.PopupMenu
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
@@ -51,7 +52,10 @@ class DocumentsRVAdapter(private val listener: IDocumentAdapter): ListAdapter<Do
         holder.pages.text = noOfPages
 
         holder.options.setOnClickListener {
-
+            //creating a popup menu to show more menu options
+            val popup = PopupMenu(holder.itemView.context, holder.options)
+            //inflating popup menu with layout
+            popup.inflate(R.menu.documents_option_menu)
         }
     }
 }
