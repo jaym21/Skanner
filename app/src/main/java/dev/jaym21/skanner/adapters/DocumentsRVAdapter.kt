@@ -62,15 +62,20 @@ class DocumentsRVAdapter(private val listener: IDocumentAdapter): ListAdapter<Do
             popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
                 when(item.itemId) {
                     R.id.option_delete -> {
-
+                        listener.onOptionDeleteClicked(currentItem)
+                        return@OnMenuItemClickListener true
                     }
+                    else ->
+                        return@OnMenuItemClickListener false
                 }
             })
+            //displaying the popup menu
+            popup.show()
         }
     }
 }
 
 interface IDocumentAdapter{
     fun onDocumentClicked(document: Document)
-    fun onOptionsDeleteClicked(document: Document)
+    fun onOptionDeleteClicked(document: Document)
 }
