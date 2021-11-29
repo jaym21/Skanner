@@ -75,6 +75,7 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     }
 
     override fun onDocumentClicked(document: Document) {
-
+        val bundle = bundleOf("openDocument" to document)
+        navController.navigate(R.id.action_allDocumentsFragment_to_openDocumentFragment, bundle)
     }
 }
