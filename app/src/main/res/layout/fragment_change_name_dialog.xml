@@ -41,15 +41,16 @@
         android:id="@+id/ivClose"
         android:layout_width="45dp"
         android:layout_height="45dp"
-        android:src="@drawable/ic_close"
-        app:tint="@color/blue_500"
+        android:layout_below="@id/tilDocumentName"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/button_light_bg"
         android:elevation="8dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        android:layout_below="@id/tilDocumentName"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="8dp"/>
+        android:src="@drawable/ic_close"
+        app:tint="@color/blue_500"
+        android:layout_marginBottom="10dp" />
 
     <ImageView
         android:id="@+id/ivChangeAccept"
@@ -64,6 +65,7 @@
         android:layout_below="@id/tilDocumentName"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="8dp"/>
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="10dp"/>
 
 </RelativeLayout>
