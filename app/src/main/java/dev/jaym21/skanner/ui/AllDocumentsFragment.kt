@@ -6,8 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -79,9 +80,26 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
 
     }
 
-    private fun deleteAlertDialog(view: View, document: Document) {
-        val builder = AlertDialog.Builder(requireContext())
-        val view = layoutInflater.inflate(R.layout.)
+    private fun deleteAlertDialog(document: Document) {
+        val alertBuilder = AlertDialog.Builder(requireContext())
+        val dialogLayout = layoutInflater.inflate(R.layout.delete_dialog_layout, null)
+        val confirmText: TextView = dialogLayout.findViewById(R.id.tvConfirmText)
+        val btnReject: ImageView = dialogLayout.findViewById(R.id.ivRejectDelete)
+        val btnAccept: ImageView = dialogLayout.findViewById(R.id.ivAcceptDelete)
+
+        //adding document name in confirm text
+        confirmText.text = "Are you sure you want to delete ${document.name}?"
+
+        alertBuilder.setView(dialogLayout)
+        val deleteDialog = alertBuilder.create()
+        deleteDialog.setCanceledOnTouchOutside(false)
+
+        btnAccept.setOnClickListener {
+
+        }
+        btnReject.setOnClickListener {
+
+        }
     }
 
     override fun onDestroy() {
