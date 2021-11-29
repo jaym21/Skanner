@@ -1,6 +1,7 @@
 package dev.jaym21.skanner.adapters
 
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -56,10 +57,20 @@ class DocumentsRVAdapter(private val listener: IDocumentAdapter): ListAdapter<Do
             val popup = PopupMenu(holder.itemView.context, holder.options)
             //inflating popup menu with layout
             popup.inflate(R.menu.documents_option_menu)
+
+            //adding menu item click listener
+            popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                when(item.itemId) {
+                    R.id.option_delete -> {
+
+                    }
+                }
+            })
         }
     }
 }
 
 interface IDocumentAdapter{
     fun onDocumentClicked(document: Document)
+    fun onOptionsDeleteClicked(document: Document)
 }
