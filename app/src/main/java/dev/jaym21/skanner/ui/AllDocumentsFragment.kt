@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
@@ -69,13 +70,22 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        binding = null
-    }
-
     override fun onDocumentClicked(document: Document) {
         val bundle = bundleOf("openDocument" to document)
         navController.navigate(R.id.action_allDocumentsFragment_to_openDocumentFragment, bundle)
+    }
+
+    override fun onOptionDeleteClicked(document: Document) {
+
+    }
+
+    private fun deleteAlertDialog(view: View, document: Document) {
+        val builder = AlertDialog.Builder(requireContext())
+        val view = layoutInflater.inflate(R.layout.)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }
