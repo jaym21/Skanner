@@ -43,11 +43,14 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //TODO: Add rotate feature
+        //TODO: Fix directory or file delete on back
+
         //initializing navController
         navController = Navigation.findNavController(view)
 
         //initializing viewModel
-        viewModel = ViewModelProvider(this).get(DocumentViewModel::class.java)
+        viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(DocumentViewModel::class.java)
 
         setUpRecyclerView()
 
@@ -72,12 +75,12 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     }
 
     override fun onDocumentClicked(document: Document) {
-        val bundle = bundleOf("openDocument" to document)
+        val bundle = bundleOf("openDocumentId" to document.id.toString())
         navController.navigate(R.id.action_allDocumentsFragment_to_openDocumentFragment, bundle)
     }
 
     override fun onOptionDeleteClicked(document: Document) {
-
+        deleteAlertDialog(document)
     }
 
     private fun deleteAlertDialog(document: Document) {

@@ -70,8 +70,6 @@ class MainActivity : AppCompatActivity() {
         when(requestCode) {
             Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] == PackageManager.PERMISSION_DENIED) {
-//                    Toast.makeText(this, "Permission of writing in external storage is required to run app", Toast.LENGTH_LONG).show()
-//                    updateOrRequestPermissions()
                     navGraph!!.startDestination = R.id.permissionNotGrantedFragment
                     navController!!.graph = navGraph as NavGraph
                 }else {
@@ -81,8 +79,6 @@ class MainActivity : AppCompatActivity() {
             }
             Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
                 if (grantResults.isEmpty() || grantResults[0] == PackageManager.PERMISSION_DENIED) {
-//                    Toast.makeText(this, "Permission of reading of external storage is required to run app", Toast.LENGTH_LONG).show()
-//                    updateOrRequestPermissions()
                     navGraph!!.startDestination = R.id.permissionNotGrantedFragment
                     navController!!.graph = navGraph as NavGraph
                 }else {

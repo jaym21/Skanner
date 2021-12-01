@@ -1,6 +1,7 @@
 package dev.jaym21.skanner.ui
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +12,7 @@ import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
@@ -25,6 +27,7 @@ import dev.jaym21.skanner.utils.FileUtils
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CameraFragment : Fragment(){
@@ -57,22 +60,6 @@ class CameraFragment : Fragment(){
         //getting new document directory for saving images
         documentDirectory = arguments?.getString("documentDirectory")
 
-        if(ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            initialize()
-        } else {
-            ActivityCompat.requestPermissions(requireActivity(), arrayOf(Manifest.permission.CAMERA), Constants.CAMERA_REQUEST_CODE)
-        }
-    }
-
-    private fun initialize() {
-        binding?.viewFinder?.post {
-            setUpCamera()
-        }
-
-        binding?.ivTakePicture?.setOnClickListener {
-            takePicture()
-        }
-
         binding?.btnCloseCamera?.setOnClickListener {
             val documentDirectoryFile = File(documentDirectory)
             val directoryAllFiles = documentDirectoryFile.listFiles()
@@ -82,6 +69,25 @@ class CameraFragment : Fragment(){
                 documentDirectoryFile.delete()
             }
             navController.popBackStack()
+        }
+
+        if (checkCameraPermissions(requireContext(), arrayOf(Manifest.permission.CAMERA))) {
+            Log.d("TAGYOYO", "IF INITIALIZE")
+            initialize()
+        } else {
+            Log.d("TAGYOYO", "ELSE REQUEST")
+            permissionRequestLauncher.launch(Manifest.permission.CAMERA)
+        }
+    }
+
+    private fun initialize() {
+        Log.d("TAGYOYO", "INSIDE INITIALIZE")
+        binding?.viewFinder?.post {
+            setUpCamera()
+        }
+
+        binding?.ivTakePicture?.setOnClickListener {
+            takePicture()
         }
     }
 
@@ -141,7 +147,7 @@ class CameraFragment : Fragment(){
         )
 
         Log.d("TAGYOYO", "PHOTO FILE $photoFile")
-//        if (photoFile != null) {
+        if (photoFile != null) {
 
             // Creating output option object which contains file + metadata
             val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile!!).build()
@@ -175,10 +181,10 @@ class CameraFragment : Fragment(){
                         navController.popBackStack()
                     }
                 })
-//        } else {
-//            Toast.makeText(requireContext(), "Failed to save the image, try again!", Toast.LENGTH_SHORT).show()
-//            navController.popBackStack()
-//        }
+        } else {
+            Toast.makeText(requireContext(), "Failed to save the image, try again!", Toast.LENGTH_SHORT).show()
+            navController.popBackStack()
+        }
     }
 
     private fun navigateToCropImage(photoFile: File) {
@@ -191,29 +197,16 @@ class CameraFragment : Fragment(){
         }
     }
 
+    private fun checkCameraPermissions(context: Context, permissions: Array<String>): Boolean = permissions.all {
+        Log.d("TAGYOYO", "INSIDE CHECKING")
+        ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode) {
-            Constants.CAMERA_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    initialize()
-                }else {
-                    Snackbar.make(binding?.root!!, "Camera permissions required to work", Snackbar.LENGTH_SHORT).show()
-                    val documentDirectoryFile = File(documentDirectory)
-                    val directoryAllFiles = documentDirectoryFile.listFiles()
-                    //deleting the directory whole if empty meaning new directory document is created
-                    if (directoryAllFiles.isEmpty()){
-                        Log.d("TAGYOYO", "INSIDE IF EMPTY DIR")
-                        documentDirectoryFile.delete()
-                    }
-                    navController.popBackStack()
-                }
-            }
+    private val permissionRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        Log.d("TAGYOYO", "INSIDE REQUEST LAUNCHER")
+        if (isGranted) {
+            Log.d("TAGYOYO", "INSIDE GRANTED")
+            initialize()
         }
     }
 

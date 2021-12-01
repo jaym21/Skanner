@@ -3,28 +3,22 @@ package dev.jaym21.skanner.ui
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.PointF
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.core.net.toUri
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentImageCropBinding
 import dev.jaym21.skanner.extensions.scaledBitmap
-import dev.jaym21.skanner.utils.Constants
 import dev.jaym21.skanner.utils.FileUtils
 import dev.jaym21.skanner.utils.OpenCVUtils
 import id.zelory.compressor.determineImageRotation
-import id.zelory.compressor.extension
 import id.zelory.compressor.saveBitmap
 import java.io.File
 
@@ -36,7 +30,7 @@ class ImageCropFragment : Fragment() {
     private var originalImageFile: File? = null
     private var documentDirectory: String? = null
     private var selectedImage: Bitmap? = null
-    private var transformedImage: Bitmap? = null
+    private var croppedImage: Bitmap? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -137,9 +131,9 @@ class ImageCropFragment : Fragment() {
                 val y3: Float = (points.getValue(2).y + pointPadding) * yRatio
                 val y4: Float = (points.getValue(3).y + pointPadding) * yRatio
 
-                transformedImage = OpenCVUtils.getScannedBitmap(selectedImage!!, x1, y1, x2, y2, x3, y3, x4, y4)
+                croppedImage = OpenCVUtils.getScannedBitmap(selectedImage!!, x1, y1, x2, y2, x3, y3, x4, y4)
 
-                transformedImage?.let {
+                croppedImage?.let {
                     saveBitmap(it, originalImageFile!!, Bitmap.CompressFormat.JPEG, 100)
                 }
 

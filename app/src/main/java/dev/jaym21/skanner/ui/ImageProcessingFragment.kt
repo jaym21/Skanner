@@ -20,6 +20,7 @@ import dev.jaym21.skanner.extensions.rotate
 import dev.jaym21.skanner.models.Document
 import dev.jaym21.skanner.utils.Constants
 import dev.jaym21.skanner.utils.FileUtils
+import id.zelory.compressor.saveBitmap
 import java.io.File
 
 
@@ -29,6 +30,7 @@ class ImageProcessingFragment : Fragment() {
     private lateinit var viewModel: DocumentViewModel
     private lateinit var navController: NavController
     private var croppedImageFilePath: String? = null
+    private var croppedImageFile: File? = null
     private var croppedImageBitmap: Bitmap? = null
     private var tempBitmap: Bitmap? = null
     private var documentDirectory: String? = null
@@ -48,7 +50,7 @@ class ImageProcessingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //initializing viewModel
-        viewModel = ViewModelProvider(this).get(DocumentViewModel::class.java)
+        viewModel = ViewModelProvider(this, ViewModelProvider.AndroidViewModelFactory(requireActivity().application)).get(DocumentViewModel::class.java)
 
         //initializing navController
         navController = Navigation.findNavController(view)
@@ -58,6 +60,9 @@ class ImageProcessingFragment : Fragment() {
 
         //getting file of cropped image from argument
         croppedImageFilePath = arguments?.getString("croppedImageFilePath")
+
+        //getting file object from absolute path
+        croppedImageFile = File(croppedImageFilePath)
 
         croppedImageBitmap = BitmapFactory.decodeFile(croppedImageFilePath)
 
@@ -104,6 +109,7 @@ class ImageProcessingFragment : Fragment() {
                 } else {
                     FileUtils.deleteFile(requireActivity(), croppedImageFilePath!!)
                 }
+                navController.popBackStack(R.id.allDocumentsFragment, false)
             }
         })
     }
@@ -161,28 +167,35 @@ class ImageProcessingFragment : Fragment() {
 
     private fun addImageToDirectoryUpdateDatabase() {
         if (exportTemp) {
-            viewModel.allDocuments.observe(viewLifecycleOwner, Observer { documents ->
-                documents.forEach {
-                    if (it.name == documentDirectory) {
-                        updateDocumentDirectory(it)
-                    }
-                }
-                addNewDocument()
-            })
+            tempBitmap?.let {
+                saveBitmap(it, croppedImageFile!!, Bitmap.CompressFormat.JPEG, 100)
+            }
+        } else {
+            croppedImageBitmap?.let {
+                saveBitmap(it, croppedImageFile!!, Bitmap.CompressFormat.JPEG, 100)
+            }
         }
+        viewModel.allDocuments.observe(viewLifecycleOwner, Observer { documents ->
+            documents.forEach {
+                if (it.name == documentDirectory) {
+                    updateDocumentDirectory(it)
+                }
+            }
+            addNewDocument()
+        })
     }
 
     private fun updateDocumentDirectory(document: Document) {
         val updatedDocument = Document(document.id, document.name, document.path, document.pageCount + 1)
         viewModel.updateDocument(updatedDocument)
-        val bundle = bundleOf("openDocument" to updatedDocument)
+        val bundle = bundleOf("openDocumentId" to updatedDocument.id.toString())
         navController.navigate(R.id.action_imageProcessingFragment_to_openDocumentFragment, bundle)
     }
 
     private fun addNewDocument() {
         val newDocument = Document(0, documentDirectory!!, documentDirectory!!, 1)
         viewModel.addDocument(newDocument)
-        val bundle = bundleOf("openDocument" to newDocument)
+        val bundle = bundleOf("openDocumentId" to newDocument.id.toString())
         navController.navigate(R.id.action_imageProcessingFragment_to_openDocumentFragment, bundle)
     }
 

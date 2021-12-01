@@ -18,13 +18,13 @@ abstract class DocumentDatabase: RoomDatabase() {
 
         fun getDatabase(context: Context): DocumentDatabase {
             return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
+                val databaseInstance = Room.databaseBuilder(
                     context.applicationContext,
                     DocumentDatabase::class.java,
                     "document_database"
                 ).build()
-                INSTANCE = instance
-                instance
+                INSTANCE = databaseInstance
+                return databaseInstance
             }
         }
     }
