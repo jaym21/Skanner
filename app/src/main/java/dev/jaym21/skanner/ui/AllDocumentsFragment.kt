@@ -21,6 +21,7 @@ import dev.jaym21.skanner.databinding.FragmentAllDocumentsBinding
 import dev.jaym21.skanner.models.Document
 import dev.jaym21.skanner.utils.Constants
 import dev.jaym21.skanner.utils.FileUtils
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -43,8 +44,9 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //TODO: Add rotate feature
+        //TODO: Add reorder feature
         //TODO: Fix directory or file delete on back
+        //TODO: Implement delete dialog
 
         //initializing navController
         navController = Navigation.findNavController(view)
@@ -98,10 +100,15 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         deleteDialog.setCanceledOnTouchOutside(false)
 
         btnAccept.setOnClickListener {
-
+            //removing document from database
+            viewModel.removeDocument(document)
+            //deleting document directory from main directory
+            val documentFile = File(document.path)
+            documentFile.delete()
+            Log.d("TAGYOYO", "INSIDE DELETE ACCEPTED FOR ${document.path} FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
         }
         btnReject.setOnClickListener {
-
+            deleteDialog.dismiss()
         }
     }
 

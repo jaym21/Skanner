@@ -2,6 +2,7 @@ package dev.jaym21.skanner.ui
 
 import android.graphics.*
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -88,8 +89,10 @@ class ImageProcessingFragment : Fragment() {
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.size == 1){
                 documentDirectoryFile.delete()
+                Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
             } else {
                 FileUtils.deleteFile(requireActivity(), croppedImageFilePath!!)
+                Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $croppedImageFilePath")
             }
             navController.popBackStack(R.id.allDocumentsFragment, false)
         }
@@ -106,8 +109,10 @@ class ImageProcessingFragment : Fragment() {
                 //deleting the directory whole if empty meaning new directory document is created
                 if (directoryAllFiles.size == 1){
                     documentDirectoryFile.delete()
+                    Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
                 } else {
                     FileUtils.deleteFile(requireActivity(), croppedImageFilePath!!)
+                    Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $croppedImageFilePath")
                 }
                 navController.popBackStack(R.id.allDocumentsFragment, false)
             }
@@ -129,8 +134,10 @@ class ImageProcessingFragment : Fragment() {
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.size == 1){
                 documentDirectoryFile.delete()
+                Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
             } else {
                 FileUtils.deleteFile(requireActivity(), croppedImageFilePath!!)
+                Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $croppedImageFilePath")
             }
             navController.popBackStack(R.id.allDocumentsFragment, false)
             binding?.progressBar?.visibility = View.GONE

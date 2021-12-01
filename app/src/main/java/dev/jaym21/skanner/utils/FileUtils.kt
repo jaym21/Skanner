@@ -50,21 +50,6 @@ class FileUtils {
             return storageDirectory
         }
 
-        fun writeFile(activity: Activity, baseDirectory: String, fileName: String, callback: FileWritingCallback) {
-            //creating destination file name
-            val absFilename = baseDirectory + fileName
-            //destination file
-            val dest = File(getOutputDirectory(activity), absFilename)
-
-            //writing file to destination
-            val out = FileOutputStream(dest)
-            callback.write(out)
-
-            //closing FileOutputStream
-            out.flush()
-            out.close()
-        }
-
         fun deleteFile(activity: Activity, filePath: String) {
             val targetFile = File(getOutputDirectory(activity), filePath)
             targetFile.delete()

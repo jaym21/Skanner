@@ -74,8 +74,10 @@ class ImageCropFragment : Fragment() {
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.size == 1){
                 documentDirectoryFile.delete()
+                Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
             } else {
                 FileUtils.deleteFile(requireActivity(), originalImageFilePath!!)
+                Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $originalImageFilePath")
             }
 
             navController.popBackStack(R.id.allDocumentsFragment, false)
@@ -93,8 +95,10 @@ class ImageCropFragment : Fragment() {
                 //deleting the directory whole if empty meaning new directory document is created
                 if (directoryAllFiles.size == 1){
                     documentDirectoryFile.delete()
+                    Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
                 } else {
                     FileUtils.deleteFile(requireActivity(), originalImageFilePath!!)
+                    Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $originalImageFilePath")
                 }
             }
         })
@@ -154,8 +158,10 @@ class ImageCropFragment : Fragment() {
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.size == 1){
                 documentDirectoryFile.delete()
+                Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
             } else {
                 FileUtils.deleteFile(requireActivity(), originalImageFilePath!!)
+                Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $originalImageFilePath")
             }
             navController.popBackStack(R.id.allDocumentsFragment, false)
         }

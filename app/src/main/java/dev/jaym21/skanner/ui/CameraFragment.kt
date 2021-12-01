@@ -65,8 +65,8 @@ class CameraFragment : Fragment(){
             val directoryAllFiles = documentDirectoryFile.listFiles()
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.isEmpty()){
-                Log.d("TAGYOYO", "INSIDE IF EMPTY DIR")
                 documentDirectoryFile.delete()
+                Log.d("TAGYOYO", "INSIDE IF EMPTY DIR ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
             }
             navController.popBackStack()
         }
@@ -177,6 +177,7 @@ class CameraFragment : Fragment(){
                         if (directoryAllFiles.isEmpty()){
                             Log.d("TAGYOYO", "INSIDE IF EMPTY DIR")
                             documentDirectoryFile.delete()
+                            Log.d("TAGYOYO", "EMPTY DIR FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
                         }
                         navController.popBackStack()
                     }
