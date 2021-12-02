@@ -72,7 +72,7 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     private fun setUpRecyclerView() {
         binding?.rvDocuments?.apply {
             adapter = documentsAdapter
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         }
     }
 

@@ -6,12 +6,10 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.util.Size
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.Surface
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -66,7 +64,7 @@ class CameraFragment : Fragment(){
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.isEmpty()){
                 documentDirectoryFile.delete()
-                Log.d("TAGYOYO", "INSIDE IF EMPTY DIR ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
+                Log.d("TAGYOYO", "INSIDE IF EMPTY DIR ${FileUtils.getOutputDirectory(requireActivity()).listFiles().forEach { it }}")
             }
             navController.popBackStack()
         }
@@ -78,6 +76,20 @@ class CameraFragment : Fragment(){
             Log.d("TAGYOYO", "ELSE REQUEST")
             permissionRequestLauncher.launch(Manifest.permission.CAMERA)
         }
+
+        //handling back press
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                val documentDirectoryFile = File(documentDirectory)
+                val directoryAllFiles = documentDirectoryFile.listFiles()
+                //deleting the directory whole if empty meaning new directory document is created
+                if (directoryAllFiles.isEmpty()){
+                    documentDirectoryFile.delete()
+                    Log.d("TAGYOYO", "INSIDE IF EMPTY DIR ${FileUtils.getOutputDirectory(requireActivity()).listFiles().forEach { it }}")
+                }
+                navController.popBackStack()
+            }
+        })
     }
 
     private fun initialize() {
