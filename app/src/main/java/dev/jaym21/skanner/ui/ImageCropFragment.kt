@@ -50,7 +50,7 @@ class ImageCropFragment : Fragment() {
         //getting document directory from argument
         documentDirectory = arguments?.getString("documentDirectory")
 
-        originalImageFilePath = arguments?.getString("originalImageFile")
+        originalImageFilePath = arguments?.getString("originalImageFilePath")
 
         //getting file object from absolute path
         originalImageFile = File(originalImageFilePath)
@@ -61,7 +61,7 @@ class ImageCropFragment : Fragment() {
             selectedImage = determineImageRotation(originalImageFile!!, fileBitmap)
         } else {
             Toast.makeText(requireContext(), "Image capture failed, try again!", Toast.LENGTH_SHORT).show()
-            navController.popBackStack()
+            navController.popBackStack(R.id.allDocumentsFragment, false)
         }
 
         binding?.flImageViewHolder?.post {
@@ -71,14 +71,16 @@ class ImageCropFragment : Fragment() {
         binding?.ivClose?.setOnClickListener {
             val documentDirectoryFile = File(documentDirectory)
             val directoryAllFiles = documentDirectoryFile.listFiles()
+            originalImageFile!!.delete()
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.size == 1){
                 documentDirectoryFile.delete()
                 Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
-            } else {
-                FileUtils.deleteFile(requireActivity(), originalImageFilePath!!)
-                Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $originalImageFilePath")
             }
+//            else {
+//                FileUtils.deleteFile(requireActivity(), originalImageFilePath!!)
+//                Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $originalImageFilePath")
+//            }
 
             navController.popBackStack(R.id.allDocumentsFragment, false)
         }
@@ -92,14 +94,16 @@ class ImageCropFragment : Fragment() {
             override fun handleOnBackPressed() {
                 val documentDirectoryFile = File(documentDirectory)
                 val directoryAllFiles = documentDirectoryFile.listFiles()
+                originalImageFile!!.delete()
                 //deleting the directory whole if empty meaning new directory document is created
                 if (directoryAllFiles.size == 1){
                     documentDirectoryFile.delete()
                     Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
-                } else {
-                    FileUtils.deleteFile(requireActivity(), originalImageFilePath!!)
-                    Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $originalImageFilePath")
                 }
+//                else {
+//                    FileUtils.deleteFile(requireActivity(), originalImageFilePath!!)
+//                    Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $originalImageFilePath")
+//                }
             }
         })
     }

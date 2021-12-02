@@ -19,6 +19,7 @@ import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
+import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentCameraBinding
 import dev.jaym21.skanner.utils.Constants
 import dev.jaym21.skanner.utils.FileUtils
@@ -87,7 +88,7 @@ class CameraFragment : Fragment(){
                     documentDirectoryFile.delete()
                     Log.d("TAGYOYO", "INSIDE IF EMPTY DIR ${FileUtils.getOutputDirectory(requireActivity()).listFiles().forEach { it }}")
                 }
-                navController.popBackStack()
+                navController.popBackStack(R.id.allDocumentsFragment, false)
             }
         })
     }
@@ -202,7 +203,7 @@ class CameraFragment : Fragment(){
 
     private fun navigateToCropImage(photoFile: File) {
         requireActivity().runOnUiThread {
-            val bundle = bundleOf("documentDirectory" to documentDirectory, "originalImageFile" to photoFile.absolutePath)
+            val bundle = bundleOf("documentDirectory" to documentDirectory, "originalImageFilePath" to photoFile.absolutePath)
             navController.navigate(
                 dev.jaym21.skanner.R.id.action_cameraFragment_to_imageCropFragment,
                 bundle
