@@ -75,7 +75,6 @@ class ImageCropFragment : Fragment() {
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.size == 1){
                 documentDirectoryFile.delete()
-                Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
             }
 
             navController.popBackStack(R.id.allDocumentsFragment, false)
@@ -137,7 +136,6 @@ class ImageCropFragment : Fragment() {
             } catch (e: java.lang.Exception) {
                 binding?.progressBar?.visibility = View.GONE
                 Toast.makeText(requireContext(), "Failed to get crop picture, try again!", Toast.LENGTH_SHORT).show()
-                Log.e("TAGYOYO", "Cropping image failed")
             }
         } else {
             binding?.progressBar?.visibility = View.GONE
@@ -148,7 +146,6 @@ class ImageCropFragment : Fragment() {
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.size == 1){
                 documentDirectoryFile.delete()
-                Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
             }
             navController.popBackStack(R.id.allDocumentsFragment, false)
         }

@@ -65,16 +65,13 @@ class CameraFragment : Fragment(){
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.isEmpty()){
                 documentDirectoryFile.delete()
-                Log.d("TAGYOYO", "INSIDE IF EMPTY DIR ${FileUtils.getOutputDirectory(requireActivity()).listFiles().forEach { it }}")
             }
             navController.popBackStack()
         }
 
         if (checkCameraPermissions(requireContext(), arrayOf(Manifest.permission.CAMERA))) {
-            Log.d("TAGYOYO", "IF INITIALIZE")
             initialize()
         } else {
-            Log.d("TAGYOYO", "ELSE REQUEST")
             permissionRequestLauncher.launch(Manifest.permission.CAMERA)
         }
 
@@ -86,7 +83,6 @@ class CameraFragment : Fragment(){
                 //deleting the directory whole if empty meaning new directory document is created
                 if (directoryAllFiles.isEmpty()){
                     documentDirectoryFile.delete()
-                    Log.d("TAGYOYO", "INSIDE IF EMPTY DIR ${FileUtils.getOutputDirectory(requireActivity()).listFiles().forEach { it }}")
                 }
                 navController.popBackStack(R.id.allDocumentsFragment, false)
             }
@@ -94,7 +90,6 @@ class CameraFragment : Fragment(){
     }
 
     private fun initialize() {
-        Log.d("TAGYOYO", "INSIDE INITIALIZE")
         binding?.viewFinder?.post {
             setUpCamera()
         }
@@ -159,7 +154,6 @@ class CameraFragment : Fragment(){
             ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION
         )
 
-        Log.d("TAGYOYO", "PHOTO FILE $photoFile")
         if (photoFile != null) {
 
             // Creating output option object which contains file + metadata
@@ -188,9 +182,7 @@ class CameraFragment : Fragment(){
                         val directoryAllFiles = documentDirectoryFile.listFiles()
                         //deleting the directory whole if empty meaning new directory document is created
                         if (directoryAllFiles.isEmpty()){
-                            Log.d("TAGYOYO", "INSIDE IF EMPTY DIR")
                             documentDirectoryFile.delete()
-                            Log.d("TAGYOYO", "EMPTY DIR FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
                         }
                         navController.popBackStack()
                     }
@@ -212,14 +204,11 @@ class CameraFragment : Fragment(){
     }
 
     private fun checkCameraPermissions(context: Context, permissions: Array<String>): Boolean = permissions.all {
-        Log.d("TAGYOYO", "INSIDE CHECKING")
         ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
     }
 
     private val permissionRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-        Log.d("TAGYOYO", "INSIDE REQUEST LAUNCHER")
         if (isGranted) {
-            Log.d("TAGYOYO", "INSIDE GRANTED")
             initialize()
         }
     }
