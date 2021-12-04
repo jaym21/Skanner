@@ -103,11 +103,13 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
             //deleting document directory from main directory
             val documentFile = File(document.path)
             documentFile.delete()
-            Log.d("TAGYOYO", "INSIDE DELETE ACCEPTED FOR ${document.path} FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
+            deleteDialog.dismiss()
         }
         btnReject.setOnClickListener {
             deleteDialog.dismiss()
         }
+
+        deleteDialog.show()
     }
 
     override fun onDestroy() {

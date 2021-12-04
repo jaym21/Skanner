@@ -103,7 +103,7 @@ class OpenDocumentFragment : Fragment() {
             setUpRecyclerView()
 
             binding?.ivEdit?.setOnClickListener {
-
+                editAlertDialog()
             }
 
             binding?.fabAddMore?.setOnClickListener {
@@ -113,6 +113,10 @@ class OpenDocumentFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "No document found in memory", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun editAlertDialog() {
+
     }
 
     private fun setUpRecyclerView() {

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/dialog_fragment_bg">
 
     <LinearLayout
-        android:id="@+id/llDeleteDocumentText"
+        android:id="@+id/llChangeDocumentName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -20,23 +20,33 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:fontFamily="@font/sailec_bold"
-            android:text="Delete document"
+            android:text="Change document name"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/tvConfirmText"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/sailec_regular"
-            android:text="Are you sure you want to delete the document?"
-            android:textColor="@color/black_alpha_70"
-            android:textSize="14sp" />
+            android:layout_height="40dp"
+            android:hint="New name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:textColorHint="@color/blue_500">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etAddUserName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:inputType="textPersonName"
+                android:textSize="14sp"
+                android:textColor="@color/black_alpha_90"
+                android:fontFamily="@font/sailec_regular"
+                android:maxLength="10"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/ivRejectDelete"
+        android:id="@+id/ivRejectName"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="16dp"
@@ -53,7 +63,7 @@
         app:layout_constraintLeft_toLeftOf="parent"/>
 
     <ImageView
-        android:id="@+id/ivAcceptDelete"
+        android:id="@+id/ivAcceptName"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:src="@drawable/ic_check"
@@ -62,7 +72,7 @@
         android:elevation="8dp"
         android:paddingTop="8dp"
         android:paddingBottom="8dp"
-        app:layout_constraintTop_toBottomOf="@id/llDeleteDocumentText"
+        app:layout_constraintTop_toBottomOf="@id/llChangeDocumentName"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="20dp"
