@@ -7,8 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AlertDialog
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -116,7 +120,28 @@ class OpenDocumentFragment : Fragment() {
     }
 
     private fun editAlertDialog() {
+        val alertBuilder = AlertDialog.Builder(requireContext())
+        val dialogLayout = layoutInflater.inflate(R.layout.edit_dialog_layout, null)
+        val nameEditText: EditText = dialogLayout.findViewById(R.id.etNewName)
+        val btnReject: ImageView = dialogLayout.findViewById(R.id.ivRejectName)
+        val btnAccept: ImageView = dialogLayout.findViewById(R.id.ivAcceptName)
 
+        alertBuilder.setView(dialogLayout)
+        val editNameDialog = alertBuilder.create()
+        editNameDialog.setCanceledOnTouchOutside(false)
+
+        btnAccept.setOnClickListener {
+            val newName = nameEditText.text.toString()
+            if (openDocument != null) {
+
+            }
+        }
+
+        btnReject.setOnClickListener {
+            editNameDialog.dismiss()
+        }
+
+        editNameDialog.show()
     }
 
     private fun setUpRecyclerView() {

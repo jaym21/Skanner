@@ -32,7 +32,7 @@
             android:textColorHint="@color/blue_500">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etAddUserName"
+                android:id="@+id/etNewName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:inputType="textPersonName"
