@@ -96,6 +96,7 @@ class OpenDocumentFragment : Fragment() {
             binding?.tvDocumentName?.text = openDocument!!.name
 
             //adding all the images in  directory to array for passing them to recycler view adapter
+            allImages.clear()
             documentDirectory!!.listFiles()!!.forEach {
                 val bitmap = BitmapFactory.decodeFile(it.absolutePath)
                 allImages.add(bitmap)
@@ -135,8 +136,7 @@ class OpenDocumentFragment : Fragment() {
             if (openDocument != null) {
                 val newDocument = Document(openDocument!!.id, newName, openDocument!!.path, openDocument!!.pageCount)
                 viewModel.updateDocument(newDocument)
-                openDocument = newDocument
-                showDocument()
+                updateName(newName)
                 editNameDialog.dismiss()
             }
         }
@@ -146,6 +146,10 @@ class OpenDocumentFragment : Fragment() {
         }
 
         editNameDialog.show()
+    }
+
+    private fun updateName(newName: String) {
+        binding?.tvDocumentName?.text = newName
     }
 
     private fun setUpRecyclerView() {
