@@ -173,6 +173,7 @@ class ImageProcessingFragment : Fragment() {
                     updateDocumentDirectory(it)
                 }
             }
+            Log.d("TAGYOYO", "ISPRESENT $isPresent")
             if (!isPresent)
                 addNewDocument()
         })

@@ -26,22 +26,22 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:hint="New name"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:textColorHint="@color/blue_500">
+            android:layout_height="60dp"
+            app:hintTextColor="@color/blue_500"
+            style="@style/InputStyle">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etNewName"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textPersonName"
-                android:textSize="14sp"
-                android:textColor="@color/black_alpha_90"
+                android:hint="New name"
+                android:textColor="@color/black"
                 android:fontFamily="@font/sailec_regular"
-                android:maxLength="10"/>
+                android:textSize="14sp"
+                android:textColorHint="@color/blue_500" />
 
         </com.google.android.material.textfield.TextInputLayout>
+
 
     </LinearLayout>
 

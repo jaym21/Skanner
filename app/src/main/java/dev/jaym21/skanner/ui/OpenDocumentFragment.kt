@@ -133,7 +133,11 @@ class OpenDocumentFragment : Fragment() {
         btnAccept.setOnClickListener {
             val newName = nameEditText.text.toString()
             if (openDocument != null) {
-
+                val newDocument = Document(openDocument!!.id, newName, openDocument!!.path, openDocument!!.pageCount)
+                viewModel.updateDocument(newDocument)
+                openDocument = newDocument
+                showDocument()
+                editNameDialog.dismiss()
             }
         }
 
