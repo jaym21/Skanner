@@ -20,7 +20,6 @@ import dev.jaym21.skanner.R
 import dev.jaym21.skanner.adapters.ImagesRVAdapter
 import dev.jaym21.skanner.databinding.FragmentOpenDocumentBinding
 import dev.jaym21.skanner.models.Document
-import dev.jaym21.skanner.utils.FileUtils
 import java.io.File
 
 class OpenDocumentFragment : Fragment() {
@@ -28,7 +27,7 @@ class OpenDocumentFragment : Fragment() {
     private var binding: FragmentOpenDocumentBinding? = null
     private lateinit var navController: NavController
     private lateinit var viewModel: DocumentViewModel
-    private var openDocumentId: String? = null
+    private var openDocumentPath: String? = null
     private var openDocument: Document? = null
     private var documentPath: String? = null
     private var documentDirectory: File? = null
@@ -54,17 +53,38 @@ class OpenDocumentFragment : Fragment() {
         navController = Navigation.findNavController(view)
 
         //getting document id to open from argument
-        openDocumentId = arguments?.getString("openDocumentId")
-
+        openDocumentPath = arguments?.getString("openDocumentPath")
         viewModel.allDocuments.observe(viewLifecycleOwner, Observer { documents ->
             documents.forEach {
-                if (it.id.toString() == openDocumentId) {
-                    Log.d("TAGYOYO", "DOCUMENT FOUND")
+                if (it.path == openDocumentPath) {
                     setDocumentToBeOpened(it)
                 }
             }
         })
-        Log.d("TAGYOYO", "OPEN DOCUMENT $openDocument ")
+
+        binding?.ivClose?.setOnClickListener {
+            navController.popBackStack(R.id.allDocumentsFragment, false)
+        }
+
+        //handling back press
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                navController.popBackStack(R.id.allDocumentsFragment, false)
+            }
+        })
+    }
+
+    private fun setDocumentToBeOpened(document: Document) {
+        //setting document
+        openDocument = document
+        //getting the path of document
+        documentPath = document.path
+        //getting the file directory of document using path
+        documentDirectory = File(documentPath)
+        showDocument()
+    }
+
+    private fun showDocument() {
         if (openDocument != null) {
 
             //adding all the images in  directory to array for passing them to recycler view adapter
@@ -78,13 +98,10 @@ class OpenDocumentFragment : Fragment() {
 
             setUpRecyclerView()
 
-            binding?.ivClose?.setOnClickListener {
-                navController.popBackStack(R.id.allDocumentsFragment, false)
-            }
-
             binding?.ivEdit?.setOnClickListener {
 
             }
+
             binding?.fabAddMore?.setOnClickListener {
                 val bundle = bundleOf("documentDirectory" to openDocument?.path)
                 navController.navigate(R.id.action_openDocumentFragment_to_cameraFragment, bundle)
@@ -92,23 +109,6 @@ class OpenDocumentFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "No document found in memory", Toast.LENGTH_SHORT).show()
         }
-
-        //handling back press
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                navController.popBackStack(R.id.allDocumentsFragment, false)
-            }
-        })
-    }
-
-    private fun setDocumentToBeOpened(document: Document) {
-        Log.d("TAGYOYO", "DOCUMENT PASSED $document")
-        //setting document
-        openDocument = document
-        //getting the path of document
-        documentPath = document.path
-        //getting the file directory of document using path
-        documentDirectory = File(documentPath)
     }
 
     private fun setUpRecyclerView() {

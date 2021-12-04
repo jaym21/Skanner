@@ -2,7 +2,6 @@ package dev.jaym21.skanner.ui
 
 import android.graphics.*
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,7 +19,6 @@ import dev.jaym21.skanner.databinding.FragmentImageProcessingBinding
 import dev.jaym21.skanner.extensions.rotate
 import dev.jaym21.skanner.models.Document
 import dev.jaym21.skanner.utils.Constants
-import dev.jaym21.skanner.utils.FileUtils
 import id.zelory.compressor.saveBitmap
 import java.io.File
 
@@ -179,14 +177,15 @@ class ImageProcessingFragment : Fragment() {
     private fun updateDocumentDirectory(document: Document) {
         val updatedDocument = Document(document.id, document.name, document.path, document.pageCount + 1)
         viewModel.updateDocument(updatedDocument)
-        val bundle = bundleOf("openDocumentPath" to updatedDocument.path.toString())
+        val bundle = bundleOf("openDocumentPath" to updatedDocument.path)
         navController.navigate(R.id.action_imageProcessingFragment_to_openDocumentFragment, bundle)
     }
 
     private fun addNewDocument() {
-        val newDocument = Document(0, documentDirectory!!, documentDirectory!!, 1)
+        val documentName = documentDirectory?.substring(61)
+        val newDocument = Document(0, documentName!!, documentDirectory!!, 1)
         viewModel.addDocument(newDocument)
-        val bundle = bundleOf("openDocumentPath" to newDocument.path.toString())
+        val bundle = bundleOf("openDocumentPath" to newDocument.path)
         navController.navigate(R.id.action_imageProcessingFragment_to_openDocumentFragment, bundle)
     }
 

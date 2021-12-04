@@ -10,27 +10,50 @@
         android:id="@+id/llTopHeading"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp">
+        android:gravity="center">
 
-        <TextView
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Your"
-            android:textSize="25sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/sailec_bold"/>
+            android:layout_weight="3"
+            android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Documents"
-            android:textSize="25sp"
-            android:textColor="@color/black"
-            android:fontFamily="@font/sailec_bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sailec_bold"
+                android:text="Your"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/sailec_bold"
+                android:text="Documents"
+                android:textColor="@color/black"
+                android:textSize="25sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/ivCamera"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/button_camera_bg"
+            android:elevation="8dp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:src="@drawable/ic_camera"
+            app:tint="@color/white"/>
+
 
     </LinearLayout>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDocuments"
@@ -38,20 +61,20 @@
         android:layout_height="0dp"
         android:layout_below="@id/llTopHeading"
         android:layout_alignParentBottom="true"
-        tools:listitem="@layout/rv_documents_item_layout"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp"
+        tools:listitem="@layout/rv_documents_item_layout" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabCamera"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/ic_camera"
-        app:backgroundTint="@color/blue_500"
-        android:elevation="8dp"
-        app:tint="@color/white" />
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/fabCamera"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:layout_alignParentBottom="true"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:layout_marginBottom="16dp"-->
+<!--        android:src="@drawable/ic_camera"-->
+<!--        app:backgroundTint="@color/blue_500"-->
+<!--        android:elevation="8dp"-->
+<!--        app:tint="@color/white" />-->
 
 </RelativeLayout>

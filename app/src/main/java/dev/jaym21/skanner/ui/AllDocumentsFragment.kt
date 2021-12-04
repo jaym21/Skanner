@@ -45,7 +45,6 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         super.onViewCreated(view, savedInstanceState)
 
         //TODO: Add reorder feature
-        //TODO: Fix directory or file delete on back
         //TODO: Implement delete dialog
 
         //initializing navController
@@ -60,10 +59,9 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
             documentsAdapter.submitList(it)
         })
 
-        binding?.fabCamera?.setOnClickListener {
+        binding?.ivCamera?.setOnClickListener {
             //making new directory to add new images taken
             val newDocumentPath = FileUtils.mkdir(requireActivity(), "Skanner_${SimpleDateFormat(Constants.FILENAME, Locale.US).format(System.currentTimeMillis())}")
-            Log.d("TAGYOYO", "NEW DOCUMENT DIRECTORY $newDocumentPath")
             val bundle = bundleOf("documentDirectory" to newDocumentPath.absolutePath)
             navController.navigate(R.id.action_allDocumentsFragment_to_cameraFragment, bundle)
         }

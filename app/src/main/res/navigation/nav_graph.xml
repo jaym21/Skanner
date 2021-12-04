@@ -84,7 +84,7 @@
         tools:layout="@layout/fragment_open_document" >
 
         <argument
-            android:name="openDocumentId" />
+            android:name="openDocumentPath" />
 
         <action
             android:id="@+id/action_openDocumentFragment_to_cameraFragment"
