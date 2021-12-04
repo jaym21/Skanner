@@ -85,7 +85,11 @@ class OpenDocumentFragment : Fragment() {
     }
 
     private fun showDocument() {
+
         if (openDocument != null) {
+
+            //setting document name
+            binding?.tvDocumentName?.text = openDocument!!.name
 
             //adding all the images in  directory to array for passing them to recycler view adapter
             documentDirectory!!.listFiles()!!.forEach {

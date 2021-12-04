@@ -2,6 +2,7 @@ package dev.jaym21.skanner.ui
 
 import android.graphics.*
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -165,12 +166,16 @@ class ImageProcessingFragment : Fragment() {
             }
         }
         viewModel.allDocuments.observe(viewLifecycleOwner, Observer { documents ->
+            var isPresent = false
             documents.forEach {
-                if (it.name == documentDirectory) {
+                if (it.path == documentDirectory) {
+                    isPresent = true
                     updateDocumentDirectory(it)
                 }
             }
-            addNewDocument()
+            Log.d("TAGYOYO", "ISPRESENT $isPresent")
+            if (!isPresent)
+                addNewDocument()
         })
     }
 
