@@ -205,7 +205,7 @@ class CameraFragment : Fragment(){
         requireActivity().runOnUiThread {
             val bundle = bundleOf("documentDirectory" to documentDirectory, "originalImageFilePath" to photoFile.absolutePath)
             navController.navigate(
-                dev.jaym21.skanner.R.id.action_cameraFragment_to_imageCropFragment,
+                R.id.action_cameraFragment_to_imageCropFragment,
                 bundle
             )
         }

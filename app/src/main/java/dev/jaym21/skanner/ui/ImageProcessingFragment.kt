@@ -86,13 +86,11 @@ class ImageProcessingFragment : Fragment() {
         binding?.ivClose?.setOnClickListener {
             val documentDirectoryFile = File(documentDirectory)
             val directoryAllFiles = documentDirectoryFile.listFiles()
+            croppedImageFile!!.delete()
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.size == 1){
                 documentDirectoryFile.delete()
                 Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
-            } else {
-                FileUtils.deleteFile(requireActivity(), croppedImageFilePath!!)
-                Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $croppedImageFilePath")
             }
             navController.popBackStack(R.id.allDocumentsFragment, false)
         }
@@ -104,17 +102,7 @@ class ImageProcessingFragment : Fragment() {
         //handling back press
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val documentDirectoryFile = File(documentDirectory)
-                val directoryAllFiles = documentDirectoryFile.listFiles()
-                //deleting the directory whole if empty meaning new directory document is created
-                if (directoryAllFiles.size == 1){
-                    documentDirectoryFile.delete()
-                    Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
-                } else {
-                    FileUtils.deleteFile(requireActivity(), croppedImageFilePath!!)
-                    Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $croppedImageFilePath")
-                }
-                navController.popBackStack(R.id.allDocumentsFragment, false)
+
             }
         })
     }
@@ -131,16 +119,14 @@ class ImageProcessingFragment : Fragment() {
                 .show()
             val documentDirectoryFile = File(documentDirectory)
             val directoryAllFiles = documentDirectoryFile.listFiles()
+            croppedImageFile!!.delete()
             //deleting the directory whole if empty meaning new directory document is created
             if (directoryAllFiles.size == 1){
                 documentDirectoryFile.delete()
                 Log.d("TAGYOYO", "INSIDE DELETE EMPTY DIR $documentDirectoryFile FILES: ${FileUtils.getOutputDirectory(requireActivity()).listFiles()}")
-            } else {
-                FileUtils.deleteFile(requireActivity(), croppedImageFilePath!!)
-                Log.d("TAGYOYO", "INSIDE DELETE FILE FOR $croppedImageFilePath")
             }
-            navController.popBackStack(R.id.allDocumentsFragment, false)
             binding?.progressBar?.visibility = View.GONE
+            navController.popBackStack(R.id.allDocumentsFragment, false)
         }
     }
 
