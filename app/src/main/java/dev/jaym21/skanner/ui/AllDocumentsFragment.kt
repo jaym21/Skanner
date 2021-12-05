@@ -93,7 +93,6 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     }
 
     private fun convertDocumentToPDFAndShare(document: Document) {
-        binding?.
         val documentDirectory = File(document.path)
         val images = arrayListOf<Bitmap>()
         documentDirectory.listFiles()!!.forEach {
@@ -113,7 +112,7 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
             val canvas = page?.canvas
             val paint = Paint()
             canvas?.drawPaint(paint)
-            paint.color = Color.BLUE
+            paint.color = Color.WHITE
             canvas?.drawBitmap(it, 0f, 0f, null)
             pdfDocument.finishPage(page)
             it.recycle()
