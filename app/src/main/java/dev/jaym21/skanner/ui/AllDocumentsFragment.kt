@@ -1,5 +1,10 @@
 package dev.jaym21.skanner.ui
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.pdf.PdfDocument
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -22,6 +27,7 @@ import dev.jaym21.skanner.models.Document
 import dev.jaym21.skanner.utils.Constants
 import dev.jaym21.skanner.utils.FileUtils
 import java.io.File
+import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -83,11 +89,36 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     }
 
     override fun onOptionSharePDFClicked(document: Document) {
-        convertDocumentToPDFAndShare()
+        convertDocumentToPDFAndShare(document)
     }
 
-    private fun convertDocumentToPDFAndShare() {
-        
+    private fun convertDocumentToPDFAndShare(document: Document) {
+        val documentDirectory = File(document.path)
+        val images = arrayListOf<Bitmap>()
+        documentDirectory.listFiles()!!.forEach {
+            if (it.toString().substring(88) == ".jpg") {
+                val bitmap = BitmapFactory.decodeFile(it.absolutePath)
+                images.add(bitmap)
+                bitmap.recycle()
+            }
+        }
+
+        val fOut = FileOutputStream(document.pdfPath)
+        val pdfDocument = PdfDocument()
+        var i = 0
+        images.forEach {
+            i++
+            val pageInfo = PdfDocument.PageInfo.Builder(it.width, it.height, i).create()
+            val page = pdfDocument.startPage(pageInfo)
+            val canvas = page?.canvas
+            val paint = Paint()
+            canvas?.drawPaint(paint)
+            paint.color = Color.BLUE
+            canvas?.drawBitmap(it, 0f, 0f, null)
+            pdfDocument.finishPage(page)
+        }
+        pdfDocument.writeTo(fOut)
+        pdfDocument.close()
     }
 
     private fun deleteAlertDialog(document: Document) {
