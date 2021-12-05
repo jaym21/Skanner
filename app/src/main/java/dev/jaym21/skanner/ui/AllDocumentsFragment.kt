@@ -93,13 +93,13 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     }
 
     private fun convertDocumentToPDFAndShare(document: Document) {
+        binding?.
         val documentDirectory = File(document.path)
         val images = arrayListOf<Bitmap>()
         documentDirectory.listFiles()!!.forEach {
-            if (it.toString().substring(88) == ".jpg") {
+            if (it.toString().substring(108) == ".jpg") {
                 val bitmap = BitmapFactory.decodeFile(it.absolutePath)
                 images.add(bitmap)
-                bitmap.recycle()
             }
         }
 
@@ -116,6 +116,7 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
             paint.color = Color.BLUE
             canvas?.drawBitmap(it, 0f, 0f, null)
             pdfDocument.finishPage(page)
+            it.recycle()
         }
         pdfDocument.writeTo(fOut)
         pdfDocument.close()

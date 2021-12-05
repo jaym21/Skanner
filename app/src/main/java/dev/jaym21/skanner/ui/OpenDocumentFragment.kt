@@ -98,7 +98,7 @@ class OpenDocumentFragment : Fragment() {
             //adding all the images in  directory to array for passing them to recycler view adapter
             allImages.clear()
             documentDirectory!!.listFiles()!!.forEach {
-                if (it.toString().substring(88) == ".jpg") {
+                if (it.toString().substring(108) == ".jpg") {
                     val bitmap = BitmapFactory.decodeFile(it.absolutePath)
                     allImages.add(bitmap)
                 }

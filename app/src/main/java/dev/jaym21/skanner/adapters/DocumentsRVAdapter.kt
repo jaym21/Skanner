@@ -1,7 +1,6 @@
 package dev.jaym21.skanner.adapters
 
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
