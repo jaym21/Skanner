@@ -83,6 +83,14 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         deleteAlertDialog(document)
     }
 
+    override fun onOptionSharePDFClicked(document: Document) {
+        convertDocumentToPDFAndShare()
+    }
+
+    private fun convertDocumentToPDFAndShare() {
+        
+    }
+
     private fun deleteAlertDialog(document: Document) {
         val alertBuilder = AlertDialog.Builder(requireContext())
         val dialogLayout = layoutInflater.inflate(R.layout.delete_dialog_layout, null)

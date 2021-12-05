@@ -3,4 +3,8 @@
     <item
         android:id="@+id/option_delete"
         android:title="Delete" />
+
+    <item
+        android:id="@+id/option_share_pdf"
+        android:title="Share PDF" />
 </menu>

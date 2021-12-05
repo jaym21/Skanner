@@ -10,5 +10,6 @@ data class Document(
     val id: Int,
     val name: String,
     val path: String,
+    val pdfPath: String,
     val pageCount: Int
 ): Serializable

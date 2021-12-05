@@ -65,6 +65,10 @@ class DocumentsRVAdapter(private val listener: IDocumentAdapter): ListAdapter<Do
                         listener.onOptionDeleteClicked(currentItem)
                         return@OnMenuItemClickListener true
                     }
+                    R.id.option_share_pdf -> {
+                        listener.onOptionSharePDFClicked(currentItem)
+                        return@OnMenuItemClickListener true
+                    }
                     else ->
                         return@OnMenuItemClickListener false
                 }
@@ -78,4 +82,5 @@ class DocumentsRVAdapter(private val listener: IDocumentAdapter): ListAdapter<Do
 interface IDocumentAdapter{
     fun onDocumentClicked(document: Document)
     fun onOptionDeleteClicked(document: Document)
+    fun onOptionSharePDFClicked(document: Document)
 }
