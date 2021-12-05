@@ -1,18 +1,22 @@
 package dev.jaym21.skanner.ui
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.pdf.PdfDocument
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -20,11 +24,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import dev.jaym21.skanner.BuildConfig
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.adapters.ImagesRVAdapter
 import dev.jaym21.skanner.databinding.FragmentOpenDocumentBinding
 import dev.jaym21.skanner.models.Document
 import java.io.File
+import java.io.FileOutputStream
 
 class OpenDocumentFragment : Fragment() {
 
@@ -113,6 +119,31 @@ class OpenDocumentFragment : Fragment() {
                 editAlertDialog()
             }
 
+            binding?.ivMoreOptions?.setOnClickListener {
+                //creating a popup menu to show more menu options
+                val popup = PopupMenu(requireContext(), binding?.ivMoreOptions)
+                //inflating popup menu with layout
+                popup.inflate(R.menu.documents_option_menu)
+
+                //adding menu item click listener
+                popup.setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener { item ->
+                    when(item.itemId) {
+                        R.id.option_delete -> {
+                            deleteAlertDialog(openDocument!!)
+                            return@OnMenuItemClickListener true
+                        }
+                        R.id.option_share_pdf -> {
+                            convertDocumentToPDFAndShare(openDocument!!)
+                            return@OnMenuItemClickListener true
+                        }
+                        else ->
+                            return@OnMenuItemClickListener false
+                    }
+                })
+                //displaying the popup menu
+                popup.show()
+            }
+
             binding?.fabAddMore?.setOnClickListener {
                 val bundle = bundleOf("documentDirectory" to openDocument?.path)
                 navController.navigate(R.id.action_openDocumentFragment_to_cameraFragment, bundle)
@@ -148,6 +179,79 @@ class OpenDocumentFragment : Fragment() {
         }
 
         editNameDialog.show()
+    }
+
+    private fun deleteAlertDialog(document: Document) {
+        val alertBuilder = AlertDialog.Builder(requireContext())
+        val dialogLayout = layoutInflater.inflate(R.layout.delete_dialog_layout, null)
+        val confirmText: TextView = dialogLayout.findViewById(R.id.tvConfirmText)
+        val btnReject: ImageView = dialogLayout.findViewById(R.id.ivRejectDelete)
+        val btnAccept: ImageView = dialogLayout.findViewById(R.id.ivAcceptDelete)
+
+        //adding document name in confirm text
+        confirmText.text = "Are you sure you want to delete ${document.name}?"
+
+        alertBuilder.setView(dialogLayout)
+        val deleteDialog = alertBuilder.create()
+        deleteDialog.setCanceledOnTouchOutside(false)
+
+        btnAccept.setOnClickListener {
+            //removing document from database
+            viewModel.removeDocument(document)
+            //deleting document directory from main directory
+            val documentFile = File(document.path)
+            documentFile.delete()
+            deleteDialog.dismiss()
+            navController.popBackStack(R.id.allDocumentsFragment, false)
+        }
+        btnReject.setOnClickListener {
+            deleteDialog.dismiss()
+        }
+        deleteDialog.show()
+    }
+
+    private fun convertDocumentToPDFAndShare(document: Document) {
+        val documentDirectory = File(document.path)
+        val images = arrayListOf<Bitmap>()
+        documentDirectory.listFiles()!!.forEach {
+            if (it.toString().substring(108) == ".jpg") {
+                val bitmap = BitmapFactory.decodeFile(it.absolutePath)
+                images.add(bitmap)
+            }
+        }
+
+        val fOut = FileOutputStream(document.pdfPath)
+        val pdfDocument = PdfDocument()
+        var i = 0
+        images.forEach {
+            i++
+            val pageInfo = PdfDocument.PageInfo.Builder(it.width, it.height, i).create()
+            val page = pdfDocument.startPage(pageInfo)
+            val canvas = page?.canvas
+            val paint = Paint()
+            canvas?.drawPaint(paint)
+            paint.color = Color.WHITE
+            canvas?.drawBitmap(it, 0f, 0f, null)
+            pdfDocument.finishPage(page)
+            it.recycle()
+        }
+        pdfDocument.writeTo(fOut)
+        pdfDocument.close()
+
+        val sharePdfIntent =  Intent(Intent.ACTION_SEND)
+        sharePdfIntent.putExtra(Intent.EXTRA_STREAM, getUriFromFile(document.pdfPath))
+        sharePdfIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        sharePdfIntent.type = "application/pdf"
+        startActivity(Intent.createChooser(sharePdfIntent, "Share document pdf"))
+    }
+
+    private fun getUriFromFile(pdfFilePath: String): Uri {
+        val pdfFile = File(pdfFilePath)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID + ".provider", pdfFile)
+        } else {
+            return Uri.fromFile(pdfFile)
+        }
     }
 
     private fun updateName(newName: String) {
