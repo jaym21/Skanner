@@ -32,12 +32,36 @@
         app:layout_constraintStart_toEndOf="@id/ivClose"
         app:layout_constraintTop_toTopOf="@id/ivClose"
         app:layout_constraintBottom_toBottomOf="@id/ivClose"
-        app:layout_constraintEnd_toStartOf="@id/ivEdit"
+        app:layout_constraintEnd_toStartOf="@id/ivMoreOptions"
         android:layout_marginTop="10dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:lines="2"
         android:gravity="center"/>
+
+    <ImageView
+        android:id="@+id/ivMoreOptions"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_more"
+        app:tint="@color/blue_500"
+        android:background="@drawable/button_light_bg"
+        android:elevation="8dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvImages"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/tvDocumentName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="20dp" />
 
     <ImageView
         android:id="@+id/ivEdit"
@@ -49,18 +73,10 @@
         android:elevation="8dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvImages"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/tvDocumentName"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:layout_marginTop="20dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="20dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddMore"
