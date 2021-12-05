@@ -45,7 +45,6 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         super.onViewCreated(view, savedInstanceState)
 
         //TODO: Add reorder feature
-        //TODO: Implement delete dialog
 
         //initializing navController
         navController = Navigation.findNavController(view)

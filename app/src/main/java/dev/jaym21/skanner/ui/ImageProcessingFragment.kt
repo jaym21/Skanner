@@ -187,9 +187,9 @@ class ImageProcessingFragment : Fragment() {
     }
 
     private fun addNewDocument() {
-        val pdfFile = File(documentDirectory)
         val documentName = documentDirectory?.substring(61)
-        val newDocument = Document(0, documentName!!, documentDirectory!!, 1)
+        val pdfFile = File(documentDirectory, "$documentName${Constants.PDF_EXTENSION}")
+        val newDocument = Document(0, documentName!!, documentDirectory!!, pdfFile.absolutePath,1)
         viewModel.addDocument(newDocument)
         val bundle = bundleOf("openDocumentPath" to newDocument.path)
         navController.navigate(R.id.action_imageProcessingFragment_to_openDocumentFragment, bundle)

@@ -134,7 +134,7 @@ class OpenDocumentFragment : Fragment() {
         btnAccept.setOnClickListener {
             val newName = nameEditText.text.toString()
             if (openDocument != null) {
-                val newDocument = Document(openDocument!!.id, newName, openDocument!!.path, openDocument!!.pageCount)
+                val newDocument = Document(openDocument!!.id, newName, openDocument!!.path, openDocument!!.pdfPath, openDocument!!.pageCount)
                 viewModel.updateDocument(newDocument)
                 updateName(newName)
                 editNameDialog.dismiss()
