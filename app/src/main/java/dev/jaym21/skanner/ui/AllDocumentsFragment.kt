@@ -1,10 +1,13 @@
 package dev.jaym21.skanner.ui
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -14,11 +17,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import dev.jaym21.skanner.BuildConfig
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.adapters.DocumentsRVAdapter
 import dev.jaym21.skanner.adapters.IDocumentAdapter
@@ -124,6 +129,12 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         }
         pdfDocument.writeTo(fOut)
         pdfDocument.close()
+
+        val sharePdfIntent =  Intent(Intent.ACTION_SEND)
+        sharePdfIntent.putExtra(Intent.EXTRA_STREAM, getUriFromFile(document.pdfPath))
+        sharePdfIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        sharePdfIntent.type = "application/pdf"
+        startActivity(Intent.createChooser(sharePdfIntent, "Share document pdf"))
     }
 
     private fun deleteAlertDialog(document: Document) {
@@ -153,6 +164,15 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         }
 
         deleteDialog.show()
+    }
+
+    private fun getUriFromFile(pdfFilePath: String): Uri {
+        val pdfFile = File(pdfFilePath)
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID + ".provider", pdfFile)
+        } else {
+            Uri.fromFile(pdfFile)
+        }
     }
 
     override fun onDestroy() {
