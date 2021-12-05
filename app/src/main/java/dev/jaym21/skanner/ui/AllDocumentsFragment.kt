@@ -171,7 +171,7 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID + ".provider", pdfFile)
         } else {
-            Uri.fromFile(pdfFile)
+        return Uri.fromFile(pdfFile)
         }
     }
 
