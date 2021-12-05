@@ -6,5 +6,5 @@
 
     <item
         android:id="@+id/option_share_pdf"
-        android:title="Share PDF" />
+        android:title="Share as PDF" />
 </menu>
