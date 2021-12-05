@@ -4,6 +4,7 @@ class Constants {
     companion object {
         const val FILENAME = "dd_MM_yyyy_HH_mm_ss"
         const val PHOTO_EXTENSION = ".jpg"
+        const val PDF_EXTENSION = ".pdf"
         const val CAMERA_REQUEST_CODE = 1001
         const val READ_EXTERNAL_STORAGE_REQUEST_CODE = 1002
         const val WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1003
