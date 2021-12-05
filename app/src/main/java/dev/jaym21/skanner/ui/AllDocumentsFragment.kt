@@ -60,8 +60,13 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
 
         setUpRecyclerView()
 
-        viewModel.allDocuments.observe(viewLifecycleOwner, {
-            documentsAdapter.submitList(it)
+        viewModel.allDocuments.observe(viewLifecycleOwner, { documents ->
+            documentsAdapter.submitList(documents)
+            //checking if the recyclerview is empty
+            if (documents.isNotEmpty())
+                binding?.tvNoDocumentAdded?.visibility = View.GONE
+            else
+                binding?.tvNoDocumentAdded?.visibility = View.VISIBLE
         })
 
         binding?.ivCamera?.setOnClickListener {
