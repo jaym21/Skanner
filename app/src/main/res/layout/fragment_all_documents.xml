@@ -63,6 +63,18 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="16dp"
         tools:listitem="@layout/rv_documents_item_layout" />
+    
+    <TextView
+        android:id="@+id/tvNoDocumentAdded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No documents added"
+        android:textSize="15sp"
+        android:textColor="@color/black_alpha_70"
+        android:fontFamily="@font/sailec_regular"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
 
     <ProgressBar
         android:id="@+id/progressBar"
