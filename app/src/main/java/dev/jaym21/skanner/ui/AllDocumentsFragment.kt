@@ -112,23 +112,28 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
             }
         }
 
-        val fOut = FileOutputStream(document.pdfPath)
-        val pdfDocument = PdfDocument()
-        var i = 0
-        images.forEach {
-            i++
-            val pageInfo = PdfDocument.PageInfo.Builder(it.width, it.height, i).create()
-            val page = pdfDocument.startPage(pageInfo)
-            val canvas = page?.canvas
-            val paint = Paint()
-            canvas?.drawPaint(paint)
-            paint.color = Color.WHITE
-            canvas?.drawBitmap(it, 0f, 0f, null)
-            pdfDocument.finishPage(page)
-            it.recycle()
+        val pdfFile = File(document.pdfPath)
+        if (pdfFile.exists()){
+            Log.d("TAGYOYO", "PDF EXISTS")
+        }else {
+            val fOut = FileOutputStream(document.pdfPath)
+            val pdfDocument = PdfDocument()
+            var i = 0
+            images.forEach {
+                i++
+                val pageInfo = PdfDocument.PageInfo.Builder(it.width, it.height, i).create()
+                val page = pdfDocument.startPage(pageInfo)
+                val canvas = page?.canvas
+                val paint = Paint()
+                canvas?.drawPaint(paint)
+                paint.color = Color.WHITE
+                canvas?.drawBitmap(it, 0f, 0f, null)
+                pdfDocument.finishPage(page)
+                it.recycle()
+            }
+            pdfDocument.writeTo(fOut)
+            pdfDocument.close()
         }
-        pdfDocument.writeTo(fOut)
-        pdfDocument.close()
 
         val sharePdfIntent =  Intent(Intent.ACTION_SEND)
         sharePdfIntent.putExtra(Intent.EXTRA_STREAM, getUriFromFile(document.pdfPath))
