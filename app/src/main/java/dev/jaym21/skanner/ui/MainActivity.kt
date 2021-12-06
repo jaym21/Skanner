@@ -35,59 +35,59 @@ class MainActivity : AppCompatActivity() {
             Log.d("TAGYOYO", "OpenCV loaded")
         }
 
-        navController = findNavController(R.id.nav_host_fragment)
-        val graphInflater = navController!!.navInflater
-        navGraph = graphInflater.inflate(R.navigation.nav_graph)
+//        navController = findNavController(R.id.nav_host_fragment)
+//        val graphInflater = navController!!.navInflater
+//        navGraph = graphInflater.inflate(R.navigation.nav_graph)
 
 
-        updateOrRequestPermissions()
+//        updateOrRequestPermissions()
     }
 
-    private fun updateOrRequestPermissions() {
-        val isReadPermissionAvailable = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-        val isWritePermissionAvailable = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
-        val minSDK29 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-
-        readPermissionGranted = isReadPermissionAvailable
-        writePermissionGranted = isWritePermissionAvailable || minSDK29
-
-
-        if (!writePermissionGranted) {
-            ActivityCompat.requestPermissions(this,  arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
-        }
-
-        if (!readPermissionGranted) {
-            ActivityCompat.requestPermissions(this,  arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE)
-        }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when(requestCode) {
-            Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> {
-                if (grantResults.isEmpty() || grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                    navGraph!!.startDestination = R.id.permissionNotGrantedFragment
-                    navController!!.graph = navGraph as NavGraph
-                }else {
-                    navGraph!!.startDestination = R.id.allDocumentsFragment
-                    navController!!.graph = navGraph as NavGraph
-                }
-            }
-            Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
-                if (grantResults.isEmpty() || grantResults[0] == PackageManager.PERMISSION_DENIED) {
-                    navGraph!!.startDestination = R.id.permissionNotGrantedFragment
-                    navController!!.graph = navGraph as NavGraph
-                }else {
-                    navGraph!!.startDestination = R.id.allDocumentsFragment
-                    navController!!.graph = navGraph as NavGraph
-                }
-            }
-        }
-    }
+//    private fun updateOrRequestPermissions() {
+//        val isReadPermissionAvailable = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+//        val isWritePermissionAvailable = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+//        val minSDK29 = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+//
+//        readPermissionGranted = isReadPermissionAvailable
+//        writePermissionGranted = isWritePermissionAvailable || minSDK29
+//
+//
+//        if (!writePermissionGranted) {
+//            ActivityCompat.requestPermissions(this,  arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
+//        }
+//
+//        if (!readPermissionGranted) {
+//            ActivityCompat.requestPermissions(this,  arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE)
+//        }
+//    }
+//
+//    override fun onRequestPermissionsResult(
+//        requestCode: Int,
+//        permissions: Array<out String>,
+//        grantResults: IntArray
+//    ) {
+//        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//        when(requestCode) {
+//            Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE -> {
+//                if (grantResults.isEmpty() || grantResults[0] == PackageManager.PERMISSION_DENIED) {
+//                    navGraph!!.startDestination = R.id.permissionNotGrantedFragment
+//                    navController!!.graph = navGraph as NavGraph
+//                }else {
+//                    navGraph!!.startDestination = R.id.allDocumentsFragment
+//                    navController!!.graph = navGraph as NavGraph
+//                }
+//            }
+//            Constants.READ_EXTERNAL_STORAGE_REQUEST_CODE -> {
+//                if (grantResults.isEmpty() || grantResults[0] == PackageManager.PERMISSION_DENIED) {
+//                    navGraph!!.startDestination = R.id.permissionNotGrantedFragment
+//                    navController!!.graph = navGraph as NavGraph
+//                }else {
+//                    navGraph!!.startDestination = R.id.allDocumentsFragment
+//                    navController!!.graph = navGraph as NavGraph
+//                }
+//            }
+//        }
+//    }
 
     override fun onDestroy() {
         super.onDestroy()

@@ -14,7 +14,6 @@ import dev.jaym21.skanner.utils.Constants
 
 class SplashActivity: AppCompatActivity() {
 
-    private var isStoragePermissionGranted = false
     private var readPermissionGranted = false
     private var writePermissionGranted = false
 
@@ -22,14 +21,6 @@ class SplashActivity: AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         updateOrRequestPermissions()
-//
-//        if(isStoragePermissionGranted) {
-//
-//        } else {
-//            val intent = Intent(this, PermissionNotGrantedActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//        }
     }
 
     private fun updateOrRequestPermissions() {
@@ -40,12 +31,6 @@ class SplashActivity: AppCompatActivity() {
         readPermissionGranted = isReadPermissionAvailable
         writePermissionGranted = isWritePermissionAvailable || minSDK29
 
-
-//        if (readPermissionGranted && writePermissionGranted) {
-//            val intent = Intent(this, MainActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//        }
 
         if (!writePermissionGranted) {
             ActivityCompat.requestPermissions(this,  arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), Constants.WRITE_EXTERNAL_STORAGE_REQUEST_CODE)
