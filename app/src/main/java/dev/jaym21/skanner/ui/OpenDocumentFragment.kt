@@ -220,7 +220,6 @@ class OpenDocumentFragment : Fragment() {
             }
         }
 
-
         val pdfFile = File(document.pdfPath)
         if (pdfFile.exists()){
             Log.d("TAGYOYO", "PDF EXISTS")
