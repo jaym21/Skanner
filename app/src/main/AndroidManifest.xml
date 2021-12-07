@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Skanner">
         <activity
+            android:name=".utils.ImageViewerActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.PermissionNotGrantedActivity"
             android:exported="false" />
         <activity

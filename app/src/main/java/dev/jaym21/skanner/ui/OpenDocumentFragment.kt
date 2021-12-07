@@ -16,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityOptionsCompat
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -26,13 +27,15 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import dev.jaym21.skanner.BuildConfig
 import dev.jaym21.skanner.R
+import dev.jaym21.skanner.adapters.IImagesRVAdapter
 import dev.jaym21.skanner.adapters.ImagesRVAdapter
 import dev.jaym21.skanner.databinding.FragmentOpenDocumentBinding
 import dev.jaym21.skanner.models.Document
+import dev.jaym21.skanner.utils.ImageViewerActivity
 import java.io.File
 import java.io.FileOutputStream
 
-class OpenDocumentFragment : Fragment() {
+class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
 
     private var binding: FragmentOpenDocumentBinding? = null
     private lateinit var navController: NavController
@@ -111,7 +114,7 @@ class OpenDocumentFragment : Fragment() {
             }
 
             //initializing adapter
-            imagesAdapter = ImagesRVAdapter(allImages.toList())
+            imagesAdapter = ImagesRVAdapter(allImages.toList(), this)
 
             setUpRecyclerView()
 
@@ -273,5 +276,12 @@ class OpenDocumentFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         binding = null
+    }
+
+    override fun onImageClick(bitmap: Bitmap) {
+        val intent = Intent(requireContext(), ImageViewerActivity::class.java)
+        intent.putExtra("bitmap", bitmap)
+        val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), binding?.clOpenDocumentRoot!!, "image")
+        startActivity(intent, options.toBundle())
     }
 }

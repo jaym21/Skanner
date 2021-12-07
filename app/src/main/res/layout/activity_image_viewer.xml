@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".utils.ImageViewerActivity"
+    android:background="@color/black"
+    android:id="@+id/layout">
+
+    <ImageView
+        android:id="@+id/ivExitImageViewer"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_back_arrow"
+        app:tint="@color/blue_500"
+        android:background="@drawable/button_dark_bg"
+        android:elevation="8dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:transitionName="image" />
+
+</RelativeLayout>

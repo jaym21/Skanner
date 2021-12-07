@@ -5,23 +5,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import dev.jaym21.skanner.R
-import dev.jaym21.skanner.utils.ImagesDiffUtil
 
 
-class ImagesRVAdapter(private var images: List<Bitmap>): RecyclerView.Adapter<ImagesRVAdapter.ImagesViewHolder>() {
+class ImagesRVAdapter(private var images: List<Bitmap>, private val listener: IImagesRVAdapter): RecyclerView.Adapter<ImagesRVAdapter.ImagesViewHolder>() {
 
     inner class ImagesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.ivDocumentImage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
-        return ImagesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.rv_image_item_layout, parent, false))
+        val viewHolder =  ImagesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.rv_image_item_layout, parent, false))
+        viewHolder.image.setOnClickListener {
+            listener.onImageClick(images[viewHolder.adapterPosition])
+        }
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: ImagesViewHolder, position: Int) {
@@ -29,18 +31,11 @@ class ImagesRVAdapter(private var images: List<Bitmap>): RecyclerView.Adapter<Im
         Glide.with(holder.itemView.context).load(currentItem).transform(CenterCrop(), RoundedCorners(16)).into(holder.image)
     }
 
-    fun updateList(newList: List<Bitmap>) {
-        val diffUtilCallback = ImagesDiffUtil(images, newList)
-        //calculates the list of update operations that can covert old list into new list
-        val diffResult = DiffUtil.calculateDiff(diffUtilCallback)
-        //adding the new updated list
-        images = newList
-        //updating the adapter
-        diffResult.dispatchUpdatesTo(this)
-    }
-
     override fun getItemCount(): Int {
         return images.size
     }
+}
 
+interface IImagesRVAdapter {
+    fun onImageClick(bitmap: Bitmap)
 }
