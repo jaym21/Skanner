@@ -38,6 +38,7 @@ class CameraFragment : Fragment(){
     private var cameraProvider: ProcessCameraProvider? = null
     private var documentDirectory: String? = null
     private var photoFile: File? = null
+    private var isFlashOn = false
     private lateinit var navController: NavController
     private val TAG = "CameraFragment"
 
@@ -96,6 +97,36 @@ class CameraFragment : Fragment(){
 
         binding?.ivTakePicture?.setOnClickListener {
             takePicture()
+        }
+
+        binding?.ivFlashlight?.setOnClickListener {
+            if (camera?.cameraInfo!!.hasFlashUnit()) {
+                if (isFlashOn) {
+                    //changing the flash icon to off
+                    binding?.ivFlashlight?.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_flash_off
+                        )
+                    )
+                    //turning off flash
+                    camera?.cameraControl?.enableTorch(false)
+                    isFlashOn = false
+                } else {
+                    //changing the flash icon to on
+                    binding?.ivFlashlight?.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.ic_flash_on
+                        )
+                    )
+                    //turning off flash
+                    camera?.cameraControl?.enableTorch(true)
+                    isFlashOn = true
+                }
+            }else {
+                Toast.makeText(requireContext(), "Flash not available from device", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

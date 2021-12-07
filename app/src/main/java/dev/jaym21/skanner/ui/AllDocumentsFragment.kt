@@ -55,6 +55,7 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //TODO: Add flash option
         //TODO: Add reorder feature
 
         //initializing navController

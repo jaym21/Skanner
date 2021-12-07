@@ -21,6 +21,18 @@
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"/>
 
+    <ImageView
+        android:id="@+id/ivFlashlight"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:src="@drawable/ic_flash_on"
+        android:backgroundTint="@color/blue_500"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp" />
+
+
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
@@ -35,7 +47,6 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp" />
-
 
     <ProgressBar
         android:id="@+id/progressBar"
