@@ -155,6 +155,10 @@ class ImageProcessingFragment : Fragment() {
         }
     }
 
+    private fun applyBW() {
+
+    }
+
     private fun addImageToDirectoryUpdateDatabase() {
         if (exportTemp) {
             tempBitmap?.let {
