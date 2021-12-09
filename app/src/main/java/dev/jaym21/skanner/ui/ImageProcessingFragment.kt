@@ -87,6 +87,10 @@ class ImageProcessingFragment : Fragment() {
             applyGrayScale()
         }
 
+        binding?.llBW?.setOnClickListener {
+            applyBW()
+        }
+
         binding?.ivClose?.setOnClickListener {
             val documentDirectoryFile = File(documentDirectory)
             val directoryAllFiles = documentDirectoryFile.listFiles()
