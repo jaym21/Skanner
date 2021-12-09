@@ -54,12 +54,39 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/llBW"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_toEndOf="@id/llGrayScale"
+            android:gravity="center"
+            android:layout_marginStart="40dp">
+
+            <ImageView
+                android:id="@+id/ivBWIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_black_and_white"
+                app:tint="@color/white_alpha_60" />
+
+            <TextView
+                android:id="@+id/tvBW"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="B/W"
+                android:textSize="12sp"
+                android:textColor="@color/white_alpha_60"
+                android:fontFamily="@font/sailec_regular"/>
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/llRotate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:layout_toEndOf="@id/llGrayScale"
+            android:layout_toEndOf="@id/llBW"
             android:layout_marginStart="40dp">
 
             <ImageView

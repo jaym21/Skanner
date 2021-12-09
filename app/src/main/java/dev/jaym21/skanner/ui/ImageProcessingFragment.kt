@@ -152,11 +152,38 @@ class ImageProcessingFragment : Fragment() {
                 exportTemp = false
             }
             isGrayScaleApplied = !isGrayScaleApplied
+        } else {
+            Toast.makeText(requireContext(), "No image found, try again!", Toast.LENGTH_SHORT)
+                .show()
+            val documentDirectoryFile = File(documentDirectory)
+            val directoryAllFiles = documentDirectoryFile.listFiles()
+            croppedImageFile!!.delete()
+            //deleting the directory whole if empty meaning new directory document is created
+            if (directoryAllFiles.size == 1){
+                documentDirectoryFile.delete()
+            }
+            binding?.progressBar?.visibility = View.GONE
+            navController.popBackStack(R.id.allDocumentsFragment, false)
         }
     }
 
     private fun applyBW() {
+        binding?.progressBar?.visibility = View.VISIBLE
+        if (tempBitmap != null) {
 
+        } else {
+            Toast.makeText(requireContext(), "No image found, try again!", Toast.LENGTH_SHORT)
+                .show()
+            val documentDirectoryFile = File(documentDirectory)
+            val directoryAllFiles = documentDirectoryFile.listFiles()
+            croppedImageFile!!.delete()
+            //deleting the directory whole if empty meaning new directory document is created
+            if (directoryAllFiles.size == 1){
+                documentDirectoryFile.delete()
+            }
+            binding?.progressBar?.visibility = View.GONE
+            navController.popBackStack(R.id.allDocumentsFragment, false)
+        }
     }
 
     private fun addImageToDirectoryUpdateDatabase() {
