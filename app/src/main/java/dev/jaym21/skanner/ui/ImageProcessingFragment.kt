@@ -18,9 +18,13 @@ import androidx.navigation.Navigation
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentImageProcessingBinding
 import dev.jaym21.skanner.extensions.rotate
+import dev.jaym21.skanner.extensions.toBitmap
+import dev.jaym21.skanner.extensions.toMat
 import dev.jaym21.skanner.models.Document
 import dev.jaym21.skanner.utils.Constants
 import id.zelory.compressor.saveBitmap
+import org.opencv.core.Mat
+import org.opencv.imgproc.Imgproc
 import java.io.File
 
 
@@ -35,6 +39,7 @@ class ImageProcessingFragment : Fragment() {
     private var tempBitmap: Bitmap? = null
     private var documentDirectory: String? = null
     private var isGrayScaleApplied: Boolean = false
+    private var isBWApplied: Boolean = false
     private var exportTemp = false
 
     override fun onCreateView(
@@ -133,6 +138,7 @@ class ImageProcessingFragment : Fragment() {
             if (!isGrayScaleApplied) {
                 binding?.ivGrayscaleIcon?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue_500))
                 binding?.tvGrayScale?.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue_500))
+
                 val bitmapMonochrome = Bitmap.createBitmap(tempBitmap!!.width, tempBitmap!!.height, Bitmap.Config.ARGB_8888)
                 val canvas = Canvas(bitmapMonochrome)
                 val colorMatrix = ColorMatrix()
@@ -141,6 +147,7 @@ class ImageProcessingFragment : Fragment() {
                 paint.colorFilter = ColorMatrixColorFilter(colorMatrix)
                 canvas.drawBitmap(tempBitmap!!, 0f, 0f, paint)
                 tempBitmap = bitmapMonochrome.copy(bitmapMonochrome.config, true)
+
                 binding?.ivCroppedImage?.setImageBitmap(tempBitmap)
                 binding?.progressBar?.visibility = View.GONE
                 exportTemp = true
@@ -152,6 +159,7 @@ class ImageProcessingFragment : Fragment() {
                 exportTemp = false
             }
             isGrayScaleApplied = !isGrayScaleApplied
+            isBWApplied = !isGrayScaleApplied
         } else {
             Toast.makeText(requireContext(), "No image found, try again!", Toast.LENGTH_SHORT)
                 .show()
@@ -170,7 +178,40 @@ class ImageProcessingFragment : Fragment() {
     private fun applyBW() {
         binding?.progressBar?.visibility = View.VISIBLE
         if (tempBitmap != null) {
+            if (!isBWApplied) {
+                binding?.ivBWIcon?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue_500))
+                binding?.tvBW?.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue_500))
 
+                val bitmapMonochrome = Bitmap.createBitmap(
+                    tempBitmap!!.width,
+                    tempBitmap!!.height,
+                    Bitmap.Config.ARGB_8888
+                )
+                val canvas = Canvas(bitmapMonochrome)
+                val colorMatrix = ColorMatrix()
+                colorMatrix.setSaturation(0f)
+                val paint = Paint()
+                paint.colorFilter = ColorMatrixColorFilter(colorMatrix)
+                canvas.drawBitmap(tempBitmap!!, 0f, 0f, paint)
+
+                val srcMat = bitmapMonochrome.toMat()
+                val desMat = Mat()
+                Imgproc.threshold(srcMat, desMat, 127.5, 255.0, Imgproc.THRESH_BINARY)
+                tempBitmap = desMat.toBitmap()
+                tempBitmap = bitmapMonochrome.copy(bitmapMonochrome.config, true)
+
+                binding?.ivCroppedImage?.setImageBitmap(tempBitmap)
+                binding?.progressBar?.visibility = View.GONE
+                exportTemp = true
+            }else {
+                binding?.ivBWIcon?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white_alpha_60))
+                binding?.tvBW?.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha_60))
+                binding?.ivCroppedImage?.setImageBitmap(croppedImageBitmap)
+                binding?.progressBar?.visibility = View.GONE
+                exportTemp = false
+            }
+            isBWApplied = !isBWApplied
+            isGrayScaleApplied = !isBWApplied
         } else {
             Toast.makeText(requireContext(), "No image found, try again!", Toast.LENGTH_SHORT)
                 .show()
