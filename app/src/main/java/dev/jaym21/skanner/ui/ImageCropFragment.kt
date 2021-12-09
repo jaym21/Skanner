@@ -3,6 +3,7 @@ package dev.jaym21.skanner.ui
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.PointF
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -96,7 +97,7 @@ class ImageCropFragment : Fragment() {
         if (selectedImage != null  && selectedImage!!.width > 0 && selectedImage!!.height > 0) {
             val scaledBitmap = selectedImage!!.scaledBitmap(binding?.flImageCropHolder!!.width, binding?.flImageCropHolder!!.height)
             binding?.ivTakenImage?.setImageBitmap(scaledBitmap)
-            val tempBitmap = scaledBitmap
+            val tempBitmap = (binding?.ivTakenImage?.drawable as BitmapDrawable).bitmap
             val pointFs = getEdgePoints(tempBitmap)
             binding?.polygonView?.setPoints(pointFs)
             binding?.polygonView?.visibility = View.VISIBLE
