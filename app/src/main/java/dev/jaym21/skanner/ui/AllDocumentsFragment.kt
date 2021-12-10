@@ -23,7 +23,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import dev.jaym21.skanner.BuildConfig
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.adapters.DocumentsRVAdapter
 import dev.jaym21.skanner.adapters.IDocumentAdapter
@@ -175,7 +174,7 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     private fun getUriFromFile(pdfFilePath: String): Uri {
         val pdfFile = File(pdfFilePath)
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            FileProvider.getUriForFile(requireContext(), BuildConfig.APPLICATION_ID + ".provider", pdfFile)
+            FileProvider.getUriForFile(requireContext(), "dev.jaym21.skanner" + ".provider", pdfFile)
         } else {
         return Uri.fromFile(pdfFile)
         }
