@@ -20,6 +20,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -103,7 +104,8 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
 
     override fun onOptionSharePDFClicked(document: Document) {
         binding?.progressBar?.visibility = View.VISIBLE
-        GlobalScope.launch(IO) {
+        //using lifecycleScope to launch coroutine, so that coroutine gets cancelled with destruction of this fragment
+        lifecycleScope.launch(IO) {
             convertDocumentToPDFAndShare(document)
         }
 
