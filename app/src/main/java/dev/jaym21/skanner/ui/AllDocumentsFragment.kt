@@ -113,7 +113,7 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         val documentDirectory = File(document.path)
         val images = arrayListOf<Bitmap>()
 
-
+        //using withContext for coroutine to block coroutine thread and not execute the sharePdfIntent code before the pdf is completed created
         withContext(IO){
             documentDirectory.listFiles()!!.forEach {
                 if (it.toString().substring(108) == ".jpg") {
