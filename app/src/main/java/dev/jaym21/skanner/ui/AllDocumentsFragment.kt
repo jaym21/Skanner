@@ -30,6 +30,8 @@ import dev.jaym21.skanner.databinding.FragmentAllDocumentsBinding
 import dev.jaym21.skanner.models.Document
 import dev.jaym21.skanner.utils.Constants
 import dev.jaym21.skanner.utils.FileUtils
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -56,6 +58,7 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
 
         //TODO: Add flash option
         //TODO: Add reorder feature
+        //TODO: Do reading and writing files using coroutine
 
         //initializing navController
         navController = Navigation.findNavController(view)
@@ -99,42 +102,47 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     }
 
     override fun onOptionSharePDFClicked(document: Document) {
-        convertDocumentToPDFAndShare(document)
+        binding?.progressBar?.visibility = View.VISIBLE
+        GlobalScope.launch(IO) {
+            convertDocumentToPDFAndShare(document)
+        }
+
     }
 
-    private fun convertDocumentToPDFAndShare(document: Document) {
+    private suspend fun convertDocumentToPDFAndShare(document: Document) {
         val documentDirectory = File(document.path)
         val images = arrayListOf<Bitmap>()
-        documentDirectory.listFiles()!!.forEach {
-            if (it.toString().substring(108) == ".jpg") {
-                val bitmap = BitmapFactory.decodeFile(it.absolutePath)
-                images.add(bitmap)
+
+
+        withContext(IO){
+            documentDirectory.listFiles()!!.forEach {
+                if (it.toString().substring(108) == ".jpg") {
+                    val bitmap = BitmapFactory.decodeFile(it.absolutePath)
+                    images.add(bitmap)
+                }
+            }
+
+            val pdfFile = File(document.pdfPath)
+            if (!pdfFile.exists()){
+                val fOut = FileOutputStream(document.pdfPath)
+                val pdfDocument = PdfDocument()
+                var i = 0
+                images.forEach {
+                    i++
+                    val pageInfo = PdfDocument.PageInfo.Builder(it.width, it.height, i).create()
+                    val page = pdfDocument.startPage(pageInfo)
+                    val canvas = page?.canvas
+                    val paint = Paint()
+                    canvas?.drawPaint(paint)
+                    paint.color = Color.WHITE
+                    canvas?.drawBitmap(it, 0f, 0f, null)
+                    pdfDocument.finishPage(page)
+                    it.recycle()
+                }
+                pdfDocument.writeTo(fOut)
+                pdfDocument.close()
             }
         }
-
-        val pdfFile = File(document.pdfPath)
-        if (pdfFile.exists()){
-            Log.d("TAGYOYO", "PDF EXISTS")
-        }else {
-            val fOut = FileOutputStream(document.pdfPath)
-            val pdfDocument = PdfDocument()
-            var i = 0
-            images.forEach {
-                i++
-                val pageInfo = PdfDocument.PageInfo.Builder(it.width, it.height, i).create()
-                val page = pdfDocument.startPage(pageInfo)
-                val canvas = page?.canvas
-                val paint = Paint()
-                canvas?.drawPaint(paint)
-                paint.color = Color.WHITE
-                canvas?.drawBitmap(it, 0f, 0f, null)
-                pdfDocument.finishPage(page)
-                it.recycle()
-            }
-            pdfDocument.writeTo(fOut)
-            pdfDocument.close()
-        }
-
         val sharePdfIntent =  Intent(Intent.ACTION_SEND)
         sharePdfIntent.putExtra(Intent.EXTRA_STREAM, getUriFromFile(document.pdfPath))
         sharePdfIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
