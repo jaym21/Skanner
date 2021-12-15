@@ -140,6 +140,9 @@ class ImageProcessingFragment : Fragment() {
         binding?.progressBar?.visibility = View.VISIBLE
         if (tempBitmap != null) {
             if (!isGrayScaleApplied) {
+                isBWApplied = true
+                applyBW()
+
                 binding?.ivGrayscaleIcon?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue_500))
                 binding?.tvGrayScale?.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue_500))
 
@@ -163,7 +166,6 @@ class ImageProcessingFragment : Fragment() {
                 exportTemp = false
             }
             isGrayScaleApplied = !isGrayScaleApplied
-            isBWApplied = !isGrayScaleApplied
         } else {
             Toast.makeText(requireContext(), "No image found, try again!", Toast.LENGTH_SHORT)
                 .show()
@@ -183,6 +185,8 @@ class ImageProcessingFragment : Fragment() {
         binding?.progressBar?.visibility = View.VISIBLE
         if (tempBitmap != null) {
             if (!isBWApplied) {
+                isGrayScaleApplied = true
+                applyGrayScale()
                 binding?.ivBWIcon?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue_500))
                 binding?.tvBW?.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue_500))
 
@@ -215,7 +219,6 @@ class ImageProcessingFragment : Fragment() {
                 exportTemp = false
             }
             isBWApplied = !isBWApplied
-            isGrayScaleApplied = !isBWApplied
         } else {
             Toast.makeText(requireContext(), "No image found, try again!", Toast.LENGTH_SHORT)
                 .show()
