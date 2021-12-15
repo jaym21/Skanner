@@ -281,6 +281,11 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
                 pdfDocument.close()
             }
         }
+
+        withContext(Dispatchers.Main) {
+            binding?.progressBar?.visibility = View.GONE
+        }
+
         val sharePdfIntent =  Intent(Intent.ACTION_SEND)
         sharePdfIntent.putExtra(Intent.EXTRA_STREAM, getUriFromFile(document.pdfPath))
         sharePdfIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION

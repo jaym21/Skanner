@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.MainThread
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.core.os.bundleOf
@@ -33,6 +34,7 @@ import dev.jaym21.skanner.utils.Constants
 import dev.jaym21.skanner.utils.FileUtils
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -144,6 +146,11 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
                 pdfDocument.close()
             }
         }
+
+        withContext(Main) {
+            binding?.progressBar?.visibility = View.GONE
+        }
+
         val sharePdfIntent =  Intent(Intent.ACTION_SEND)
         sharePdfIntent.putExtra(Intent.EXTRA_STREAM, getUriFromFile(document.pdfPath))
         sharePdfIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
