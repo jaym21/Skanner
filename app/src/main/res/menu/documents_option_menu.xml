@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/option_delete"
-        android:title="Delete" />
+        android:title="Delete document" />
 
     <item
         android:id="@+id/option_share_pdf"
