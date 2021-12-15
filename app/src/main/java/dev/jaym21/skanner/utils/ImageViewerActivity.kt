@@ -27,7 +27,7 @@ class ImageViewerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_viewer)
 
-        val imageUrl = intent.getStringExtra("bitmap")
+        val imageUrl = intent.getStringExtra("clickedImage")
         val imageBitmap = BitmapFactory.decodeFile(imageUrl)
 
         imageView = findViewById(R.id.imageView)
