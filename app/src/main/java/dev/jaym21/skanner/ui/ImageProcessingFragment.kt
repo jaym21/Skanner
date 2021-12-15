@@ -22,6 +22,10 @@ import dev.jaym21.skanner.extensions.toMat
 import dev.jaym21.skanner.models.Document
 import dev.jaym21.skanner.utils.Constants
 import id.zelory.compressor.saveBitmap
+import org.opencv.android.Utils
+import org.opencv.core.CvType
+import org.opencv.core.Mat
+import org.opencv.imgproc.Imgproc
 import java.io.File
 
 
@@ -188,21 +192,26 @@ class ImageProcessingFragment : Fragment() {
                 binding?.ivBWIcon?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.blue_500))
                 binding?.tvBW?.setTextColor(ContextCompat.getColor(requireContext(), R.color.blue_500))
 
-                val bitmapMonochrome = Bitmap.createBitmap(
+                val bitmapBW = Bitmap.createBitmap(
                     tempBitmap!!.width,
                     tempBitmap!!.height,
                     Bitmap.Config.ARGB_8888
                 )
-                val canvas = Canvas(bitmapMonochrome)
+                val canvas = Canvas(bitmapBW)
                 val paint = Paint()
                 canvas.drawBitmap(tempBitmap!!, 0f, 0f, paint)
 
-                val srcMat = bitmapMonochrome.toMat()
-                val desMat = srcMat.clone()
-                desMat.convertTo(desMat, -1, 1.9, -80.0)
-                tempBitmap = desMat.toBitmap()
+                val tmp = Mat(bitmapBW.width, bitmapBW.height, CvType.CV_8UC1)
+                Utils.bitmapToMat(bitmapBW, tmp)
 
-                tempBitmap = bitmapMonochrome.copy(bitmapMonochrome.config, true)
+                val gray = Mat(bitmapBW.width, bitmapBW.height, CvType.CV_8UC1)
+                Imgproc.cvtColor(tmp, gray, Imgproc.COLOR_BGR2GRAY)
+
+                val destMat = Mat(gray.width(), gray.height(), gray.type())
+                Imgproc.adaptiveThreshold(gray, destMat, 255.0,
+                    Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 15, 4.0)
+
+                tempBitmap = destMat.toBitmap()
 
                 binding?.ivCroppedImage?.setImageBitmap(tempBitmap)
                 binding?.progressBar?.visibility = View.GONE

@@ -22,6 +22,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -31,6 +32,9 @@ import dev.jaym21.skanner.adapters.ImagesRVAdapter
 import dev.jaym21.skanner.databinding.FragmentOpenDocumentBinding
 import dev.jaym21.skanner.models.Document
 import dev.jaym21.skanner.utils.ImageViewerActivity
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 
@@ -137,7 +141,10 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
                             return@OnMenuItemClickListener true
                         }
                         R.id.option_share_pdf -> {
-                            convertDocumentToPDFAndShare(openDocument!!)
+                            binding?.progressBar?.visibility = View.VISIBLE
+                            lifecycleScope.launch(Dispatchers.IO) {
+                                convertDocumentToPDFAndShare(openDocument!!)
+                            }
                             return@OnMenuItemClickListener true
                         }
                         else ->
@@ -241,39 +248,39 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
         deleteDialog.show()
     }
 
-    private fun convertDocumentToPDFAndShare(document: Document) {
+    private suspend fun convertDocumentToPDFAndShare(document: Document) {
         val documentDirectory = File(document.path)
         val images = arrayListOf<Bitmap>()
-        documentDirectory.listFiles()!!.forEach {
-            if (it.toString().substring(108) == ".jpg") {
-                val bitmap = BitmapFactory.decodeFile(it.absolutePath)
-                images.add(bitmap)
+
+        withContext(Dispatchers.IO) {
+            documentDirectory.listFiles()!!.forEach {
+                if (it.toString().substring(108) == ".jpg") {
+                    val bitmap = BitmapFactory.decodeFile(it.absolutePath)
+                    images.add(bitmap)
+                }
+            }
+
+            val pdfFile = File(document.pdfPath)
+            if (!pdfFile.exists())  {
+                val fOut = FileOutputStream(document.pdfPath)
+                val pdfDocument = PdfDocument()
+                var i = 0
+                images.forEach {
+                    i++
+                    val pageInfo = PdfDocument.PageInfo.Builder(it.width, it.height, i).create()
+                    val page = pdfDocument.startPage(pageInfo)
+                    val canvas = page?.canvas
+                    val paint = Paint()
+                    canvas?.drawPaint(paint)
+                    paint.color = Color.WHITE
+                    canvas?.drawBitmap(it, 0f, 0f, null)
+                    pdfDocument.finishPage(page)
+                    it.recycle()
+                }
+                pdfDocument.writeTo(fOut)
+                pdfDocument.close()
             }
         }
-
-        val pdfFile = File(document.pdfPath)
-        if (pdfFile.exists()){
-            Log.d("TAGYOYO", "PDF EXISTS")
-        }else {
-            val fOut = FileOutputStream(document.pdfPath)
-            val pdfDocument = PdfDocument()
-            var i = 0
-            images.forEach {
-                i++
-                val pageInfo = PdfDocument.PageInfo.Builder(it.width, it.height, i).create()
-                val page = pdfDocument.startPage(pageInfo)
-                val canvas = page?.canvas
-                val paint = Paint()
-                canvas?.drawPaint(paint)
-                paint.color = Color.WHITE
-                canvas?.drawBitmap(it, 0f, 0f, null)
-                pdfDocument.finishPage(page)
-                it.recycle()
-            }
-            pdfDocument.writeTo(fOut)
-            pdfDocument.close()
-        }
-
         val sharePdfIntent =  Intent(Intent.ACTION_SEND)
         sharePdfIntent.putExtra(Intent.EXTRA_STREAM, getUriFromFile(document.pdfPath))
         sharePdfIntent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION

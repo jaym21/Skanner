@@ -93,4 +93,13 @@
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"/>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="@color/blue_500"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
