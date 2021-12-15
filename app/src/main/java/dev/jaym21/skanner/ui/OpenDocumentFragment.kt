@@ -214,6 +214,33 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
         deleteDialog.show()
     }
 
+    private fun deleteImageDialog(position: Int) {
+        val alertBuilder = AlertDialog.Builder(requireContext())
+        val dialogLayout = layoutInflater.inflate(R.layout.delete_dialog_layout, null)
+        val confirmText: TextView = dialogLayout.findViewById(R.id.tvConfirmText)
+        val btnReject: ImageView = dialogLayout.findViewById(R.id.ivRejectDelete)
+        val btnAccept: ImageView = dialogLayout.findViewById(R.id.ivAcceptDelete)
+
+        //adding document name in confirm text
+        confirmText.text = "Are you sure you want to delete the image?"
+
+        alertBuilder.setView(dialogLayout)
+        val deleteDialog = alertBuilder.create()
+        deleteDialog.setCanceledOnTouchOutside(false)
+
+        btnAccept.setOnClickListener {
+            //deleting image from document directory
+            val imageFile = File(allImagesPath[position])
+            imageFile.delete()
+            showDocument()
+            deleteDialog.dismiss()
+        }
+        btnReject.setOnClickListener {
+            deleteDialog.dismiss()
+        }
+        deleteDialog.show()
+    }
+
     private fun convertDocumentToPDFAndShare(document: Document) {
         val documentDirectory = File(document.path)
         val images = arrayListOf<Bitmap>()
@@ -277,6 +304,10 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
     override fun onDestroy() {
         super.onDestroy()
         binding = null
+    }
+
+    override fun onDeleteClick(position: Int) {
+        deleteImageDialog(position)
     }
 
     override fun onImageClick(position: Int) {
