@@ -2,7 +2,6 @@ package dev.jaym21.skanner.ui
 
 import android.graphics.*
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,10 +22,7 @@ import dev.jaym21.skanner.extensions.toMat
 import dev.jaym21.skanner.models.Document
 import dev.jaym21.skanner.utils.Constants
 import id.zelory.compressor.saveBitmap
-import org.opencv.core.Mat
-import org.opencv.imgproc.Imgproc
 import java.io.File
-import kotlin.math.log
 
 
 class ImageProcessingFragment : Fragment() {
