@@ -16,12 +16,16 @@ class ImagesRVAdapter(private var images: List<Bitmap>, private val listener: II
 
     inner class ImagesViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val image: ImageView = itemView.findViewById(R.id.ivDocumentImage)
+        val delete: ImageView = itemView.findViewById(R.id.ivDeleteImage)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
         val viewHolder =  ImagesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.rv_image_item_layout, parent, false))
         viewHolder.image.setOnClickListener {
             listener.onImageClick(viewHolder.adapterPosition)
+        }
+        viewHolder.delete.setOnClickListener {
+            listener.onDeleteClick(viewHolder.adapterPosition)
         }
         return viewHolder
     }
@@ -38,4 +42,5 @@ class ImagesRVAdapter(private var images: List<Bitmap>, private val listener: II
 
 interface IImagesRVAdapter {
     fun onImageClick(position: Int)
+    fun onDeleteClick(position: Int)
 }
