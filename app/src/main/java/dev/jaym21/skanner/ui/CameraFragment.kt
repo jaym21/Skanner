@@ -18,15 +18,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import com.google.android.material.snackbar.Snackbar
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentCameraBinding
 import dev.jaym21.skanner.utils.Constants
-import dev.jaym21.skanner.utils.FileUtils
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class CameraFragment : Fragment(){

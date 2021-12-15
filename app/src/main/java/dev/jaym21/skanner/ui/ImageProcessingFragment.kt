@@ -26,6 +26,7 @@ import id.zelory.compressor.saveBitmap
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 import java.io.File
+import kotlin.math.log
 
 
 class ImageProcessingFragment : Fragment() {
@@ -162,6 +163,7 @@ class ImageProcessingFragment : Fragment() {
                 binding?.ivGrayscaleIcon?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white_alpha_60))
                 binding?.tvGrayScale?.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha_60))
                 binding?.ivCroppedImage?.setImageBitmap(croppedImageBitmap)
+                tempBitmap = croppedImageBitmap
                 binding?.progressBar?.visibility = View.GONE
                 exportTemp = false
             }
@@ -196,16 +198,14 @@ class ImageProcessingFragment : Fragment() {
                     Bitmap.Config.ARGB_8888
                 )
                 val canvas = Canvas(bitmapMonochrome)
-                val colorMatrix = ColorMatrix()
-                colorMatrix.setSaturation(0f)
                 val paint = Paint()
-                paint.colorFilter = ColorMatrixColorFilter(colorMatrix)
                 canvas.drawBitmap(tempBitmap!!, 0f, 0f, paint)
 
                 val srcMat = bitmapMonochrome.toMat()
-                val desMat = Mat()
-                Imgproc.threshold(srcMat, desMat, 127.5, 255.0, Imgproc.THRESH_BINARY)
+                val desMat = srcMat.clone()
+                desMat.convertTo(desMat, -1, 1.9, -80.0)
                 tempBitmap = desMat.toBitmap()
+
                 tempBitmap = bitmapMonochrome.copy(bitmapMonochrome.config, true)
 
                 binding?.ivCroppedImage?.setImageBitmap(tempBitmap)
@@ -215,6 +215,7 @@ class ImageProcessingFragment : Fragment() {
                 binding?.ivBWIcon?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.white_alpha_60))
                 binding?.tvBW?.setTextColor(ContextCompat.getColor(requireContext(), R.color.white_alpha_60))
                 binding?.ivCroppedImage?.setImageBitmap(croppedImageBitmap)
+                tempBitmap = croppedImageBitmap
                 binding?.progressBar?.visibility = View.GONE
                 exportTemp = false
             }

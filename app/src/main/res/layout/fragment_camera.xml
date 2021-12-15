@@ -26,11 +26,15 @@
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:src="@drawable/ic_flash_on"
-        android:backgroundTint="@color/blue_500"
+        app:tint="@color/blue_500"
+        android:background="@drawable/button_dark_bg"
+        android:elevation="8dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp" />
+        android:layout_marginEnd="16dp"/>
 
 
     <androidx.camera.view.PreviewView
