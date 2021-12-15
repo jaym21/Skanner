@@ -21,7 +21,7 @@ class ImagesRVAdapter(private var images: List<Bitmap>, private val listener: II
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImagesViewHolder {
         val viewHolder =  ImagesViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.rv_image_item_layout, parent, false))
         viewHolder.image.setOnClickListener {
-            listener.onImageClick(images[viewHolder.adapterPosition])
+            listener.onImageClick(viewHolder.adapterPosition)
         }
         return viewHolder
     }
@@ -37,5 +37,5 @@ class ImagesRVAdapter(private var images: List<Bitmap>, private val listener: II
 }
 
 interface IImagesRVAdapter {
-    fun onImageClick(bitmap: Bitmap)
+    fun onImageClick(position: Int)
 }

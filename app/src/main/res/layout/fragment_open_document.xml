@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.OpenDocumentFragment"
-    android:id="@+id/clOpenDocumentRoot">
+    android:id="@+id/clOpenDocumentRoot"
+    android:transitionName="image">
 
     <ImageView
         android:id="@+id/ivClose"

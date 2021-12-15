@@ -45,6 +45,7 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
     private var documentDirectory: File? = null
     private lateinit var imagesAdapter: ImagesRVAdapter
     private var allImages = arrayListOf<Bitmap>()
+    private var allImagesPath = arrayListOf<String>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -109,6 +110,7 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
                 if (it.toString().substring(108) == ".jpg") {
                     val bitmap = BitmapFactory.decodeFile(it.absolutePath)
                     allImages.add(bitmap)
+                    allImagesPath.add(it.absolutePath)
                 }
             }
 
@@ -277,9 +279,10 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
         binding = null
     }
 
-    override fun onImageClick(bitmap: Bitmap) {
+    override fun onImageClick(position: Int) {
+        val clickedImage = allImagesPath[position]
         val intent = Intent(requireContext(), ImageViewerActivity::class.java)
-        intent.putExtra("bitmap", bitmap)
+        intent.putExtra("clickedImage", clickedImage)
         val options = ActivityOptionsCompat.makeSceneTransitionAnimation(requireActivity(), binding?.clOpenDocumentRoot!!, "image")
         startActivity(intent, options.toBundle())
     }

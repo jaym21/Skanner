@@ -1,6 +1,7 @@
 package dev.jaym21.skanner.utils
 
 import android.annotation.SuppressLint
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
@@ -26,14 +27,15 @@ class ImageViewerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_viewer)
 
-        val imageUrl = intent.getStringExtra("url")
+        val imageUrl = intent.getStringExtra("bitmap")
+        val imageBitmap = BitmapFactory.decodeFile(imageUrl)
 
         imageView = findViewById(R.id.imageView)
         back = findViewById(R.id.ivExitImageViewer)
         view = findViewById(R.id.layout)
         view.background.alpha = 255
 
-        Glide.with(this).load(imageUrl).into(imageView)
+        Glide.with(this).load(imageBitmap).into(imageView)
 
         back.setOnClickListener {
             finish()
