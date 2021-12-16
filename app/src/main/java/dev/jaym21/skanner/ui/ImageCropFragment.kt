@@ -5,10 +5,9 @@ import android.graphics.BitmapFactory
 import android.graphics.PointF
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import androidx.fragment.app.Fragment
 import android.widget.FrameLayout
+import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.os.bundleOf
@@ -17,7 +16,6 @@ import androidx.navigation.Navigation
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentImageCropBinding
 import dev.jaym21.skanner.extensions.scaledBitmap
-import dev.jaym21.skanner.utils.FileUtils
 import dev.jaym21.skanner.utils.OpenCVUtils
 import id.zelory.compressor.determineImageRotation
 import id.zelory.compressor.saveBitmap

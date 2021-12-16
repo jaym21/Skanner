@@ -209,7 +209,7 @@ class ImageProcessingFragment : Fragment() {
 
                 val destMat = Mat(gray.width(), gray.height(), gray.type())
                 Imgproc.adaptiveThreshold(gray, destMat, 255.0,
-                    Imgproc.ADAPTIVE_THRESH_MEAN_C, Imgproc.THRESH_BINARY_INV, 15, 4.0)
+                    Imgproc.ADAPTIVE_THRESH_GAUSSIAN_C, Imgproc.THRESH_BINARY, 55, 15.0)
 
                 tempBitmap = destMat.toBitmap()
 
