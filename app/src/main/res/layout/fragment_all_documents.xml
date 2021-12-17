@@ -8,51 +8,54 @@
 
     <LinearLayout
         android:id="@+id/llTopHeading"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:gravity="center">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:orientation="vertical">
+            android:fontFamily="@font/sailec_bold"
+            android:text="Your"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sailec_bold"
-                android:text="Your"
-                android:textColor="@color/black"
-                android:textSize="25sp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sailec_bold"
+            android:text="Documents"
+            android:textColor="@color/black"
+            android:textSize="25sp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/sailec_bold"
-                android:text="Documents"
-                android:textColor="@color/black"
-                android:textSize="25sp" />
-
-        </LinearLayout>
+    </LinearLayout>
 
         <ImageView
             android:id="@+id/ivCamera"
             android:layout_width="55dp"
             android:layout_height="55dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/button_camera_bg"
             android:elevation="8dp"
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
             android:src="@drawable/ic_camera"
-            app:tint="@color/white"/>
+            app:tint="@color/white"
+            android:layout_alignParentEnd="true"/>
 
-
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:background="@drawable/button_camera_bg"
+            android:elevation="8dp"
+            android:layout_below="@id/ivCamera"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_alignParentEnd="true" />
 
 
     <androidx.recyclerview.widget.RecyclerView
