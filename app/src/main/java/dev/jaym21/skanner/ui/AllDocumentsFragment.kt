@@ -14,6 +14,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.MainThread
@@ -47,6 +49,19 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     private var documentsAdapter = DocumentsRVAdapter(this)
     private lateinit var viewModel: DocumentViewModel
     private var isClicked = false
+
+    private val rotateOpen: Animation by lazy {
+        AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_fab_open)
+    }
+    private val rotateClose: Animation by lazy {
+        AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_fab_close)
+    }
+    private val openExtraButtons: Animation by lazy {
+        AnimationUtils.loadAnimation(requireContext(), R.anim.open_extra_buttons)
+    }
+    private val closeExtraButtons: Animation by lazy {
+        AnimationUtils.loadAnimation(requireContext(), R.anim.close_extra_buttons)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -93,12 +108,22 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     }
 
     private fun onAddClicked() {
-        if (!isClicked) {
-            binding?.llCamera?.visibility =  View.VISIBLE
-            binding?.llTextExtract?.visibility = View.VISIBLE
-        } else {
+        if (isClicked) {
             binding?.llCamera?.visibility =  View.GONE
             binding?.llTextExtract?.visibility = View.GONE
+        } else {
+            binding?.llCamera?.visibility =  View.VISIBLE
+            binding?.llTextExtract?.visibility = View.VISIBLE
+        }
+
+        if (isClicked) {
+            binding?.ivAdd?.startAnimation(rotateClose)
+            binding?.llCamera?.startAnimation(closeExtraButtons)
+            binding?.llTextExtract?.startAnimation(closeExtraButtons)
+        } else {
+            binding?.ivAdd?.startAnimation(rotateOpen)
+            binding?.llCamera?.startAnimation(openExtraButtons)
+            binding?.llTextExtract?.startAnimation(openExtraButtons)
         }
     }
 
