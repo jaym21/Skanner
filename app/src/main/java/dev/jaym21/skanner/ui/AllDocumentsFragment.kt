@@ -107,6 +107,11 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         }
     }
 
+    override fun onPause() {
+        super.onPause()
+        isClicked = false
+    }
+
     private fun onAddClicked() {
         if (isClicked) {
             binding?.llCamera?.visibility =  View.GONE
@@ -125,6 +130,15 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
             binding?.llCamera?.startAnimation(openExtraButtons)
             binding?.llTextExtract?.startAnimation(openExtraButtons)
         }
+
+        if (isClicked) {
+            binding?.llCamera?.isClickable = true
+            binding?.llTextExtract?.isClickable = true
+        } else {
+            binding?.llCamera?.isClickable = false
+            binding?.llTextExtract?.isClickable = false
+        }
+        isClicked = !isClicked
     }
 
     private fun setUpRecyclerView() {
@@ -149,7 +163,6 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         lifecycleScope.launch(IO) {
             convertDocumentToPDFAndShare(document)
         }
-
     }
 
     private suspend fun convertDocumentToPDFAndShare(document: Document) {

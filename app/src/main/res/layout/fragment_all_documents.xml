@@ -52,6 +52,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:elevation="8dp"
+        android:layout_marginTop="5dp"
         android:layout_below="@id/ivAdd"
         android:layout_alignParentEnd="true"
         android:visibility="gone">
@@ -64,7 +65,10 @@
             android:fontFamily="@font/sailec_bold"
             android:textColor="@color/white"
             android:background="@drawable/floating_text_bg"
-            android:padding="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:layout_marginEnd="10dp"
             android:layout_gravity="center"/>
 
@@ -102,7 +106,10 @@
             android:fontFamily="@font/sailec_bold"
             android:textColor="@color/white"
             android:background="@drawable/floating_text_bg"
-            android:padding="5dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
             android:layout_marginEnd="10dp"
             android:layout_gravity="center"/>
 
