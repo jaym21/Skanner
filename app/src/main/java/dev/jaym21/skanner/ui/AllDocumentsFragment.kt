@@ -1,15 +1,13 @@
 package dev.jaym21.skanner.ui
 
+import android.R.attr
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.Paint
 import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -44,6 +42,11 @@ import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import android.R.attr.bitmap
+import android.graphics.*
+import android.widget.Toast
+import java.lang.Exception
+
 
 class AllDocumentsFragment : Fragment(), IDocumentAdapter {
 
@@ -121,7 +124,18 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE) {
             val data = data?.data
-
+            var bitmap: Bitmap? = null
+            try {
+                bitmap = if (Build.VERSION.SDK_INT < 28) {
+                    MediaStore.Images.Media.getBitmap(requireContext().contentResolver, data)
+                } else {
+                    val source: ImageDecoder.Source =
+                        ImageDecoder.createSource(requireContext().contentResolver, data!!)
+                    ImageDecoder.decodeBitmap(source)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
             //making new directory to add new images taken
             val newDocumentPath = FileUtils.mkdir(requireActivity(), "Skanner_${SimpleDateFormat(Constants.FILENAME, Locale.US).format(System.currentTimeMillis())}")
 
@@ -131,7 +145,13 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
                 Constants.FILENAME, Locale.US
             ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION)
 
-            navigateToCropImage(photoFile, newDocumentPath.absolutePath)
+            if (bitmap != null) {
+                FileUtils.writeBitmapToFile(photoFile, bitmap)
+                navigateToCropImage(photoFile, newDocumentPath.absolutePath)
+            } else {
+                Toast.makeText(requireContext(), "Could not get selected picture", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 
