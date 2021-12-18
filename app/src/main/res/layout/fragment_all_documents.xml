@@ -46,40 +46,80 @@
         app:tint="@color/white"
         android:layout_alignParentEnd="true"/>
 
-    <ImageView
-        android:id="@+id/ivCamera"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/button_camera_bg"
+    <LinearLayout
+        android:id="@+id/llCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:elevation="8dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:src="@drawable/ic_camera"
-        app:tint="@color/white"
         android:layout_below="@id/ivAdd"
-        android:layout_alignParentEnd="true"/>
+        android:layout_alignParentEnd="true">
 
-    <ImageView
-        android:id="@+id/iv"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        android:background="@drawable/button_camera_bg"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open Camera"
+            android:textSize="14sp"
+            android:fontFamily="@font/sailec_bold"
+            android:textColor="@color/white"
+            android:background="@drawable/floating_text_bg"
+            android:padding="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/ivCamera"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/button_camera_bg"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:src="@drawable/ic_camera"
+            app:tint="@color/white"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llTextExtract"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:elevation="8dp"
-        android:src="@drawable/ic_text_detection"
-        app:tint="@color/white"
-        android:clickable="true"
-        android:focusable="true"
-        android:layout_below="@id/ivCamera"
-        android:paddingTop="14dp"
-        android:paddingBottom="14dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_alignParentEnd="true" />
+        android:layout_below="@id/llCamera"
+        android:layout_alignParentEnd="true" >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Extract Text"
+            android:textSize="14sp"
+            android:fontFamily="@font/sailec_bold"
+            android:textColor="@color/white"
+            android:background="@drawable/floating_text_bg"
+            android:padding="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/ivTextExtract"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:background="@drawable/button_camera_bg"
+            android:elevation="8dp"
+            android:src="@drawable/ic_text_detection"
+            app:tint="@color/white"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"/>
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDocuments"
