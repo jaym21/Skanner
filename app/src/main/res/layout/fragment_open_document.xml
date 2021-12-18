@@ -80,18 +80,101 @@
         android:layout_marginStart="16dp"
         android:layout_marginBottom="20dp"/>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <ImageView
         android:id="@+id/fabAddMore"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_add"
-        app:backgroundTint="@color/blue_500"
-        app:tint="@color/white"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:background="@drawable/button_camera_bg"
         android:elevation="8dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:src="@drawable/ic_add"
+        app:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginBottom="16dp"
         android:layout_marginEnd="16dp"/>
+
+    <LinearLayout
+        android:id="@+id/llCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:elevation="8dp"
+        android:layout_marginBottom="5dp"
+
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open Camera"
+            android:textSize="14sp"
+            android:fontFamily="@font/sailec_bold"
+            android:textColor="@color/white"
+            android:background="@drawable/floating_text_bg"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/ivCamera"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/button_camera_bg"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:src="@drawable/ic_camera"
+            app:tint="@color/white"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llGallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:elevation="8dp"
+        android:layout_marginBottom="5dp"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open Gallery"
+            android:textSize="14sp"
+            android:fontFamily="@font/sailec_bold"
+            android:textColor="@color/white"
+            android:background="@drawable/floating_text_bg"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/ivGallery"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/button_camera_bg"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:src="@drawable/ic_gallery"
+            app:tint="@color/white"/>
+
+    </LinearLayout>
 
     <ProgressBar
         android:id="@+id/progressBar"
