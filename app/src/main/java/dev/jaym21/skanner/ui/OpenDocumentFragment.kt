@@ -1,14 +1,12 @@
 package dev.jaym21.skanner.ui
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Color
-import android.graphics.Paint
+import android.graphics.*
 import android.graphics.pdf.PdfDocument
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -33,12 +31,17 @@ import dev.jaym21.skanner.adapters.IImagesRVAdapter
 import dev.jaym21.skanner.adapters.ImagesRVAdapter
 import dev.jaym21.skanner.databinding.FragmentOpenDocumentBinding
 import dev.jaym21.skanner.models.Document
+import dev.jaym21.skanner.utils.Constants
+import dev.jaym21.skanner.utils.FileUtils
 import dev.jaym21.skanner.utils.ImageViewerActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
+import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 
 class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
 
@@ -53,6 +56,7 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
     private var allImages = arrayListOf<Bitmap>()
     private var allImagesPath = arrayListOf<String>()
     private var isClicked = false
+    private val PICK_IMAGE = 101
 
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_fab_open)
@@ -97,10 +101,6 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
 
         binding?.ivClose?.setOnClickListener {
             navController.popBackStack(R.id.allDocumentsFragment, false)
-        }
-
-        binding?.fabAddMore?.setOnClickListener {
-            onAddMoreClicked()
         }
 
         //handling back press
@@ -176,9 +176,20 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
             }
 
             binding?.fabAddMore?.setOnClickListener {
+                onAddMoreClicked()
+            }
+
+            binding?.ivCamera?.setOnClickListener {
                 val bundle = bundleOf("documentDirectory" to openDocument?.path)
                 navController.navigate(R.id.action_openDocumentFragment_to_cameraFragment, bundle)
             }
+
+            binding?.ivGallery?.setOnClickListener {
+                val galleryIntent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+                galleryIntent.type = "image/*"
+                startActivityForResult(galleryIntent, PICK_IMAGE)
+            }
+
         } else {
             Toast.makeText(requireContext(), "No document found in memory", Toast.LENGTH_SHORT).show()
         }
@@ -360,6 +371,46 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
             adapter = imagesAdapter
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE) {
+            val data = data?.data
+            var bitmap: Bitmap? = null
+            try {
+                bitmap = if (Build.VERSION.SDK_INT < 28) {
+                    MediaStore.Images.Media.getBitmap(requireContext().contentResolver, data)
+                } else {
+                    val source: ImageDecoder.Source =
+                        ImageDecoder.createSource(requireContext().contentResolver, data!!)
+                    ImageDecoder.decodeBitmap(source)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+
+            val photoFile =  File(
+                openDocument?.path,
+                SimpleDateFormat(
+                    Constants.FILENAME, Locale.US
+                ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION)
+
+            if (bitmap != null) {
+                FileUtils.writeBitmapToFile(photoFile, bitmap)
+                navigateToCropImage(photoFile)
+            } else {
+                Toast.makeText(requireContext(), "Could not get selected picture", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun navigateToCropImage(photoFile: File) {
+        val bundle = bundleOf("documentDirectory" to openDocument?.path, "originalImageFilePath" to photoFile.absolutePath)
+        navController.navigate(
+            R.id.action_openDocumentFragment_to_imageCropFragment,
+            bundle
+        )
     }
 
     override fun onDestroy() {
