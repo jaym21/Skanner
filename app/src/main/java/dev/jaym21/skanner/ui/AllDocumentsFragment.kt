@@ -131,18 +131,16 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
                 Constants.FILENAME, Locale.US
             ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION)
 
-            navigateToCropImage(photoFile)
+            navigateToCropImage(photoFile, newDocumentPath.absolutePath)
         }
     }
 
-    private fun navigateToCropImage(photoFile: File) {
-        requireActivity().runOnUiThread {
-            val bundle = bundleOf("documentDirectory" to documentDirectory, "originalImageFilePath" to photoFile.absolutePath)
-            navController.navigate(
-                R.id.action_cameraFragment_to_imageCropFragment,
-                bundle
-            )
-        }
+    private fun navigateToCropImage(photoFile: File, documentDirectory: String) {
+        val bundle = bundleOf("documentDirectory" to documentDirectory, "originalImageFilePath" to photoFile.absolutePath)
+        navController.navigate(
+            R.id.action_allDocumentsFragment_to_imageCropFragment,
+            bundle
+        )
     }
 
 
