@@ -100,6 +100,13 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
             onAddClicked()
         }
 
+        binding?.ivGallery?.setOnClickListener {
+            val galleryIntent = Intent()
+            galleryIntent.type = "image/*"
+            galleryIntent.action = Intent.ACTION_GET_CONTENT
+
+        }
+
         binding?.ivCamera?.setOnClickListener {
             //making new directory to add new images taken
             val newDocumentPath = FileUtils.mkdir(requireActivity(), "Skanner_${SimpleDateFormat(Constants.FILENAME, Locale.US).format(System.currentTimeMillis())}")
@@ -109,30 +116,38 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     }
 
 
+
+
     private fun onAddClicked() {
         if (isClicked) {
             binding?.llCamera?.visibility =  View.GONE
+            binding?.llGallery?.visibility = View.GONE
             binding?.llTextExtract?.visibility = View.GONE
         } else {
             binding?.llCamera?.visibility =  View.VISIBLE
+            binding?.llGallery?.visibility =  View.VISIBLE
             binding?.llTextExtract?.visibility = View.VISIBLE
         }
 
         if (isClicked) {
             binding?.ivAdd?.startAnimation(rotateClose)
             binding?.llCamera?.startAnimation(closeExtraButtons)
+            binding?.llGallery?.startAnimation(closeExtraButtons)
             binding?.llTextExtract?.startAnimation(closeExtraButtons)
         } else {
             binding?.ivAdd?.startAnimation(rotateOpen)
             binding?.llCamera?.startAnimation(openExtraButtons)
+            binding?.llGallery?.startAnimation(openExtraButtons)
             binding?.llTextExtract?.startAnimation(openExtraButtons)
         }
 
         if (isClicked) {
             binding?.llCamera?.isClickable = false
+            binding?.llGallery?.isClickable = false
             binding?.llTextExtract?.isClickable = false
         } else {
             binding?.llCamera?.isClickable = true
+            binding?.llGallery?.isClickable = true
             binding?.llTextExtract?.isClickable = true
         }
         isClicked = !isClicked
