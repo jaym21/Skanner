@@ -46,6 +46,7 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     private lateinit var navController: NavController
     private var documentsAdapter = DocumentsRVAdapter(this)
     private lateinit var viewModel: DocumentViewModel
+    private var isClicked = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -79,11 +80,25 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
                 binding?.tvNoDocumentAdded?.visibility = View.VISIBLE
         })
 
+        binding?.ivAdd?.setOnClickListener {
+            onAddClicked()
+        }
+
         binding?.ivCamera?.setOnClickListener {
             //making new directory to add new images taken
             val newDocumentPath = FileUtils.mkdir(requireActivity(), "Skanner_${SimpleDateFormat(Constants.FILENAME, Locale.US).format(System.currentTimeMillis())}")
             val bundle = bundleOf("documentDirectory" to newDocumentPath.absolutePath)
             navController.navigate(R.id.action_allDocumentsFragment_to_cameraFragment, bundle)
+        }
+    }
+
+    private fun onAddClicked() {
+        if (!isClicked) {
+            binding?.llCamera?.visibility =  View.VISIBLE
+            binding?.llTextExtract?.visibility = View.VISIBLE
+        } else {
+            binding?.llCamera?.visibility =  View.GONE
+            binding?.llTextExtract?.visibility = View.GONE
         }
     }
 
