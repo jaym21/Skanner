@@ -36,6 +36,7 @@
         android:id="@+id/ivAdd"
         android:layout_width="55dp"
         android:layout_height="55dp"
+        android:layout_alignParentEnd="true"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/button_camera_bg"
@@ -43,8 +44,7 @@
         android:paddingTop="14dp"
         android:paddingBottom="14dp"
         android:src="@drawable/ic_add"
-        app:tint="@color/white"
-        android:layout_alignParentEnd="true"/>
+        app:tint="@color/white" />
 
     <LinearLayout
         android:id="@+id/llCamera"
@@ -89,12 +89,54 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llGallery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:elevation="8dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/llCamera"
+        android:layout_alignParentEnd="true"
+        android:visibility="gone">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Open Gallery"
+            android:textSize="14sp"
+            android:fontFamily="@font/sailec_bold"
+            android:textColor="@color/white"
+            android:background="@drawable/floating_text_bg"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="center"/>
+
+        <ImageView
+            android:id="@+id/ivGallery"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/button_camera_bg"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:src="@drawable/ic_gallery"
+            app:tint="@color/white"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/llTextExtract"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:elevation="8dp"
-        android:layout_below="@id/llCamera"
+        android:layout_below="@id/llGallery"
         android:layout_alignParentEnd="true"
         android:visibility="gone">
 
