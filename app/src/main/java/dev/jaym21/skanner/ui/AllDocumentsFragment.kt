@@ -17,6 +17,7 @@ import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.MainThread
 import androidx.appcompat.app.AlertDialog
@@ -107,10 +108,6 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        isClicked = false
-    }
 
     private fun onAddClicked() {
         if (isClicked) {
@@ -132,11 +129,11 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         }
 
         if (isClicked) {
-            binding?.llCamera?.isClickable = true
-            binding?.llTextExtract?.isClickable = true
-        } else {
             binding?.llCamera?.isClickable = false
             binding?.llTextExtract?.isClickable = false
+        } else {
+            binding?.llCamera?.isClickable = true
+            binding?.llTextExtract?.isClickable = true
         }
         isClicked = !isClicked
     }
@@ -247,6 +244,12 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         } else {
         return Uri.fromFile(pdfFile)
         }
+    }
+
+
+    override fun onPause() {
+        super.onPause()
+        isClicked = false
     }
 
     override fun onDestroy() {
