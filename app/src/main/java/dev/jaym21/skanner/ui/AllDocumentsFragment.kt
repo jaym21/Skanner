@@ -151,7 +151,6 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
             } else {
                 Toast.makeText(requireContext(), "Could not get selected picture", Toast.LENGTH_SHORT).show()
             }
-
         }
     }
 
