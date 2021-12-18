@@ -13,6 +13,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import android.widget.*
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
@@ -50,6 +52,20 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
     private lateinit var imagesAdapter: ImagesRVAdapter
     private var allImages = arrayListOf<Bitmap>()
     private var allImagesPath = arrayListOf<String>()
+    private var isClicked = false
+
+    private val rotateOpen: Animation by lazy {
+        AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_fab_open)
+    }
+    private val rotateClose: Animation by lazy {
+        AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_fab_close)
+    }
+    private val openExtraButtons: Animation by lazy {
+        AnimationUtils.loadAnimation(requireContext(), R.anim.open_extra_buttons)
+    }
+    private val closeExtraButtons: Animation by lazy {
+        AnimationUtils.loadAnimation(requireContext(), R.anim.close_extra_buttons)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -81,6 +97,10 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
 
         binding?.ivClose?.setOnClickListener {
             navController.popBackStack(R.id.allDocumentsFragment, false)
+        }
+
+        binding?.fabAddMore?.setOnClickListener {
+            onAddMoreClicked()
         }
 
         //handling back press
@@ -162,6 +182,35 @@ class OpenDocumentFragment : Fragment(), IImagesRVAdapter {
         } else {
             Toast.makeText(requireContext(), "No document found in memory", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun onAddMoreClicked() {
+        if (isClicked) {
+            binding?.llCamera?.visibility =  View.GONE
+            binding?.llGallery?.visibility = View.GONE
+        } else {
+            binding?.llCamera?.visibility =  View.VISIBLE
+            binding?.llGallery?.visibility =  View.VISIBLE
+        }
+
+        if (isClicked) {
+            binding?.fabAddMore?.startAnimation(rotateClose)
+            binding?.llCamera?.startAnimation(closeExtraButtons)
+            binding?.llGallery?.startAnimation(closeExtraButtons)
+        } else {
+            binding?.fabAddMore?.startAnimation(rotateOpen)
+            binding?.llCamera?.startAnimation(openExtraButtons)
+            binding?.llGallery?.startAnimation(openExtraButtons)
+        }
+
+        if (isClicked) {
+            binding?.llCamera?.isClickable = false
+            binding?.llGallery?.isClickable = false
+        } else {
+            binding?.llCamera?.isClickable = true
+            binding?.llGallery?.isClickable = true
+        }
+        isClicked = !isClicked
     }
 
     private fun editAlertDialog() {
