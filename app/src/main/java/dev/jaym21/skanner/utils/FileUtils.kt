@@ -7,7 +7,7 @@ class FileUtils {
     companion object {
 
         // Using external media if it is available or else our app's file directory
-        fun getOutputDirectory(activity: Activity): File {
+        private fun getOutputDirectory(activity: Activity): File {
             val mediaDir = activity.externalMediaDirs.firstOrNull()?.let {
                 File(it, activity.resources.getString(R.string.app_name)).apply { mkdirs() }
             }

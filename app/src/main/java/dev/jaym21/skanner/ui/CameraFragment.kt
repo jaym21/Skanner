@@ -193,7 +193,6 @@ class CameraFragment : Fragment(){
                 ContextCompat.getMainExecutor(requireContext()),
                 object : ImageCapture.OnImageSavedCallback {
                     override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                        val savedUri = outputFileResults.savedUri
                         binding?.progressBar?.visibility = View.GONE
                         navigateToCropImage(photoFile!!)
                     }

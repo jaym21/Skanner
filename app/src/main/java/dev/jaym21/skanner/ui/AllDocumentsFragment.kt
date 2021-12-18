@@ -52,6 +52,7 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
     private var documentsAdapter = DocumentsRVAdapter(this)
     private lateinit var viewModel: DocumentViewModel
     private var isClicked = false
+    private val PICK_IMAGE = 100
 
     private val rotateOpen: Animation by lazy {
         AnimationUtils.loadAnimation(requireContext(), R.anim.rotate_fab_open)
@@ -103,10 +104,9 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         }
 
         binding?.ivGallery?.setOnClickListener {
-            val galleryIntent = Intent()
+            val galleryIntent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
             galleryIntent.type = "image/*"
-            galleryIntent.action = Intent.ACTION_GET_CONTENT
-            resultLauncher.launch(galleryIntent)
+            startActivityForResult(galleryIntent, PICK_IMAGE)
         }
 
         binding?.ivCamera?.setOnClickListener {
@@ -117,9 +117,31 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         }
     }
 
-    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data = result.data
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE) {
+            val data = data?.data
+
+            //making new directory to add new images taken
+            val newDocumentPath = FileUtils.mkdir(requireActivity(), "Skanner_${SimpleDateFormat(Constants.FILENAME, Locale.US).format(System.currentTimeMillis())}")
+
+            val photoFile =  File(
+                newDocumentPath.absolutePath,
+                SimpleDateFormat(
+                Constants.FILENAME, Locale.US
+            ).format(System.currentTimeMillis()) + Constants.PHOTO_EXTENSION)
+
+            navigateToCropImage(photoFile)
+        }
+    }
+
+    private fun navigateToCropImage(photoFile: File) {
+        requireActivity().runOnUiThread {
+            val bundle = bundleOf("documentDirectory" to documentDirectory, "originalImageFilePath" to photoFile.absolutePath)
+            navController.navigate(
+                R.id.action_cameraFragment_to_imageCropFragment,
+                bundle
+            )
         }
     }
 
