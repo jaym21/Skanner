@@ -1,5 +1,6 @@
 package dev.jaym21.skanner.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -19,6 +20,7 @@ import android.view.animation.AnimationUtils
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.MainThread
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
@@ -104,7 +106,7 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
             val galleryIntent = Intent()
             galleryIntent.type = "image/*"
             galleryIntent.action = Intent.ACTION_GET_CONTENT
-
+            resultLauncher.launch(galleryIntent)
         }
 
         binding?.ivCamera?.setOnClickListener {
@@ -115,7 +117,11 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
         }
     }
 
-
+    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            val data = result.data
+        }
+    }
 
 
     private fun onAddClicked() {
