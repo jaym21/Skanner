@@ -6,15 +6,13 @@ import android.content.pm.PackageManager
 import android.graphics.Rect
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.camera.core.AspectRatio
-import androidx.camera.core.Camera
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
+import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -33,6 +31,7 @@ class TextExtractFragment : Fragment() {
     private var binding: FragmentTextExtractBinding? = null
     private lateinit var navController: NavController
     private var preview: Preview? = null
+    private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private var displayId: Int = -1
@@ -82,7 +81,40 @@ class TextExtractFragment : Fragment() {
     }
 
     private fun bindCameraUseCases() {
+
+        //unbind the use-cases before rebinding them
+        cameraProvider?.unbindAll()
+
         val screenAspectRatio = aspectRatio(binding?.viewFinder?.width!!, binding?.viewFinder?.height!!)
+
+        val rotation = binding?.viewFinder?.display?.rotation
+
+        //camera provider
+        val cameraProvider = cameraProvider ?: throw IllegalStateException("Camera initialization failed.")
+
+        //camera selector
+        val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+
+        //preview
+        preview = Preview.Builder()
+            .setTargetAspectRatio(screenAspectRatio)
+            .setTargetRotation(rotation!!)
+            .build()
+
+        //analyzer
+        imageAnalyzer = ImageAnalysis.Builder()
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            .setTargetAspectRatio(screenAspectRatio)
+            .build()
+
+
+        try {
+            camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
+
+            preview?.setSurfaceProvider(binding?.viewFinder?.surfaceProvider)
+        }catch (exc: Exception) {
+            Log.d("TAG", "bindCameraUseCases: Failed to bind use cases")
+        }
 
     }
 
