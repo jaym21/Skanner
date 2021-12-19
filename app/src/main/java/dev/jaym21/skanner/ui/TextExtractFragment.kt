@@ -1,6 +1,7 @@
 package dev.jaym21.skanner.ui
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Rect
@@ -21,6 +22,8 @@ import androidx.navigation.Navigation
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentTextExtractBinding
 import dev.jaym21.skanner.utils.Constants
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -30,6 +33,7 @@ class TextExtractFragment : Fragment() {
 
     private var binding: FragmentTextExtractBinding? = null
     private lateinit var navController: NavController
+    private lateinit var cameraExecutor: ExecutorService
     private var preview: Preview? = null
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
@@ -63,6 +67,10 @@ class TextExtractFragment : Fragment() {
         }
     }
     private fun initialize() {
+
+        // Initialize our background executor
+        cameraExecutor = Executors.newSingleThreadExecutor()
+
         binding?.viewFinder?.post {
             displayId = binding?.viewFinder?.display!!.displayId
 
@@ -81,9 +89,10 @@ class TextExtractFragment : Fragment() {
             cameraProvider = cameraProviderFuture.get()
 
             bindCameraUseCases()
-        }, ContextCompat.getMainExecutor(requireContext()))
+        }, cameraExecutor)
     }
 
+    @SuppressLint("UnsafeOptInUsageError")
     private fun bindCameraUseCases() {
 
         //unbind the use-cases before rebinding them
@@ -111,6 +120,12 @@ class TextExtractFragment : Fragment() {
             .setTargetAspectRatio(screenAspectRatio)
             .build()
 
+        imageAnalyzer?.setAnalyzer(cameraExecutor, ImageAnalysis.Analyzer { imageProxy ->
+            val mediaImage = imageProxy.image
+            if (mediaImage != null) {
+
+            }
+        })
 
         try {
             camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
