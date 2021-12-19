@@ -52,6 +52,10 @@ class TextExtractFragment : Fragment() {
         //initializing navController
         navController = Navigation.findNavController(view)
 
+        binding?.ivClose?.setOnClickListener {
+            navController.popBackStack()
+        }
+
         if (checkCameraPermissions(requireContext(), arrayOf(Manifest.permission.CAMERA))) {
             initialize()
         } else {
