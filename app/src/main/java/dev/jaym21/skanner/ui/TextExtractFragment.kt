@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -36,7 +37,6 @@ class TextExtractFragment : Fragment() {
 
     private var binding: FragmentTextExtractBinding? = null
     private lateinit var navController: NavController
-    private lateinit var cameraExecutor: ExecutorService
     private var preview: Preview? = null
     private var imageAnalyzer: ImageAnalysis? = null
     private var camera: Camera? = null
@@ -76,9 +76,6 @@ class TextExtractFragment : Fragment() {
     }
     private fun initialize() {
 
-        // Initialize our background executor
-        cameraExecutor = Executors.newSingleThreadExecutor()
-
         binding?.viewFinder?.post {
             displayId = binding?.viewFinder?.display!!.displayId
 
@@ -97,7 +94,7 @@ class TextExtractFragment : Fragment() {
             cameraProvider = cameraProviderFuture.get()
 
             bindCameraUseCases()
-        }, cameraExecutor)
+        }, ContextCompat.getMainExecutor(requireContext()))
     }
 
     @SuppressLint("UnsafeOptInUsageError")
@@ -128,7 +125,7 @@ class TextExtractFragment : Fragment() {
             .setTargetAspectRatio(screenAspectRatio)
             .build()
 
-        imageAnalyzer?.setAnalyzer(cameraExecutor, ImageAnalysis.Analyzer { imageProxy ->
+        imageAnalyzer?.setAnalyzer(ContextCompat.getMainExecutor(requireContext()), ImageAnalysis.Analyzer { imageProxy ->
             val mediaImage = imageProxy.image
             if (mediaImage != null) {
                 val image  = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
@@ -147,7 +144,14 @@ class TextExtractFragment : Fragment() {
     }
 
     private fun recognizeText(image: InputImage) {
-
+        detector.process(image)
+            .addOnSuccessListener { text ->
+                binding?.tvExtractedText?.text = text.toString()
+            }
+            .addOnFailureListener { exception ->
+                Log.d("TAGYOYO", "recognizeText: $exception")
+                Toast.makeText(requireContext(), "Failed to recognize text", Toast.LENGTH_SHORT).show()
+            }
     }
 
     private fun aspectRatio(width: Int, height: Int): Int {
