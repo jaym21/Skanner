@@ -129,7 +129,7 @@ class TextExtractFragment : Fragment() {
             val mediaImage = imageProxy.image
             if (mediaImage != null) {
                 val image  = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-                recognizeText(image)
+                recognizeText(image, imageProxy)
             }
         })
 
@@ -143,14 +143,16 @@ class TextExtractFragment : Fragment() {
 
     }
 
-    private fun recognizeText(image: InputImage) {
+    private fun recognizeText(image: InputImage, imageProxy: ImageProxy) {
         detector.process(image)
             .addOnSuccessListener { text ->
-                binding?.tvExtractedText?.text = text.toString()
+                binding?.tvExtractedText?.text = text.text
+                imageProxy.close()
             }
             .addOnFailureListener { exception ->
                 Log.d("TAGYOYO", "recognizeText: $exception")
                 Toast.makeText(requireContext(), "Failed to recognize text", Toast.LENGTH_SHORT).show()
+                imageProxy.close()
             }
     }
 
