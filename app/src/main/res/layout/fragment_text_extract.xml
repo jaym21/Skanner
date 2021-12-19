@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
         app:cardElevation="8dp"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="16dp"
         android:layout_alignParentBottom="true">
 
         <RelativeLayout
