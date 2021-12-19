@@ -93,6 +93,10 @@ dependencies {
     //compressor
     implementation 'id.zelory:compressor:3.0.1'
 
+    //ocr
+    implementation 'com.google.mlkit:text-recognition:16.0.0-beta2'
+    implementation 'com.google.mlkit:text-recognition-devanagari:16.0.0-beta2'
+
     //unit testing
     testImplementation 'junit:junit:4.13.2'
 
