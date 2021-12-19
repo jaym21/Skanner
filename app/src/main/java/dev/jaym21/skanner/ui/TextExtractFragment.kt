@@ -19,6 +19,9 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.mlkit.vision.common.InputImage
+import com.google.mlkit.vision.text.TextRecognition
+import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import dev.jaym21.skanner.R
 import dev.jaym21.skanner.databinding.FragmentTextExtractBinding
 import dev.jaym21.skanner.utils.Constants
@@ -40,6 +43,11 @@ class TextExtractFragment : Fragment() {
     private var cameraProvider: ProcessCameraProvider? = null
     private var displayId: Int = -1
     private lateinit var metrics: Rect
+    private val detector = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+
+    init {
+        lifecycle.addObserver(detector)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -123,7 +131,8 @@ class TextExtractFragment : Fragment() {
         imageAnalyzer?.setAnalyzer(cameraExecutor, ImageAnalysis.Analyzer { imageProxy ->
             val mediaImage = imageProxy.image
             if (mediaImage != null) {
-
+                val image  = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+                recognizeText(image)
             }
         })
 
@@ -137,8 +146,8 @@ class TextExtractFragment : Fragment() {
 
     }
 
-    private fun checkCameraPermissions(context: Context, permissions: Array<String>): Boolean = permissions.all {
-        ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    private fun recognizeText(image: InputImage) {
+
     }
 
     private fun aspectRatio(width: Int, height: Int): Int {
@@ -147,6 +156,10 @@ class TextExtractFragment : Fragment() {
             return AspectRatio.RATIO_4_3
         }
         return AspectRatio.RATIO_16_9
+    }
+
+    private fun checkCameraPermissions(context: Context, permissions: Array<String>): Boolean = permissions.all {
+        ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
     }
 
     private val permissionRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
