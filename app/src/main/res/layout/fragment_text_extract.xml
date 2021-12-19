@@ -26,4 +26,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="10dp"
+        android:layout_alignParentBottom="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#232323"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/tvExtractedText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:text="ofeswdr kfn vgfvgfoer sndgno rjeemsdm flsedmflsmfsdel"
+                android:textColor="@color/white"
+                android:fontFamily="@font/sailec_regular" />
+
+            <ImageView
+                android:id="@+id/ivCopyText"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_copy"
+                app:tint="@color/blue_500"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@+id/tvExtractedText"
+                android:layout_marginTop="8dp"/>
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+
 </RelativeLayout>
