@@ -50,9 +50,23 @@ class TextExtractFragment : Fragment() {
         }
     }
     private fun initialize() {
-
+        binding?.viewFinder?.post {
+            setUpCamera()
+        }
     }
 
+    private fun setUpCamera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
+        cameraProviderFuture.addListener({
+            cameraProvider = cameraProviderFuture.get()
+
+            bindCameraUseCases()
+        })
+    }
+
+    private fun bindCameraUseCases() {
+
+    }
 
     private fun checkCameraPermissions(context: Context, permissions: Array<String>): Boolean = permissions.all {
         ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
