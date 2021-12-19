@@ -42,7 +42,6 @@ class TextExtractFragment : Fragment() {
     private var binding: FragmentTextExtractBinding? = null
     private lateinit var navController: NavController
     private var preview: Preview? = null
-    private var imageAnalyzer: ImageAnalysis? = null
     private var imageCapture: ImageCapture? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
@@ -81,15 +80,6 @@ class TextExtractFragment : Fragment() {
     }
     private fun initialize() {
 
-        binding?.ivCopyText?.setOnClickListener {
-            if (!binding?.tvExtractedText?.text.isNullOrEmpty()) {
-                copyExtractedTextToClipboard()
-                Snackbar.make(binding?.root!!, "Text copied", Snackbar.LENGTH_SHORT).show()
-            } else {
-                Snackbar.make(binding?.root!!, "No extracted text found", Snackbar.LENGTH_SHORT).show()
-            }
-        }
-
         binding?.viewFinder?.post {
             displayId = binding?.viewFinder?.display!!.displayId
 
@@ -99,6 +89,19 @@ class TextExtractFragment : Fragment() {
             }
 
             setUpCamera()
+        }
+
+        binding?.ivCopyText?.setOnClickListener {
+            if (!binding?.tvExtractedText?.text.isNullOrEmpty()) {
+                copyExtractedTextToClipboard()
+                Snackbar.make(binding?.root!!, "Text copied", Snackbar.LENGTH_SHORT).show()
+            } else {
+                Snackbar.make(binding?.root!!, "No extracted text found", Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
+        binding?.ivAccept?.setOnClickListener {
+            takePicture()
         }
     }
 
@@ -111,7 +114,6 @@ class TextExtractFragment : Fragment() {
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
-    @SuppressLint("UnsafeOptInUsageError")
     private fun bindCameraUseCases() {
 
         //unbind the use-cases before rebinding them
@@ -133,20 +135,6 @@ class TextExtractFragment : Fragment() {
             .setTargetRotation(rotation!!)
             .build()
 
-        //analyzer
-        imageAnalyzer = ImageAnalysis.Builder()
-            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
-            .setTargetAspectRatio(screenAspectRatio)
-            .build()
-
-        imageAnalyzer?.setAnalyzer(ContextCompat.getMainExecutor(requireContext()), ImageAnalysis.Analyzer { imageProxy ->
-            val mediaImage = imageProxy.image
-            if (mediaImage != null) {
-                val image  = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
-                recognizeText(image, imageProxy)
-            }
-        })
-
         //image capture
         imageCapture = ImageCapture.Builder()
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
@@ -154,13 +142,26 @@ class TextExtractFragment : Fragment() {
             .build()
 
         try {
-            camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture, imageAnalyzer)
+            camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture)
 
             preview?.setSurfaceProvider(binding?.viewFinder?.surfaceProvider)
         }catch (exc: Exception) {
             Log.d("TAG", "bindCameraUseCases: Failed to bind use cases")
         }
+    }
 
+    private fun takePicture() {
+        imageCapture?.takePicture(ContextCompat.getMainExecutor(requireContext()), object: ImageCapture.OnImageCapturedCallback() {
+            @SuppressLint("UnsafeOptInUsageError")
+            override fun onCaptureSuccess(imageProxy: ImageProxy) {
+                super.onCaptureSuccess(imageProxy)
+                val mediaImage = imageProxy.image
+                if (mediaImage != null) {
+                    val image  = InputImage.fromMediaImage(mediaImage, imageProxy.imageInfo.rotationDegrees)
+                    recognizeText(image, imageProxy)
+                }
+            }
+        })
     }
 
     private fun recognizeText(image: InputImage, imageProxy: ImageProxy) {
@@ -169,8 +170,7 @@ class TextExtractFragment : Fragment() {
                 binding?.tvExtractedText?.text = text.text
                 imageProxy.close()
             }
-            .addOnFailureListener { exception ->
-                Log.d("TAGYOYO", "recognizeText: $exception")
+            .addOnFailureListener {
                 Toast.makeText(requireContext(), "Failed to recognize text", Toast.LENGTH_SHORT).show()
                 imageProxy.close()
             }
