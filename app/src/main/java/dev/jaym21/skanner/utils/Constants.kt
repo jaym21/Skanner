@@ -21,5 +21,7 @@ class Constants {
         const val FIRST_MAX_CONTOURS = 10
         const val SMALLEST_ANGLE_COS = 0.172
         const val ANGLE_OF_ROTATION = 90
+        const val RATIO_4_3_VALUE = 4.0 / 3.0
+        const val RATIO_16_9_VALUE = 16.0 / 9.0
     }
 }
