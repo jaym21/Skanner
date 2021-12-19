@@ -1,14 +1,19 @@
 package dev.jaym21.skanner.ui
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.Camera
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import dev.jaym21.skanner.R
@@ -37,6 +42,26 @@ class TextExtractFragment : Fragment() {
 
         //initializing navController
         navController = Navigation.findNavController(view)
+
+        if (checkCameraPermissions(requireContext(), arrayOf(Manifest.permission.CAMERA))) {
+            initialize()
+        } else {
+            permissionRequestLauncher.launch(Manifest.permission.CAMERA)
+        }
+    }
+    private fun initialize() {
+
+    }
+
+
+    private fun checkCameraPermissions(context: Context, permissions: Array<String>): Boolean = permissions.all {
+        ActivityCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private val permissionRequestLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            initialize()
+        }
     }
 
     override fun onDestroy() {
