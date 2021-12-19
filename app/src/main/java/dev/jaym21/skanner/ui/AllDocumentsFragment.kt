@@ -106,17 +106,21 @@ class AllDocumentsFragment : Fragment(), IDocumentAdapter {
             onAddClicked()
         }
 
-        binding?.ivGallery?.setOnClickListener {
-            val galleryIntent = Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-            galleryIntent.type = "image/*"
-            startActivityForResult(galleryIntent, PICK_IMAGE)
-        }
-
         binding?.ivCamera?.setOnClickListener {
             //making new directory to add new images taken
             val newDocumentPath = FileUtils.mkdir(requireActivity(), "Skanner_${SimpleDateFormat(Constants.FILENAME, Locale.US).format(System.currentTimeMillis())}")
             val bundle = bundleOf("documentDirectory" to newDocumentPath.absolutePath)
             navController.navigate(R.id.action_allDocumentsFragment_to_cameraFragment, bundle)
+        }
+
+        binding?.ivGallery?.setOnClickListener {
+            val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            galleryIntent.type = "image/*"
+            startActivityForResult(galleryIntent, PICK_IMAGE)
+        }
+
+        binding?.ivTextExtract?.setOnClickListener {
+            navController.navigate(R.id.action_allDocumentsFragment_to_textExtractFragment)
         }
     }
 
