@@ -2,6 +2,8 @@ package dev.jaym21.skanner.ui
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Rect
@@ -10,6 +12,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Surface
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
@@ -20,6 +23,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.google.android.material.snackbar.Snackbar
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
@@ -39,6 +43,7 @@ class TextExtractFragment : Fragment() {
     private lateinit var navController: NavController
     private var preview: Preview? = null
     private var imageAnalyzer: ImageAnalysis? = null
+    private var imageCapture: ImageCapture? = null
     private var camera: Camera? = null
     private var cameraProvider: ProcessCameraProvider? = null
     private var displayId: Int = -1
@@ -75,6 +80,15 @@ class TextExtractFragment : Fragment() {
         }
     }
     private fun initialize() {
+
+        binding?.ivCopyText?.setOnClickListener {
+            if (!binding?.tvExtractedText?.text.isNullOrEmpty()) {
+                copyExtractedTextToClipboard()
+                Snackbar.make(binding?.root!!, "Text copied", Snackbar.LENGTH_SHORT).show()
+            } else {
+                Snackbar.make(binding?.root!!, "No extracted text found", Snackbar.LENGTH_SHORT).show()
+            }
+        }
 
         binding?.viewFinder?.post {
             displayId = binding?.viewFinder?.display!!.displayId
@@ -133,8 +147,14 @@ class TextExtractFragment : Fragment() {
             }
         })
 
+        //image capture
+        imageCapture = ImageCapture.Builder()
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
+            .setTargetRotation(Surface.ROTATION_0)
+            .build()
+
         try {
-            camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
+            camera = cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageCapture, imageAnalyzer)
 
             preview?.setSurfaceProvider(binding?.viewFinder?.surfaceProvider)
         }catch (exc: Exception) {
@@ -154,6 +174,12 @@ class TextExtractFragment : Fragment() {
                 Toast.makeText(requireContext(), "Failed to recognize text", Toast.LENGTH_SHORT).show()
                 imageProxy.close()
             }
+    }
+
+    private fun copyExtractedTextToClipboard() {
+        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText("label", binding?.tvExtractedText?.text)
+        clipboard.setPrimaryClip(clip)
     }
 
     private fun aspectRatio(width: Int, height: Int): Int {
