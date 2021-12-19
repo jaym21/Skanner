@@ -22,7 +22,5 @@
 |---	|---	|---
 |  ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot4.jpg)    |  ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot5.jpg)    |   ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot6.jpg)  
 
-|   Document    |  Extract Text  |   Button Options 
-|---	|---	|---
-|  ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot7.jpg)    |  ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot8.jpg)    |   ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot9.jpg)
+
 
