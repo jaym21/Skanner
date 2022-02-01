@@ -13,24 +13,16 @@
 
 ## Screenshots
 </br>
-<div align="center">
-   <table align="center" border="0" >
-  <tr>
-    <td><img width="360" src="screenshots/screenshot1.jpg"/>
-       <td><img width="360" src="screenshots/screenshot2.jpg"/></td>
-     <td> <img width="360" src="screenshots/screenshot3.jpg"/></td>
-    <td> <img width="360" src="screenshots/screenshot4.jpg"/></td>
-  </table>
-  </div>
-</br>
-<div align="center">
-  <table align="center" border="0" >
-  <tr>
-    <td> <img width="360" src="screenshots/screenshot5.jpg"/></td>
-     <td> <img width="360" src="screenshots/screenshot6.jpg"/></td>
-     <td> <img width="360" src="screenshots/screenshot7.jpg"/></td>
-     <td> <img width="360" src="screenshots/screenshot8.jpg"/></td>
-  </tr>
-</table>
-  </div>
-</br>
+
+|   All Documents    |   Camera    |   Image Crop  
+|---	|---	|---
+|  ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot1.jpg)    |  ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot2.jpg)    |   ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot3.jpg)    
+
+|   Image Edit    |  Grayscale   |   B/W  
+|---	|---	|---
+|  ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot4.jpg)    |  ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot5.jpg)    |   ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot6.jpg)  
+
+|   Document    | Extract Text    |   Button Options      
+|---	|---	|---		
+|  ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot7.jpg)    |  ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot8.jpg)    |   ![](https://github.com/jaym21/Skanner/blob/main/screenshots/screenshot9.jpg)
+
